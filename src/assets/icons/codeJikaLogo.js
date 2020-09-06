@@ -1,0 +1,68 @@
+/* eslint-disable max-len */
+import React from 'react';
+
+function codetribeLogo() {
+  return (
+    <img aria-label='[Codetribe Logo]'
+    height={30}
+
+    src="data:image/png;base64,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
+ZWFkeXHJZTwAAAAASUVORK5CYII=" />
+  );
+  return (
+    <svg
+      aria-label='[Codetribe Logo]'
+      height={24}
+      role='math'
+      version='1.1'
+      viewBox='0 0 210 24'
+      width={210}
+      xmlns='http://www.w3.org/2000/svg'
+      xmlnsXlink='http://www.w3.org/1999/xlink'
+    >
+
+    </svg>
+  );
+}
+
+codetribeLogo.displayName = 'codetribeLogo';
+
+export default codetribeLogo;

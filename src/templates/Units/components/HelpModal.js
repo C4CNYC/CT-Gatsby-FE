@@ -1,0 +1,76 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import { createQuestion, closeModal, isHelpModalOpenSelector } from '../redux';
+import { executeGA } from '../../../state';
+
+import './help-modal.css';
+import Modal from '@material-ui/core/Modal';
+import Button from '@material-ui/core/Button';
+
+const mapStateToProps = state => ({ isOpen: isHelpModalOpenSelector(state) });
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    { createQuestion, executeGA, closeHelpModal: () => closeModal('help') },
+    dispatch
+  );
+
+const propTypes = {
+  closeHelpModal: PropTypes.func.isRequired,
+  createQuestion: PropTypes.func.isRequired,
+  executeGA: PropTypes.func,
+  isOpen: PropTypes.bool
+};
+
+const RSA =
+  'https://www.freecodecamp.org/forum/t/how-to-get-help-when-you-are-stuck-coding/19514';
+
+export class HelpModal extends Component {
+  render() {
+    const { isOpen, closeHelpModal, createQuestion, executeGA } = this.props;
+    if (isOpen) {
+      executeGA({ type: 'modal', data: '/help-modal' });
+    }
+    return null;
+    // return (
+    //   <Modal dialogClassName='help-modal' onHide={closeHelpModal} open={isOpen}>
+    //     <Modal.Header
+    //       className='help-modal-header fcc-modal'
+    //       closeButton={true}
+    //     >
+    //       <Modal.Title className='text-center'>Ask for help?</Modal.Title>
+    //     </Modal.Header>
+    //     <Modal.Body className='help-modal-body text-center'>
+    //       <h3>
+    //         If you've already tried the&nbsp;
+    //         <a
+    //           href={RSA}
+    //           rel='noopener noreferrer'
+    //           target='_blank'
+    //           title='Read, search, ask'
+    //         >
+    //           Read-Search-Ask
+    //         </a>
+    //         &nbsp; method, then you can ask for help on the freeCodeCamp forum.
+    //       </h3>
+    //       <Button  onClick={createQuestion}>
+    //         Create a help post on the forum
+    //       </Button>
+    //       <Button  onClick={closeHelpModal}>
+    //         Cancel
+    //       </Button>
+    //     </Modal.Body>
+    //   </Modal>
+    // );
+  }
+}
+
+HelpModal.displayName = 'HelpModal';
+HelpModal.propTypes = propTypes;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HelpModal);

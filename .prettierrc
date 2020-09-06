@@ -1,0 +1,8 @@
+{
+  "endOfLine": "auto",
+  "semi": true,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "tabWidth": 4,
+  "trailingComma": "none"
+}

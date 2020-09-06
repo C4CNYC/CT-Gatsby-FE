@@ -1,0 +1,18 @@
+version: "3"
+services:
+
+  codecanby:
+    image: node:lts
+    user: node
+    environment:
+      - API_PROXY=http://api-fcc:3000
+      - GATSBY_WEBPACK_PUBLICPATH=http://$DOCKER_HOST_LOCATION:8000/
+      - HOME_LOCATION=http://$DOCKER_HOST_LOCATION:8000
+      - CCT_API_LOCATION=http://$DOCKER_HOST_LOCATION:3000
+    volumes:
+      - .:/app
+    working_dir: ./
+    command: npm run develop -- -H '0.0.0.0'
+    ports:
+      - '8000:8000'
+      - '9228:9228'

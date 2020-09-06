@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  frontend:
+    image: ${SWARMLET_REGISTRY}/c4c-frontend
+    build:
+      context: ./
+      dockerfile: ./.docker/Dockerfile
+#      args:
+#        API_URL: https://${API_DOMAIN}
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.tags=traefik-public
+        - traefik.${PREFIX}-frontend.port=80
+        - traefik.${PREFIX}-frontend.frontend.rule=Host:${FRONTEND_DOMAIN}
+        - traefik.${PREFIX}-frontend.frontend.entryPoints=http,https
+        - traefik.${PREFIX}-frontend.frontend.passHostHeader=true
+        - traefik.${PREFIX}-frontend.frontend.headers.SSLRedirect=true
+        - traefik.${PREFIX}-frontend.frontend.headers.SSLHost=${FRONTEND_DOMAIN}
+        - traefik.${PREFIX}-frontend.frontend.headers.STSIncludeSubdomains=true
+        - traefik.${PREFIX}-frontend.frontend.headers.STSPreload=true
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
