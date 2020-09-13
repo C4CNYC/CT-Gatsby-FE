@@ -23,6 +23,7 @@ import { isWideScreen, timeoutThrottlerHandler } from '../../utils/helpers';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import SpringScrollbars from '../SpringScrollbars/SpringScrollbars';
+import WithInstantSearch from '../search/WithInstantSearch';
 
 const styles = theme => ({
   main: {
@@ -165,7 +166,7 @@ class DefaultLayout extends Component {
             },
           ]}
         />
-        {/* <WithInstantSearch>*/}
+         <WithInstantSearch>
           <LayoutWrapper>
 
             <main className={classes.main}>
@@ -196,7 +197,7 @@ class DefaultLayout extends Component {
           {/*  }}*/}
           {/*  {...rest}*/}
           {/* />*/}
-        {/* </WithInstantSearch>*/}
+         </WithInstantSearch>
       </Fragment>
     );
   }

@@ -121,7 +121,7 @@ class LearnLayout extends Component {
         <Helmet>
           <meta content='noindex' name='robots' />
         </Helmet>
-        {/*<WithInstantSearch>*/}
+        <WithInstantSearch>
         {/*  <LayoutWrapper>*/}
             {/*<OfflineWarning isOnline={isOnline} isSignedIn={isSignedIn} />*/}
             {/*{hasMessage && flashMessage ? (*/}
@@ -137,7 +137,7 @@ class LearnLayout extends Component {
             <ActionsBar categories={[]} />
             {/*<InfoBar pages={[]} parts={[]} />*/}
           {/*</LayoutWrapper>*/}
-        {/*</WithInstantSearch>*/}
+        </WithInstantSearch>
         {/*<Main id='learn-app-wrapper'>{children}</Main>*/}
         {/*<DonateModal />*/}
       </Fragment>
