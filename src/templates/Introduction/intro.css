@@ -21,8 +21,12 @@
   background-color: var(--secondary-background);
 }
 
-.intro-toc a:hover {
-  text-decoration: none;
-  text-decoration-style: none;
-  color: var(--secondary-color);
+.intro-toc a {
+    display: block;
 }
+
+/*.intro-toc a {*/
+/*  text-decoration: none;*/
+/*  text-decoration-style: none;*/
+/*  color: var(--secondary-color);*/
+/*}*/

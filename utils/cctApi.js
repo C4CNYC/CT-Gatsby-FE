@@ -37,7 +37,6 @@ exports.getUnit = async (id) =>  {
     headers
   })
   .then(response => {
-    console.log(response);
     return response.json();
   }).catch(response => null);
 }

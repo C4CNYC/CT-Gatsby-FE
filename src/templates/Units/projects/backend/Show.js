@@ -192,7 +192,7 @@ export class BackEnd extends Component {
         nextUnitPath={nextUnitPath}
         prevUnitPath={prevUnitPath}
       >
-        <LearnLayout>
+        <>
           <Helmet title={`${blockNameTitle} | Learn | codetribe.com`} />
           <Grid>
             <Row>
@@ -240,7 +240,7 @@ export class BackEnd extends Component {
               <HelpModal />
             </Row>
           </Grid>
-        </LearnLayout>
+        </>
       </Hotkeys>
     );
   }

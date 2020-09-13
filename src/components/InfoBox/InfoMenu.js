@@ -28,21 +28,21 @@ const InfoMenu = props => {
 
   return (
     <nav className={classes.infoMenu}>
-      {pages.map((page, i) => {
-        const { fields, frontmatter } = page.node;
-        return (
-          <Link
-            key={fields.slug}
-            to={fields.slug}
-            onClick={linkOnClick}
-            className={classes.link}
-            data-shape="closed"
-          >
-            {frontmatter.menuTitle ? frontmatter.menuTitle : frontmatter.title}
-          </Link>
-        );
-      })}
-      <Link to="/learn/" onClick={linkOnClick} className={classes.link} data-shape="closed">
+      {/*{pages.map((page, i) => {*/}
+      {/*  const { fields, frontmatter } = page.node;*/}
+      {/*  return (*/}
+      {/*    <Link*/}
+      {/*      key={fields.slug}*/}
+      {/*      to={fields.slug}*/}
+      {/*      onClick={linkOnClick}*/}
+      {/*      className={classes.link}*/}
+      {/*      data-shape="closed"*/}
+      {/*    >*/}
+      {/*      {frontmatter.menuTitle ? frontmatter.menuTitle : frontmatter.title}*/}
+      {/*    </Link>*/}
+      {/*  );*/}
+      {/*})}*/}
+      <Link to="/learn/" onClick={linkOnClick} className={classes.link} data-shape="open">
         Learn
       </Link>
       <Link to="/about/" onClick={linkOnClick} className={classes.link} data-shape="closed">

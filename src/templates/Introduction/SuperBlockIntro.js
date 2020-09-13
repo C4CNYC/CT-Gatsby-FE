@@ -28,12 +28,13 @@ function SuperBlockIntroductionPage({
     image
   } = blockNode;
   return (
-    <LearnLayout>
+    <>
       <Helmet>
         <title>{title} | codetribe.com</title>
       </Helmet>
-      <Grid className='intro-layout-container' container={true}>
-        <Grid container={true} xs={12}>
+        <Box p={3}>
+      <Grid className='intro-layout-container' container={true} spacing={3}>
+        <Grid container={true}>
           <Grid item={true}>
             <img alt='' src={image} style={{width: '100%'}} />
           </Grid>
@@ -49,10 +50,17 @@ function SuperBlockIntroductionPage({
             className='intro-layout'
             dangerouslySetInnerHTML={{ __html: content }}
           />
+          <p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor </p>
         </FullWidthRow>
+      </Grid>
+        </Box>
+      <Box p={3}>
+          <FullWidthRow>
+              <h2>Lessons:</h2>
+          </FullWidthRow>
         <Grid container={true} spacing={3}>
         {allBlockNode.edges.map((block, i) => (
-          <Grid className={'superblock'} item={true} key={i} xs={6}>
+          <Grid className={'superblock'} item={true} key={i} xs={4}>
             <Card>
               <CardContent>
                 <Link to={block.node.fields.slug}>
@@ -65,8 +73,8 @@ function SuperBlockIntroductionPage({
         ))}
         <Spacer />
       </Grid>
-      </Grid>
-    </LearnLayout>
+        </Box>
+    </>
   );
 }
 

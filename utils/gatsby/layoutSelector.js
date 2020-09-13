@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import {
   CertificationLayout,
-  DefaultLayout
+  DefaultLayout,
+  LearnLayout
 } from '../../src/components/layouts';
 import FourOhFourPage from '../../src/pages/404';
 
@@ -25,11 +26,11 @@ export default function layoutSelector({ element, props }) {
   if (/^\/guide(\/.*)*/.test(pathname)) {
     console.log('Hitting guide for some reason. Need a redirect.');
   }
-  if (/^\/learn(\/.*)*/.test(pathname)) {
+  if (/^\/learn\/.*\/.*\/.*/.test(pathname)) {
     return (
-      <DefaultLayout pathname={pathname} showFooter={false}>
+      <LearnLayout pathname={pathname} showFooter={false}>
         {element}
-      </DefaultLayout>
+      </LearnLayout>
     );
   }
   if (/^\/donation(\/.*)*|^\/donate(\/.*)*/.test(pathname)) {

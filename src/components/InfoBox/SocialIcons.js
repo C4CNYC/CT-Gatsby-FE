@@ -37,7 +37,6 @@ const Socialcons = props => {
   const icons = {
     twitter: TwitterIcon,
     facebook: FacebookIcon,
-    github: GithubIcon
   };
 
   return (

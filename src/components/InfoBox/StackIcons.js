@@ -1,50 +1,51 @@
-import React from "react";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React from 'react';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
 
-import AlgoliaIcon from "!svg-react-loader!../../assets/images/svg-icons/algolia.svg?name=AlgoliaIcon";
-import ReactIcon from "!svg-react-loader!../../assets/images/svg-icons/react.svg?name=ReactIcon";
-import GraphqlIcon from "!svg-react-loader!../../assets/images/svg-icons/graphql.svg?name=GraphqlIcon";
-import JssIcon from "!svg-react-loader!../../assets/images/svg-icons/jss.svg?name=JssIcon";
-import MaterialUiIcon from "!svg-react-loader!../../assets/images/svg-icons/material-ui.svg?name=MaterialUiIcon";
-import ReduxIcon from "!svg-react-loader!../../assets/images/svg-icons/redux.svg?name=ReduxIcon";
-import GatsbyIcon from "!svg-react-loader!../../assets/images/svg-icons/gatsby.svg?name=GatsbyIcon";
-import WebpackIcon from "!svg-react-loader!../../assets/images/svg-icons/webpack.svg?name=WebpackIcon";
-import BabelIcon from "!svg-react-loader!../../assets/images/svg-icons/babel.svg?name=BabelIcon";
-import NetlifyIcon from "!svg-react-loader!../../assets/images/svg-icons/netlify.svg?name=NetlifyIcon";
-import FreeCodeCampIcon from "!svg-react-loader!../../assets/images/svg-icons/freecodecamp.svg?name=FreeCodeCampIcon";
+import AlgoliaIcon from '!svg-react-loader!../../assets/images/svg-icons/algolia.svg?name=AlgoliaIcon';
+import ReactIcon from '!svg-react-loader!../../assets/images/svg-icons/react.svg?name=ReactIcon';
+import GraphqlIcon from '!svg-react-loader!../../assets/images/svg-icons/graphql.svg?name=GraphqlIcon';
+import JssIcon from '!svg-react-loader!../../assets/images/svg-icons/jss.svg?name=JssIcon';
+import MaterialUiIcon from '!svg-react-loader!../../assets/images/svg-icons/material-ui.svg?name=MaterialUiIcon';
+import ReduxIcon from '!svg-react-loader!../../assets/images/svg-icons/redux.svg?name=ReduxIcon';
+import GatsbyIcon from '!svg-react-loader!../../assets/images/svg-icons/gatsby.svg?name=GatsbyIcon';
+import WebpackIcon from '!svg-react-loader!../../assets/images/svg-icons/webpack.svg?name=WebpackIcon';
+import BabelIcon from '!svg-react-loader!../../assets/images/svg-icons/babel.svg?name=BabelIcon';
+import NetlifyIcon from '!svg-react-loader!../../assets/images/svg-icons/netlify.svg?name=NetlifyIcon';
+import FreeCodeCampIcon from '!svg-react-loader!../../assets/images/svg-icons/freecodecamp.svg?name=FreeCodeCampIcon';
+import HeartIcon from '!svg-react-loader!../../assets/images/svg-icons/heart.svg?name=HeartIcon';
 
 const styles = theme => ({
   stack: {
-    display: "none",
+    display: 'none',
     [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      display: "block",
-      position: "absolute",
+      display: 'block',
+      position: 'absolute',
       left: 0,
       bottom: 0,
-      width: "100%",
-      padding: "1em 2em"
+      width: '100%',
+      padding: '1em 2em'
     }
   },
   box: {
-    display: "flex",
-    justifyContent: "center",
-    flexWrap: "wrap"
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap'
   },
   link: {
-    display: "inline-block",
-    padding: "8px"
+    display: 'inline-block',
+    padding: '8px'
   },
   svg: {
-    width: "22px",
-    height: "22px"
+    width: '22px',
+    height: '22px'
   },
   header: {
-    textAlign: "center",
-    fontSize: ".85em",
-    letterSpacing: ".3em",
-    width: "100%",
-    margin: "0 0 .8em 0",
+    textAlign: 'center',
+    fontSize: '.85em',
+    letterSpacing: '.3em',
+    width: '100%',
+    margin: '0 0 .8em 0',
     fontWeight: 300
   }
 });
@@ -53,17 +54,17 @@ const StackIcons = props => {
   const { classes } = props;
 
   const items = [
-    { name: "freeCodeCamp", url: "https://www.freecodecamp.org/", comp: FreeCodeCampIcon },
-    { name: "gatsby", url: "https://www.gatsbyjs.org/", comp: GatsbyIcon },
-    { name: "react", url: "https://reactjs.org/", comp: ReactIcon },
-    { name: "graphql", url: "http://graphql.org/", comp: GraphqlIcon },
-    { name: "jss", url: "http://cssinjs.org/", comp: JssIcon },
-    { name: "material-ui", url: "https://material-ui-next.com/", comp: MaterialUiIcon },
-    { name: "redux", url: "https://redux.js.org/", comp: ReduxIcon },
-    { name: "algolia", url: "https://www.algolia.com/", comp: AlgoliaIcon },
-    { name: "webpack", url: "https://webpack.js.org/", comp: WebpackIcon },
-    { name: "babel", url: "https://babeljs.io/", comp: BabelIcon },
-    { name: "netlify", url: "https://www.netlify.com/", comp: NetlifyIcon }
+    { name: 'love', url: 'https://www.google.com/search?q=love', comp: HeartIcon },
+    { name: 'freeCodeCamp', url: 'https://www.freecodecamp.org/', comp: FreeCodeCampIcon },
+    { name: 'gatsby', url: 'https://www.gatsbyjs.org/', comp: GatsbyIcon },
+    { name: 'react', url: 'https://reactjs.org/', comp: ReactIcon },
+    { name: 'graphql', url: 'http://graphql.org/', comp: GraphqlIcon },
+    { name: 'jss', url: 'http://cssinjs.org/', comp: JssIcon },
+    { name: 'material-ui', url: 'https://material-ui-next.com/', comp: MaterialUiIcon },
+    { name: 'redux', url: 'https://redux.js.org/', comp: ReduxIcon },
+    { name: 'algolia', url: 'https://www.algolia.com/', comp: AlgoliaIcon },
+    { name: 'webpack', url: 'https://webpack.js.org/', comp: WebpackIcon },
+    { name: 'babel', url: 'https://babeljs.io/', comp: BabelIcon }
   ];
 
   return (
@@ -74,13 +75,13 @@ const StackIcons = props => {
           const Icon = item.comp;
           return (
             <a
+              className={classes.link}
               href={item.url}
               key={item.name}
-              className={classes.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              rel='noopener noreferrer'
+              target='_blank'
               title={item.name}
-            >
+              >
               <Icon className={classes.svg} />
             </a>
           );

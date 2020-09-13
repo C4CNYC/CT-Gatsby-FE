@@ -129,6 +129,31 @@ class ActionsBar extends React.Component {
 
     return (
       <div className={classes.actionsBar}>
+        <track-preview></track-preview>
+        <div id="app-action-timeline">
+          <a href="http://localhost:8080/"
+                                         className="back mdc-button mdc-button--outlined mdc-custom-outline mdc-custom-min-width"><span
+            className="mdc-button__label">&lt; Back</span></a>
+          <div id="complete-step-container">
+            <button id="complete-step"
+                    className="mdc-button mdc-button--secondary mdc-button--raised mdc-custom-min-width"
+                    disabled="disabled">Next
+            </button>
+          </div>
+        </div>
+        <div className="help-container">
+          <challenge-reminder course="programming"></challenge-reminder>
+          <div tooltip data-gravity="e"
+               title="Report bugs/suggestions to Jad (course creator).">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 viewBox="0 0 24 24" fill="#A7A7A7"
+                 className="help">
+              <path fill="none" d="M0 0h24v24H0z"/>
+              <path
+                  d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
+            </svg>
+          </div>
+        </div>
         <div className={classes.group}>
           <IconButton
             aria-label="Back to home"
@@ -138,9 +163,9 @@ class ActionsBar extends React.Component {
           >
             <HomeIcon />
           </IconButton>
-          {((isWideScreen && navigatorShape === "open") || navigatorPosition !== "is-aside") && (
-            <CategoryFilter categories={categories} filterCategory={this.categoryFilterOnClick} />
-          )}
+          {/*{((isWideScreen && navigatorShape === "open") || navigatorPosition !== "is-aside") && (*/}
+          {/*  <CategoryFilter categories={categories} filterCategory={this.categoryFilterOnClick} />*/}
+          {/*)}*/}
           <IconButton
             aria-label="Search"
             onClick={this.searchOnClick}

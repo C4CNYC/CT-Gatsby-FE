@@ -152,8 +152,8 @@ function prepareCanvasCCTUnitForFrontend(canvasModuleItem, cctUnit = null, bundl
     forumTopicId: 0,
     tests: [
       {
-        text: 'name of test goes here',
-        testString: 'test validation string goes here'
+        text: 'Your app should have an <code>input</code> element of type <code>text</code>',
+        testString: 'assert($("input[type=text]").length > 0);'
       }
     ],
     instructions: 'instructions go here',
@@ -162,9 +162,29 @@ function prepareCanvasCCTUnitForFrontend(canvasModuleItem, cctUnit = null, bundl
         key: 'html',
         ext: 'html',
         name: 'index',
-        contents: 'contents',
-        head: 'head',
-        tail: 'tail'
+        contents: '<h2>CatPhotoApp</h2>\n' +
+            '<main>\n' +
+            '  <p>Click here to view more <a href="#">cat photos</a>.</p>\n' +
+            '\n' +
+            '  <a href="#"><img src="https://bit.ly/fcc-relaxing-cat" alt="A cute orange cat lying on its back."></a>\n' +
+            '\n' +
+            '  <p>Things cats love:</p>\n' +
+            '  <ul>\n' +
+            '    <li>cat nip</li>\n' +
+            '    <li>laser pointers</li>\n' +
+            '    <li>lasagna</li>\n' +
+            '  </ul>\n' +
+            '  <p>Top 3 things cats hate:</p>\n' +
+            '  <ol>\n' +
+            '    <li>flea treatment</li>\n' +
+            '    <li>thunder</li>\n' +
+            '    <li>other cats</li>\n' +
+            '  </ol>\n' +
+            '\n' +
+            '\n' +
+            '</main>',
+        head: '',
+        tail: ''
       },
       // indexjs: 'indexjs'
     },

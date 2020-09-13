@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, graphql } from 'gatsby';
 import Helmet from 'react-helmet';
-import { Grid } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 
 import LearnLayout from '../../components/layouts/Learn';
 import FullWidthRow from '../../components/helpers/FullWidthRow';
@@ -39,10 +39,11 @@ function IntroductionPage({ data: { blockNode, allUnitNode } }) {
     ? firstLesson.fields.slug
     : '/strange-place';
   return (
-    <LearnLayout>
+    <>
       <Helmet>
         <title>{title} | codetribe.com</title>
       </Helmet>
+        <Box p={3}>
       <Grid className='intro-layout-container'>
         <Grid item={true} sm={4} xs={6}>
           <img alt='' src={image} style={{width: '100%'}} />
@@ -64,11 +65,11 @@ function IntroductionPage({ data: { blockNode, allUnitNode } }) {
             className='btn btn-lg btn-primary btn-block'
             to={firstLessonPath}
           >
-            Go to the first lesson
+            Let's go!
           </Link>
           <ButtonSpacer />
           <Link className='btn btn-lg btn-primary btn-block' to='/learn'>
-            View the curriculum
+            View the entire curriculum first
           </Link>
           <ButtonSpacer />
           <hr />
@@ -80,7 +81,8 @@ function IntroductionPage({ data: { blockNode, allUnitNode } }) {
           </div>
         </FullWidthRow>
       </Grid>
-    </LearnLayout>
+        </Box>
+    </>
   );
 }
 

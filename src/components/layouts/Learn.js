@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Fragment, Component, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
@@ -19,6 +19,56 @@ import './prism-night.css';
 import 'react-reflex/styles.css';
 import './learn.css';
 import Main from '../Main';
+import OfflineWarning from '../OfflineWarning';
+import Flash from '../Flash';
+import ActionsBar from '../ActionsBar/ActionsBar';
+import InfoBar from '../InfoBar/InfoBar';
+import Loading from '../common/Loading/Loading';
+import muiTheme from '../../styles/theme';
+import LayoutWrapper from '../LayoutWrapper/LayoutWrapper';
+import WithInstantSearch from '../search/WithInstantSearch';
+import SpringScrollbars from '../SpringScrollbars/SpringScrollbars';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+const styles = theme => ({
+    main: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        width: '100%',
+        animationName: 'main-entry',
+        animationDuration: '.5s',
+        [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+            // width: `100vw`,
+        },
+        [`@media (max-width: ${theme.mediaQueryTresholds.L}px)`]: {
+            top: '61px' // todo
+        },
+        '& > div': {
+            height: '100%'
+        }
+        // '@media print': {
+        //     position: 'relative',
+        //     '& > div': {
+        //         overflow: 'visible!important'
+        //     },
+        //     '& > div > div': {
+        //         position: 'relative!important'
+        //     }
+        // }
+    },
+    // '@keyframes main-entry': {
+    //     '0%': {
+    //         opacity: 0,
+    //         transform: 'translateY(20px)'
+    //     },
+    //     '100%': {
+    //         opacity: 1,
+    //         transform: 'translateY(0)'
+    //     }
+    // }
+});
 
 const mapStateToProps = createSelector(
   userFetchStateSelector,
@@ -54,23 +104,41 @@ class LearnLayout extends Component {
       fetchState: { pending, complete },
       isSignedIn,
       user: { acceptedPrivacyTerms },
-      children
+      children,
+      classes
     } = this.props;
 
-    if (pending && !complete) {
-      return <Loader fullScreen={true} />;
-    }
-
-    if (isSignedIn && !acceptedPrivacyTerms) {
-      return <RedirectAcceptPrivacyTerm />;
-    }
+    // if (pending && !complete) {
+    //   return <Loader fullScreen={true} />;
+    // }
+    //
+    // if (isSignedIn && !acceptedPrivacyTerms) {
+    //   return <RedirectAcceptPrivacyTerm />;
+    // }
 
     return (
       <Fragment>
         <Helmet>
           <meta content='noindex' name='robots' />
         </Helmet>
-        <Main id='learn-app-wrapper'>{children}</Main>
+        {/*<WithInstantSearch>*/}
+        {/*  <LayoutWrapper>*/}
+            {/*<OfflineWarning isOnline={isOnline} isSignedIn={isSignedIn} />*/}
+            {/*{hasMessage && flashMessage ? (*/}
+            {/*    <Flash flashMessage={flashMessage} onClose={removeFlashMessage} />*/}
+            {/*) : null}*/}
+
+          {/*{children}*/}
+              <main className={classes.main}>
+                  {/*<SpringScrollbars>*/}
+                      {children}
+                  {/*</SpringScrollbars>*/}
+              </main>
+            <ActionsBar categories={[]} />
+            {/*<InfoBar pages={[]} parts={[]} />*/}
+          {/*</LayoutWrapper>*/}
+        {/*</WithInstantSearch>*/}
+        {/*<Main id='learn-app-wrapper'>{children}</Main>*/}
         {/*<DonateModal />*/}
       </Fragment>
     );
@@ -92,7 +160,7 @@ LearnLayout.propTypes = {
   })
 };
 
-export default connect(
+export default withStyles(styles)(connect(
   mapStateToProps,
   mapDispatchToProps
-)(LearnLayout);
+)(LearnLayout));

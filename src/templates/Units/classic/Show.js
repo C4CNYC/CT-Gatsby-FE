@@ -284,7 +284,7 @@ class ShowClassic extends Component {
         nextUnitPath={nextUnitPath}
         prevUnitPath={prevUnitPath}
       >
-        <LearnLayout>
+        <>
           <Helmet title={`Learn ${this.getBlockNameTitle()} | codetribe.com`} />
           <Media maxWidth={MAX_MOBILE_WIDTH}>
             <MobileLayout
@@ -316,7 +316,7 @@ class ShowClassic extends Component {
           {/*<HelpModal />*/}
           {/*<VideoModal videoUrl={this.getVideoUrl()} />*/}
           {/*<ResetModal />*/}
-        </LearnLayout>
+        </>
       </Hotkeys>
     );
   }

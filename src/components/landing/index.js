@@ -30,7 +30,7 @@ export const Landing = ({ edges }) => {
         <title>Vocational Coding for Teens | Codetribe.com</title>
       </Helmet>
       {/* <main className='landing-page'>*/}
-        <Main>
+      {/*  <Main>*/}
         {/* <div className="award">*/}
         {/*  <a*/}
         {/*    href="https://www.fastcompany.com/90329244/world-changing-ideas-2019-all-the-winners-finalists-and-honorable-mentions"*/}
@@ -72,7 +72,7 @@ export const Landing = ({ edges }) => {
             </Grid>
           </Grid>
 
-          <h2 className='medium-heading'>Courses:</h2>
+          <h2 className='medium-heading'>Latest Updates:</h2>
           <Grid container={true} spacing={3}>
             {superBlocks.map((superBlock, i) => (
               <Grid className={'superblock'} item={true} key={i} xs={6}>
@@ -90,7 +90,7 @@ export const Landing = ({ edges }) => {
               <Card>
                 <CardContent>
                   <Link to={'/learn'}>
-                    <h2 className='medium-heading'>All Courses</h2>
+                    <h2 className='medium-heading'>View Entire Curriculum</h2>
                   </Link>
                 </CardContent>
               </Card>
@@ -98,7 +98,7 @@ export const Landing = ({ edges }) => {
             <Spacer />
           </Grid>
         </Box>
-        </Main>
+        {/*</Main>*/}
       {/* </main>*/}
     </Fragment>
   );

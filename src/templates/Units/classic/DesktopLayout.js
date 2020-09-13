@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import PropTypes from 'prop-types';
+import SpringScrollbars from '../../../components/SpringScrollbars';
 
 const propTypes = {
   unitFile: PropTypes.shape({
@@ -31,7 +32,7 @@ class DesktopLayout extends Component {
     return (
       <ReflexContainer className='desktop-layout' orientation='vertical'>
         <ReflexElement flex={1} {...resizeProps}>
-          {instructions}
+           {instructions}
         </ReflexElement>
         <ReflexSplitter propagate={true} {...resizeProps} />
         <ReflexElement flex={1} {...resizeProps}>

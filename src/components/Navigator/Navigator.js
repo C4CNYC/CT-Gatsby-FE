@@ -1,27 +1,26 @@
-import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { forceCheck } from "react-lazyload";
-
-import { moveNavigatorAside } from "./../../utils/shared";
-import List from "./List";
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { forceCheck } from 'react-lazyload';
 import { createSelector } from 'reselect';
 import {
-  executeGA,
-  fetchUser, fontSizeChange,
-  fontSizeIncreaseSelector,
-  isOnlineSelector,
-  isSignedInSelector,
-  isWideScreenSelector, navigatorPositionChange, navigatorShapeChange,
-  navigatorPositionSelector, navigatorShapeSelector, onlineStatusChange,
-  userSelector, wideScreenStatusChange
+    fontSizeChange,
+    fontSizeIncreaseSelector,
+    isWideScreenSelector,
+    navigatorPositionChange,
+    navigatorPositionSelector,
+    navigatorShapeChange,
+    navigatorShapeSelector,
+    wideScreenStatusChange
 } from '../../state';
-import { flashMessageSelector, removeFlashMessage } from '../Flash/redux';
 import { bindActionCreators } from 'redux';
+import Map from '../Map';
+import { graphql, useStaticQuery } from 'gatsby';
 
 const styles = theme => ({
   navigator: {
+      // zIndex: 99,
     transform: "translate3d(0, 0, 0)",
     willChange: "left, top, bottom, width",
     background: theme.navigator.colors.background,
@@ -70,7 +69,7 @@ const styles = theme => ({
           left: theme.base.sizes.linesMargin,
           right: theme.base.sizes.linesMargin,
           height: 0,
-          borderTop: `1px solid ${theme.base.colors.lines}`
+          // borderTop: `1px solid ${theme.base.colors.lines}`
         }
       },
       "&.moving-aside": {
@@ -113,45 +112,101 @@ const styles = theme => ({
   }
 });
 
-class Navigator extends React.Component {
-  linkOnClick = moveNavigatorAside.bind(this);
+const Navigator = props => {
+    const { classes, children, navigatorPosition, navigatorShape, categoryFilter } = props;
+  const { unitEdges, blockEdges} = useAllBlockAndUnitNodes();
 
-  expandOnClick = e => {
-    this.props.navigatorShapeChange("open");
+  const expandOnClick = e => {
+    props.navigatorShapeChange("open");
     setTimeout(forceCheck, 600);
   };
 
-  removefilterOnClick = e => {
-    this.props.setCategoryFilter("all pages");
+  const removefilterOnClick = e => {
+    props.setCategoryFilter("all pages");
   };
 
-  render() {
-    const { classes, children, navigatorPosition, navigatorShape, categoryFilter } = this.props;
-
-    return (
+  return (
       <nav
+          onClick={expandOnClick}
         className={`${classes.navigator} ${navigatorPosition ? navigatorPosition : ""} ${
           navigatorShape ? navigatorShape : ""
         } `}
       >
-        {this.props.children.length && (
-          <List
-            children={children}
-            navigatorPosition={navigatorPosition}
-            navigatorShape={navigatorShape}
-            linkOnClick={this.linkOnClick}
-            expandOnClick={this.expandOnClick}
-            categoryFilter={categoryFilter}
-            removeFilter={this.removefilterOnClick}
+          {blockEdges && unitEdges && (
+          <Map
+              // hash={hashValue}
+              blockNodes={blockEdges.map(({ node }) => node)}
+              isSignedIn={props.isSignedIn}
+              nodes={unitEdges
+                  .map(({ node }) => node)
+                  .filter(({ isPrivate }) => !isPrivate)}
           />
-        )}
+          )}
+        {/*{props.children.length && (*/}
+        {/*  <List*/}
+        {/*    children={children}*/}
+        {/*    navigatorPosition={navigatorPosition}*/}
+        {/*    navigatorShape={navigatorShape}*/}
+        {/*    linkOnClick={moveNavigatorAside}*/}
+        {/*    expandOnClick={expandOnClick}*/}
+        {/*    categoryFilter={categoryFilter}*/}
+        {/*    removeFilter={removefilterOnClick}*/}
+        {/*  />*/}
+        {/*)}*/}
       </nav>
     );
-  }
 }
 
+const useAllBlockAndUnitNodes = () => {
+    const {
+        allUnitNode,
+        allBlockNode
+    } = useStaticQuery(graphql`
+        query getAllUnitNodesAndGetAllBlockNodes {
+            allUnitNode(sort: { fields: [superOrder, order, unitOrder] }) {
+                edges {
+                    node {
+                        fields {
+                            slug
+                            blockName
+                        }
+                        id
+                        block
+                        title
+                        superBlock
+                        dashedName
+                    }
+                }
+            }
+            allBlockNode(sort: { fields: [superOrder, order] }) {
+                edges {
+                    node {
+                        fields {
+                            slug
+                        }
+                        id
+                        title
+                        content
+                        excerpt
+                        image
+                        dashedName
+                        superBlock
+                    }
+                }
+            }
+        }
+    `);
+
+    return {
+        unitEdges: allUnitNode.edges,
+        blockEdges: allBlockNode.edges
+    };
+};
+
 Navigator.propTypes = {
-  children: PropTypes.object.isRequired,
+    unitEdges: PropTypes.any,
+    blockEdges: PropTypes.any,
+  // children: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   navigatorPosition: PropTypes.string.isRequired,
   navigatorShape: PropTypes.string.isRequired,

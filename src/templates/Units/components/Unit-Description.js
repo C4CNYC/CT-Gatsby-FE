@@ -8,6 +8,7 @@ import './unit-description.css';
 import RevealJsWrapper from '../revealjs/RevealJsWrapper';
 import Slides from "../revealjs/Slides";
 import withStyles from '@material-ui/core/styles/withStyles';
+import SpringScrollbars from '../../../components/SpringScrollbars/SpringScrollbars';
 
 const styles = theme => ({});
 
@@ -48,6 +49,7 @@ class UnitDescription extends Component {
     return (
 
           // <div className={`reveal unit-instructions ${section}`} style={{height: '100%%'}}
+        <SpringScrollbars>
           <div className={`unit-instructions ${section}`} style={{height: '100%%'}}
                ref={this.instructionsRef}>
             <div className={'slides'}>
@@ -67,6 +69,7 @@ class UnitDescription extends Component {
               {/*</RevealJsWrapper>*/}
             </div>
           </div>
+        </SpringScrollbars>
 
 
 

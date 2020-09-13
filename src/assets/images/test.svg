@@ -1,0 +1,43 @@
+<svg
+    height='50'
+    viewBox='0 0 200 200'
+    width='50'
+    xmlns='http://www.w3.org/2000/svg'
+    >
+<g>
+<circle
+    cx='100'
+    cy='99'
+    fill='black'
+    r='95'
+    stroke='green'
+    strokeDasharray='null'
+    strokeLinecap='null'
+    strokeLinejoin='null'
+/>
+<rect
+    fill='green'
+    height='10'
+    stroke='green'
+    strokeDasharray='null'
+    strokeLinecap='null'
+    strokeLinejoin='null'
+    transform='rotate(-45, 120, 106.321)'
+width='64.425'
+x='55.57059'
+y='127.32089'
+/>
+<rect
+    fill='green'
+    height='10'
+    stroke='green'
+    strokeDasharray='null'
+    strokeLinecap='null'
+    strokeLinejoin='null'
+    transform='rotate(45, 66.75, 123.75)'
+    width='40.332'
+    x='85.41726'
+    y='130.75'
+/>
+</g>
+    </svg>

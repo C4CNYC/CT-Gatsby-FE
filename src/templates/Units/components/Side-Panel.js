@@ -82,7 +82,7 @@ export class SidePanel extends Component {
           </UnitTitle>
           <hr />
         </ReflexElement>
-        <ReflexElement flex={6}>
+        <ReflexElement flex={4}>
           <UnitDescription
             description={description}
             instructions={instructions}

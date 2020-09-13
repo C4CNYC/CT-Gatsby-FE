@@ -54,8 +54,9 @@ const initialState = {
   isOnline: true,
 
   // layout
+  // navigatorPosition: "is-aside",
   navigatorPosition: "is-aside",
-  navigatorShape: "",
+  navigatorShape: "closed",
   isWideScreen: false,
   scrollToTop: false,
   fontSizeIncrease: 1,
@@ -333,7 +334,7 @@ export const activeDonationsSelector = state => {
     : Number(sessionMetaSelector(state).activeDonations);
 };
 
-export const isWideScreenSelector = state => state[ns].isWideScreen;
+export const    isWideScreenSelector = state => state[ns].isWideScreen;
 export const navigatorPositionSelector = state => state[ns].navigatorPosition;
 export const navigatorShapeSelector = state => state[ns].navigatorShape;
 export const scrollToTopSelector = state => state[ns].scrollToTop;

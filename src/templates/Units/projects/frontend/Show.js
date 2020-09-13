@@ -117,7 +117,7 @@ export class Project extends Component {
         nextUnitPath={nextUnitPath}
         prevUnitPath={prevUnitPath}
       >
-        <LearnLayout>
+        <>
           <Helmet title={`${blockNameTitle} | Learn | codetribe.com`} />
           <Spacer />
           <UnitTitle>{blockNameTitle}</UnitTitle>
@@ -132,7 +132,7 @@ export class Project extends Component {
           <Spacer />
           <CompletionModal blockName={blockName} />
           <HelpModal />
-        </LearnLayout>
+        </>
       </Hotkeys>
     );
   }
