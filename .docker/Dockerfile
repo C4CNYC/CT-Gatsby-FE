@@ -4,11 +4,12 @@ ARG API_URL
 ENV API_URL=${API_URL}
 
 WORKDIR /usr/src
-ADD package.json package-lock.json ./
+#ADD package.json package-lock.json ./
+ADD package.json ./
 #RUN npm install --only=production
-RUN npm install
+RUN yarn install
 COPY . .
-RUN npm run-script build
+RUN yarn run build
 
 FROM nginx:1.14
 
