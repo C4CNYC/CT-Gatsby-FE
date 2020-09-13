@@ -3,11 +3,12 @@ FROM node:lts as builder
 ARG API_URL
 ENV API_URL=${API_URL}
 
-ADD package.json package-lock.json ./
+#ADD package.json yarn.lock ./
+ADD package.json ./
 #RUN npm install --only=production
-RUN npm install
+RUN yarn install
 ADD . .
-RUN npm run-script build
+RUN yarn run build
 
 FROM nginx:alpine
 COPY .docker/nginx.default.conf /etc/nginx/conf.d/default.conf
