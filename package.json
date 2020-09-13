@@ -35,7 +35,6 @@
     "data-source-test": "node data-source-test.js"
   },
   "dependencies": {
-    "@codetribe/common": "0.0.1",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-brands-svg-icons": "^5.12.1",
