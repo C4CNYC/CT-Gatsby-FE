@@ -35,7 +35,6 @@ const styles = theme => ({
     left: 0,
     //top: `calc(100vh - ${theme.bars.sizes.actionsBar}px)`,
     bottom: 0,
-    display: "none",
     flexDirection: "row",
     padding: `0 ${theme.base.sizes.linesMargin}`,
     justifyContent: "space-between",
