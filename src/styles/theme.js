@@ -148,6 +148,7 @@ const theme = createMuiTheme({
     },
     mediaQueryTresholds: {
         M: 600,
+        P: 768,
         L: 1024
     },
     palette: {
