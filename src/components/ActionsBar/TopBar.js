@@ -11,9 +11,13 @@ import * as screenfull from "screenfull";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
-
+import FlashOnIcon from '@material-ui/icons/FlashOn';
+import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import FaceIcon from '@material-ui/icons/Face';
+import TimerIcon from '@material-ui/icons/Timer';
+import MenuIcon from '@material-ui/icons/Menu';
 import { featureNavigator, moveNavigatorAside } from "./../../utils/shared";
 import FontSetter from "./FontSetter";
 import CategoryFilter from "./CategoryFilter";
@@ -111,18 +115,51 @@ class TopBar extends React.Component {
     return (
       <div className={classes.topBar}>
         <div className={classes.group}>
+
+          {/*{((isWideScreen && navigatorShape === "open") || navigatorPosition !== "is-aside") && (*/}
+          {/*  <CategoryFilter categories={categories} filterCategory={this.categoryFilterOnClick} />*/}
+          {/*)}*/}
+          <IconButton
+            aria-label="flash"
+            onClick={() => { }}
+            title="flash"
+            className={classes.button}
+          >
+            <FlashOnIcon />
+          </IconButton>
+          {screenfull.isEnabled && (
+            <IconButton
+              aria-label="Fullscreen"
+              onClick={this.fullscreenOnClick}
+              title="Fullscreen mode"
+              className={classes.button}
+            >
+              {this.state.fullscreen ? <FullscreenExitIcon /> : <ZoomOutMapIcon />}
+            </IconButton>
+          )}
+        </div>
+        <div className={classes.group}>
           <IconButton
             aria-label="Back to home"
             onClick={this.homeOnClick}
             title="Back to home"
             className={classes.button}
           >
-            <HomeIcon />
+            <FolderOpenIcon />
           </IconButton>
-          {/*{((isWideScreen && navigatorShape === "open") || navigatorPosition !== "is-aside") && (*/}
-          {/*  <CategoryFilter categories={categories} filterCategory={this.categoryFilterOnClick} />*/}
-          {/*)}*/}
           <IconButton
+            aria-label="person"
+            onClick={() => { }}
+            title="person"
+            className={classes.button}
+          >
+            <FaceIcon />
+          </IconButton>
+
+          {/* {navigatorPosition === "is-aside" && <FontSetter increaseFont={this.fontSetterOnClick} />} */}
+        </div>
+        <div className={classes.group}>
+          {/* <IconButton
             aria-label="Search"
             onClick={this.searchOnClick}
             component={Link}
@@ -132,26 +169,27 @@ class TopBar extends React.Component {
             className={classes.button}
           >
             <SearchIcon className={classes.button} />
+          </IconButton> */}
+          <IconButton
+            aria-label="timmer"
+            onClick={() => { }}
+            title="timmer"
+            className={classes.button}
+          >
+            <TimerIcon />
           </IconButton>
-        </div>
-        <div className={classes.group}>
-          {navigatorPosition === "is-aside" && <FontSetter increaseFont={this.fontSetterOnClick} />}
-          {navigatorPosition === "is-aside" && <FontSetter increaseFont={this.fontSetterOnClick} />}
-        </div>
-        <div className={classes.group}>
-          {screenfull.isEnabled && (
-            <IconButton
-              aria-label="Fullscreen"
-              onClick={this.fullscreenOnClick}
-              title="Fullscreen mode"
-              className={classes.button}
-            >
-              {this.state.fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-            </IconButton>
-          )}
+          <IconButton
+            aria-label="Menu"
+            onClick={() => { }}
+            title="Menu"
+            className={classes.button}
+          >
+            <MenuIcon />
+          </IconButton>
+          {/* 
           <IconButton aria-label="Back to top" onClick={this.arrowUpOnClick} title="Scroll to top">
             <ArrowUpwardIcon className={classes.button} />
-          </IconButton>
+          </IconButton> */}
         </div>
       </div>
     );
