@@ -30,7 +30,7 @@ import { createSelector } from 'reselect';
 const styles = theme => ({
   footer: {
     position: "absolute",
-    zIndex: 100,
+    zIndex: 200,
     background: theme.bars.colors.background,
     left: 0,
     //top: `calc(100vh - ${theme.bars.sizes.actionsBar}px)`,
@@ -49,9 +49,9 @@ const styles = theme => ({
       top: 0,
       borderTop: `1px solid ${theme.base.colors.lines}`
     },
-    display: "none",
+    display: "flex",
     [`@media (min-width: ${theme.mediaQueryTresholds.P}px)`]: {
-      display: "flex",
+      display: "none",
     }
   },
   group: {
