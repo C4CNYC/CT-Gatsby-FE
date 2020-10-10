@@ -25,7 +25,6 @@ import Paper from '@material-ui/core/Paper';
 // import 'swiper/css/swiper.css';
 import SwipeableViews from 'react-swipeable-views';
 import IconButton from "@material-ui/core/IconButton";
-import MobileFooter from '../../../components/ActionsBar/MobileFooter';
 function TabPanel(props) {
   const { children, index, ...other } = props;
 
@@ -106,12 +105,14 @@ class MobileLayout extends Component {
     this.setState({
       index: value,
     });
+    this.props.moveToTab(value);
   };
 
   handleChangeIndex = index => {
     this.setState({
       index,
     });
+    this.props.moveToTab(index);
   };
 
   componentDidMount() {
@@ -120,7 +121,6 @@ class MobileLayout extends Component {
   render() {
 
     const { index } = this.state;
-
     const {
       currentTab,
       moveToTab,
@@ -133,7 +133,6 @@ class MobileLayout extends Component {
       videoUrl,
       classes
     } = this.props;
-
     return (
       <Fragment>
         <div style={{ flexGrow: 1, width: '100%', }}>
@@ -192,22 +191,18 @@ class MobileLayout extends Component {
           <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
             <TabPanel index={0}>
               {instructions}
-              <MobileFooter index={index} />
             </TabPanel>
             <TabPanel index={1}>
               {editor}
-              <MobileFooter index={index} />
             </TabPanel>
             {/*<TabPanel value={value} index={2}>*/}
             {/*  {testOutput}*/}
             {/*</TabPanel>*/}
             {hasPreview && (
               <TabPanel index={2}>
-                {/* {preview} */}
-                <MobileFooter index={index} />
+                {preview}
               </TabPanel>
             )}
-
           </SwipeableViews>
 
         </div>

@@ -12,7 +12,16 @@ import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
+import FlashOnIcon from '@material-ui/icons/FlashOn';
+import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
+import CropOriginalIcon from '@material-ui/icons/CropOriginal';
+import PublishOutlinedIcon from '@material-ui/icons/PublishOutlined';
+import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
+import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
+import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
+import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 import { featureNavigator, moveNavigatorAside } from "./../../utils/shared";
 import FontSetter from "./FontSetter";
@@ -23,9 +32,11 @@ import {
   navigatorPositionChange, navigatorPositionSelector,
   navigatorShapeChange, navigatorShapeSelector,
   scrollToTopStatusChange,
-  wideScreenStatusChange
+  wideScreenStatusChange,
 } from '../../state';
 import { createSelector } from 'reselect';
+import { currentTabSelector, moveToTab } from "../../templates/Units/redux";
+import { Button } from "@material-ui/core";
 
 const styles = theme => ({
   footer: {
@@ -49,18 +60,68 @@ const styles = theme => ({
       top: 0,
       borderTop: `1px solid ${theme.base.colors.lines}`
     },
+    alignItems: "center",
     display: "none",
     [`@media (min-width: ${theme.mediaQueryTresholds.P}px)`]: {
       display: "flex",
+    }
+  },
+  footerMobile: {
+    display: "flex",
+    [`@media (min-width: ${theme.mediaQueryTresholds.P}px)`]: {
+      display: "none",
     }
   },
   group: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    width: `calc(100% / 3)`,
+    padding: "30px",
+  },
+  group1: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `37%`,
+    padding: "0 20px",
+    height: "100%",
+  },
+  group2: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `38%`,
+    padding: "0 20px",
+    height: "100%",
+  },
+  group3: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `25%`,
+    padding: "0 20px",
+    height: "100%",
   },
   button: {
     color: theme.bars.colors.icon
+  },
+  span: {
+    color: theme.bars.colors.icon,
+    fontSize: '12px',
+    textTransform: "uppercase",
+    fontWeight: "bold",
+  },
+  rightBorder: {
+    borderRight: `1px solid ${theme.bars.colors.borderRight}`
+  },
+  keyBoardBar: {
+    textAlign: "center",
+    width: `calc(100% / 6)`
   }
 });
 
@@ -105,76 +166,167 @@ class Footer extends React.Component {
   };
 
   render() {
-    const { classes, navigatorPosition, navigatorShape, isWideScreen, categories } = this.props;
+    const { classes, navigatorPosition, navigatorShape, isWideScreen, categories, currentTab } = this.props;
 
     return (
-      <div className={classes.footer}>
-        <track-preview></track-preview>
-        <div id="app-action-timeline">
-          <a href="http://localhost:8080/"
-            className="back mdc-button mdc-button--outlined mdc-custom-outline mdc-custom-min-width"><span
-              className="mdc-button__label">&lt; Back</span></a>
-          <div id="complete-step-container">
-            <button id="complete-step"
-              className="mdc-button mdc-button--secondary mdc-button--raised mdc-custom-min-width"
-              disabled="disabled">Next
-            </button>
+      <>
+        <div className={classes.footer}>
+          <div className={classes.group1}>
+            <span className={classes.span}>Lesson Structure Breadcrumbs</span>
+          </div>
+          <div className={classes.group2}>
+            <Button variant="outlined" className={classes.button}>Back</Button>
+            <Button variant="outlined" className={classes.button}>Next</Button>
+          </div>
+          <div className={classes.group3}>
+            <div>
+              <IconButton
+                aria-label="Gallery"
+                onClick={() => { }}
+                title="Gallery">
+                <CropOriginalIcon className={classes.button} />
+
+              </IconButton>
+              <span className={classes.span}>Gallery</span>
+            </div>
+            <div>
+              <IconButton
+                aria-label="Publish"
+                onClick={() => { }}
+                title="Publish">
+                <PublishOutlinedIcon className={classes.button} />
+              </IconButton>
+              <span className={classes.span}>Publish</span>
+            </div>
+            <div>
+              <IconButton
+                aria-label="Save As"
+                onClick={() => { }}
+                title="Save As">
+                <SaveOutlinedIcon className={classes.button} />
+              </IconButton>
+              <span className={classes.span}>Save As</span>
+            </div>
           </div>
         </div>
-        <div className="help-container">
-          <challenge-reminder course="programming"></challenge-reminder>
-          <div tooltip data-gravity="e"
-            title="Report bugs/suggestions to Jad (course creator).">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              viewBox="0 0 24 24" fill="#A7A7A7"
-              className="help">
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path
-                d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
-            </svg>
-          </div>
+        <div className={`${classes.footer} ${classes.footerMobile}`}>
+          {currentTab === 0 && <>
+            <div>
+              <IconButton
+                aria-label="flash"
+                onClick={() => { }}
+                title="flash"
+                className={classes.button}
+              >
+                <FlashOnIcon />
+              </IconButton>
+              <span className={classes.span}>Lesson Structure Breadcrumbs</span>
+            </div>
+            {screenfull.isEnabled && (
+              <IconButton
+                aria-label="Fullscreen"
+                onClick={this.fullscreenOnClick}
+                title="Fullscreen mode"
+                className={classes.button}
+              >
+                {this.state.fullscreen ? <FullscreenExitIcon /> : <ZoomOutMapIcon />}
+              </IconButton>
+            )}
+          </>}
+          {currentTab === 1 && <>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="tab"
+                onClick={() => { }}
+                title="tab"
+                className={classes.button}
+              >
+                <span className={classes.span}>tab</span>
+              </IconButton>
+            </div>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="ArrowBack"
+                onClick={() => { }}
+                title="ArrowBack"
+                className={classes.button}
+              >
+                <ArrowBackIosOutlinedIcon />
+              </IconButton>
+            </div>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="ArrowForward"
+                onClick={() => { }}
+                title="ArrowForward"
+                className={classes.button}
+              >
+                <ArrowForwardIosOutlinedIcon />
+              </IconButton>
+            </div>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="Slash"
+                onClick={() => { }}
+                title="Slash"
+                className={classes.button}
+              >
+                <span className={classes.span} style={{ fontSize: "30px" }}>/</span>
+              </IconButton>
+
+            </div>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="Quote"
+                onClick={() => { }}
+                title="Quote"
+                className={classes.button}
+              >
+                <FormatQuoteIcon />
+              </IconButton>
+            </div>
+            <div className={classes.keyBoardBar}>
+              <IconButton
+                aria-label="More"
+                onClick={() => { }}
+                title="More"
+                className={classes.button}
+              >
+                <MoreHorizIcon />
+              </IconButton>
+            </div>
+          </>}
+          {currentTab === 2 && <>
+            <div>
+              <IconButton
+                aria-label="Gallery"
+                onClick={() => { }}
+                title="Gallery">
+                <CropOriginalIcon className={classes.button} />
+              </IconButton>
+              <span className={classes.span}>Gallery</span>
+            </div>
+            <div>
+              <IconButton
+                aria-label="Publish"
+                onClick={() => { }}
+                title="Publish">
+                <PublishOutlinedIcon className={classes.button} />
+              </IconButton>
+              <span className={classes.span}>Publish</span>
+            </div>
+            <div>
+              <IconButton
+                aria-label="Save As"
+                onClick={() => { }}
+                title="Save As">
+                <SaveOutlinedIcon className={classes.button} />
+              </IconButton>
+              <span className={classes.span}>Save As</span>
+            </div>
+          </>}
         </div>
-        <div className={classes.group}>
-          <IconButton
-            aria-label="Back to home"
-            onClick={this.homeOnClick}
-            title="Back to home"
-            className={classes.button}
-          >
-            <HomeIcon />
-          </IconButton>
-          {/*{((isWideScreen && navigatorShape === "open") || navigatorPosition !== "is-aside") && (*/}
-          {/*  <CategoryFilter categories={categories} filterCategory={this.categoryFilterOnClick} />*/}
-          {/*)}*/}
-          <IconButton
-            aria-label="Search"
-            onClick={this.searchOnClick}
-            component={Link}
-            data-shape="closed"
-            to="/search/"
-            title="Search"
-            className={classes.button}
-          >
-            <SearchIcon className={classes.button} />
-          </IconButton>
-        </div>
-        <div className={classes.group}>
-          {navigatorPosition === "is-aside" && <FontSetter increaseFont={this.fontSetterOnClick} />}
-          {screenfull.isEnabled && (
-            <IconButton
-              aria-label="Fullscreen"
-              onClick={this.fullscreenOnClick}
-              title="Fullscreen mode"
-              className={classes.button}
-            >
-              {this.state.fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-            </IconButton>
-          )}
-          <IconButton aria-label="Back to top" onClick={this.arrowUpOnClick} title="Scroll to top">
-            <ArrowUpwardIcon className={classes.button} />
-          </IconButton>
-        </div>
-      </div>
+      </>
     );
   }
 }
@@ -186,6 +338,7 @@ Footer.propTypes = {
   isWideScreen: PropTypes.bool.isRequired,
   scrollToTopStatusChange: PropTypes.func.isRequired,
   fontSizeChange: PropTypes.func.isRequired,
+  currentTab: PropTypes.number,
   // categories: PropTypes.array.isRequired,
   // setCategoryFilter: PropTypes.func.isRequired,
   // categoryFilter: PropTypes.string.isRequired
@@ -197,11 +350,13 @@ const mapStateToProps = createSelector(
   navigatorPositionSelector,
   navigatorShapeSelector,
   fontSizeIncreaseSelector,
-  (isWideScreen, navigatorPosition, navigatorShape, fontSizeIncrease) => ({
+  currentTabSelector,
+  (isWideScreen, navigatorPosition, navigatorShape, fontSizeIncrease, currentTab) => ({
     isWideScreen,
     navigatorPosition,
     navigatorShape,
     fontSizeIncrease,
+    currentTab
   })
 );
 

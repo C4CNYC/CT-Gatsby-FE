@@ -62,7 +62,35 @@ const styles = theme => ({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: `calc(100% / 3)`
+    width: `calc(100% / 3)`,
+    padding: "20px",
+  },
+  group1: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `37%`,
+    padding: "0 20px",
+    height: "100%",
+  },
+  group2: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `38%`,
+    padding: "0 20px",
+    height: "100%",
+  },
+  group3: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `25%`,
+    padding: "0 20px",
+    height: "100%",
   },
   button: {
     color: theme.bars.colors.icon
@@ -114,7 +142,7 @@ class TopBar extends React.Component {
 
     return (
       <div className={classes.topBar}>
-        <div className={classes.group}>
+        <div className={classes.group1}>
 
           {/*{((isWideScreen && navigatorShape === "open") || navigatorPosition !== "is-aside") && (*/}
           {/*  <CategoryFilter categories={categories} filterCategory={this.categoryFilterOnClick} />*/}
@@ -138,7 +166,7 @@ class TopBar extends React.Component {
             </IconButton>
           )}
         </div>
-        <div className={classes.group}>
+        <div className={classes.group2}>
           <IconButton
             aria-label="Back to home"
             onClick={this.homeOnClick}
@@ -158,7 +186,7 @@ class TopBar extends React.Component {
 
           {/* {navigatorPosition === "is-aside" && <FontSetter increaseFont={this.fontSetterOnClick} />} */}
         </div>
-        <div className={classes.group}>
+        <div className={classes.group3}>
           {/* <IconButton
             aria-label="Search"
             onClick={this.searchOnClick}
