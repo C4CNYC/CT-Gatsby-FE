@@ -193,7 +193,6 @@ class Editor extends Component {
   onChange = editorValue => {
     const { updateFile, fileKey } = this.props;
     updateFile({ key: fileKey, editorValue });
-
     this.props.executeUnit();
   };
 

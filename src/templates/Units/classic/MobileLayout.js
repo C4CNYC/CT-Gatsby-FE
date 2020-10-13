@@ -4,7 +4,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-
+import withStyles from "@material-ui/core/styles/withStyles";
 import ToolPanel from '../components/Tool-Panel';
 import { createStructuredSelector } from 'reselect';
 import { currentTabSelector, moveToTab } from '../redux';
@@ -15,12 +15,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 import CodeIcon from '@material-ui/icons/Code';
+import MenuIcon from '@material-ui/icons/Menu';
+import TimerIcon from '@material-ui/icons/Timer';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import FaceIcon from '@material-ui/icons/Face';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 import Paper from '@material-ui/core/Paper';
 // import Swiper from 'react-id-swiper';
 // import 'swiper/css/swiper.css';
 import SwipeableViews from 'react-swipeable-views';
-
+import IconButton from "@material-ui/core/IconButton";
 function TabPanel(props) {
   const { children, index, ...other } = props;
 
@@ -52,13 +56,19 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
+const styles = theme => ({
+  tabRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    // width: `calc(100% / 3)`
   },
-}));
+  button: {
+    color: theme.bars.colors.icon
+  }
+});
+
 
 const mapStateToProps = createStructuredSelector({
   currentTab: currentTabSelector
@@ -95,12 +105,14 @@ class MobileLayout extends Component {
     this.setState({
       index: value,
     });
+    this.props.moveToTab(value);
   };
 
   handleChangeIndex = index => {
     this.setState({
       index,
     });
+    this.props.moveToTab(index);
   };
 
   componentDidMount() {
@@ -109,7 +121,6 @@ class MobileLayout extends Component {
   render() {
 
     const { index } = this.state;
-
     const {
       currentTab,
       moveToTab,
@@ -119,30 +130,65 @@ class MobileLayout extends Component {
       hasPreview,
       preview,
       guideUrl,
-      videoUrl
+      videoUrl,
+      classes
     } = this.props;
-
     return (
       <Fragment>
-        <div style={{flexGrow: 1, width: '100%',}}>
+        <div style={{ flexGrow: 1, width: '100%', }}>
           <AppBar position="static" color={'transparent'}>
-            <Tabs
-              id='unit-page-tabs'
-              value={index}
-              onChange={this.handleChange}
-              variant="fullWidth"
-              indicatorColor="primary"
-              textColor="primary"
-              aria-label="lesson tabs">
-              <Tab icon={<AssignmentIcon />} aria-label="Lesson" {...a11yProps(0)} />
-              <Tab icon={<CodeIcon />} aria-label="Code"  {...a11yProps(1)} />
-              {/*<Tab icon={<SpellcheckIcon />} aria-label="Tests"  {...a11yProps(2)} />*/}
-              {hasPreview && (
-                <Tab icon={<VideoLabelIcon />} aria-label="Preview"  {...a11yProps(2)} />
-              )}
-            </Tabs>
+            <div className={classes.tabRow}>
+              {(index === 2 || index === 0) && <IconButton
+                aria-label="timmer"
+                onClick={() => { }}
+                title="timmer"
+                className={classes.button}
+              >
+                <TimerIcon />
+              </IconButton>}
+
+              {index === 1 && <IconButton
+                aria-label="Back to home"
+                onClick={() => { }}
+                title="Back to home"
+                className={classes.button}
+              >
+                <FolderOpenIcon />
+              </IconButton>}
+              <Tabs
+                id='unit-page-tabs'
+                value={index}
+                onChange={this.handleChange}
+                variant="fullWidth"
+                indicatorColor="primary"
+                textColor="primary"
+                aria-label="lesson tabs">
+                <Tab icon={<AssignmentIcon />} aria-label="Lesson" {...a11yProps(0)} />
+                <Tab icon={<CodeIcon />} aria-label="Code"  {...a11yProps(1)} />
+                {/*<Tab icon={<SpellcheckIcon />} aria-label="Tests"  {...a11yProps(2)} />*/}
+                {hasPreview && (
+                  <Tab icon={<VideoLabelIcon />} aria-label="Preview"  {...a11yProps(2)} />
+                )}
+              </Tabs>
+              {(index === 2 || index === 0) && <IconButton
+                aria-label="Menu"
+                onClick={() => { }}
+                title="Menu"
+                className={classes.button}
+              >
+                <MenuIcon />
+              </IconButton>}
+              {index === 1 && <IconButton
+                aria-label="person"
+                onClick={() => { }}
+                title="person"
+                className={classes.button}
+              >
+                <FaceIcon />
+              </IconButton>}
+            </div>
           </AppBar>
-          <SwipeableViews  index={index} onChangeIndex={this.handleChangeIndex}>
+          <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
             <TabPanel index={0}>
               {instructions}
             </TabPanel>
@@ -172,4 +218,4 @@ MobileLayout.propTypes = propTypes;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MobileLayout);
+)(withStyles(styles)(MobileLayout));

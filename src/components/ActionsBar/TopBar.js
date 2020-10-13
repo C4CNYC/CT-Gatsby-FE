@@ -11,9 +11,13 @@ import * as screenfull from "screenfull";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
-
+import FlashOnIcon from '@material-ui/icons/FlashOn';
+import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import FaceIcon from '@material-ui/icons/Face';
+import TimerIcon from '@material-ui/icons/Timer';
+import MenuIcon from '@material-ui/icons/Menu';
 import { featureNavigator, moveNavigatorAside } from "./../../utils/shared";
 import FontSetter from "./FontSetter";
 import CategoryFilter from "./CategoryFilter";
@@ -28,64 +32,72 @@ import {
 import { createSelector } from 'reselect';
 
 const styles = theme => ({
-  actionsBar: {
+  topBar: {
     position: "absolute",
-    zIndex: 100,
+    zIndex: 101,
     background: theme.bars.colors.background,
     left: 0,
-    //top: `calc(100vh - ${theme.bars.sizes.actionsBar}px)`,
-    bottom: 0,
-    display: "flex",
+    // top: `calc(100vh - ${theme.bars.sizes.actionsBar}px)`,
     flexDirection: "row",
     padding: `0 ${theme.base.sizes.linesMargin}`,
     justifyContent: "space-between",
     height: `${theme.bars.sizes.actionsBar}px`,
     width: "100%",
-    "&::before": {
+    "&::after": {
       content: `""`,
       position: "absolute",
       left: theme.base.sizes.linesMargin,
       right: theme.base.sizes.linesMargin,
       height: 0,
-      top: 0,
+      bottom: 0,
       borderTop: `1px solid ${theme.base.colors.lines}`
     },
-    [`@media (min-width: ${theme.mediaQueryTresholds.M}px)`]: {
-      padding: `0 calc(${theme.base.sizes.linesMargin} * 1.5)`
-    },
-    [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      flexDirection: "column",
-      top: 0,
-      right: 0,
-      left: "auto",
-      height: "100%",
-      padding: `${theme.base.sizes.linesMargin} 0`,
-      width: `${theme.bars.sizes.actionsBar}px`,
-      "&::before": {
-        top: theme.base.sizes.linesMargin,
-        bottom: theme.base.sizes.linesMargin,
-        left: 0,
-        right: "auto",
-        width: 0,
-        height: "auto",
-        borderLeft: `1px solid ${theme.base.colors.lines}`
-      }
+    display: "none",
+    [`@media (min-width: ${theme.mediaQueryTresholds.P}px)`]: {
+      display: "flex"
     }
   },
   group: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      flexDirection: "column"
-    }
+    justifyContent: "space-between",
+    width: `calc(100% / 3)`,
+    padding: "20px",
+  },
+  group1: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `37%`,
+    padding: "0 20px",
+    height: "100%",
+  },
+  group2: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `38%`,
+    padding: "0 20px",
+    height: "100%",
+  },
+  group3: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: `25%`,
+    padding: "0 20px",
+    height: "100%",
   },
   button: {
     color: theme.bars.colors.icon
   }
 });
 
-class ActionsBar extends React.Component {
+class TopBar extends React.Component {
   state = {
     fullscreen: false
   };
@@ -129,45 +141,53 @@ class ActionsBar extends React.Component {
     const { classes, navigatorPosition, navigatorShape, isWideScreen, categories } = this.props;
 
     return (
-      <div className={classes.actionsBar}>
-        <track-preview></track-preview>
-        <div id="app-action-timeline">
-          <a href="http://localhost:8080/"
-            className="back mdc-button mdc-button--outlined mdc-custom-outline mdc-custom-min-width"><span
-              className="mdc-button__label">&lt; Back</span></a>
-          <div id="complete-step-container">
-            <button id="complete-step"
-              className="mdc-button mdc-button--secondary mdc-button--raised mdc-custom-min-width"
-              disabled="disabled">Next
-            </button>
-          </div>
+      <div className={classes.topBar}>
+        <div className={classes.group1}>
+
+          {/*{((isWideScreen && navigatorShape === "open") || navigatorPosition !== "is-aside") && (*/}
+          {/*  <CategoryFilter categories={categories} filterCategory={this.categoryFilterOnClick} />*/}
+          {/*)}*/}
+          <IconButton
+            aria-label="flash"
+            onClick={() => { }}
+            title="flash"
+            className={classes.button}
+          >
+            <FlashOnIcon />
+          </IconButton>
+          {screenfull.isEnabled && (
+            <IconButton
+              aria-label="Fullscreen"
+              onClick={this.fullscreenOnClick}
+              title="Fullscreen mode"
+              className={classes.button}
+            >
+              {this.state.fullscreen ? <FullscreenExitIcon /> : <ZoomOutMapIcon />}
+            </IconButton>
+          )}
         </div>
-        <div className="help-container">
-          <challenge-reminder course="programming"></challenge-reminder>
-          <div tooltip data-gravity="e"
-            title="Report bugs/suggestions to Jad (course creator).">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              viewBox="0 0 24 24" fill="#A7A7A7"
-              className="help">
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path
-                d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
-            </svg>
-          </div>
-        </div>
-        <div className={classes.group}>
+        <div className={classes.group2}>
           <IconButton
             aria-label="Back to home"
             onClick={this.homeOnClick}
             title="Back to home"
             className={classes.button}
           >
-            <HomeIcon />
+            <FolderOpenIcon />
           </IconButton>
-          {/*{((isWideScreen && navigatorShape === "open") || navigatorPosition !== "is-aside") && (*/}
-          {/*  <CategoryFilter categories={categories} filterCategory={this.categoryFilterOnClick} />*/}
-          {/*)}*/}
           <IconButton
+            aria-label="person"
+            onClick={() => { }}
+            title="person"
+            className={classes.button}
+          >
+            <FaceIcon />
+          </IconButton>
+
+          {/* {navigatorPosition === "is-aside" && <FontSetter increaseFont={this.fontSetterOnClick} />} */}
+        </div>
+        <div className={classes.group3}>
+          {/* <IconButton
             aria-label="Search"
             onClick={this.searchOnClick}
             component={Link}
@@ -177,30 +197,34 @@ class ActionsBar extends React.Component {
             className={classes.button}
           >
             <SearchIcon className={classes.button} />
+          </IconButton> */}
+          <IconButton
+            aria-label="timmer"
+            onClick={() => { }}
+            title="timmer"
+            className={classes.button}
+          >
+            <TimerIcon />
           </IconButton>
-        </div>
-        <div className={classes.group}>
-          {navigatorPosition === "is-aside" && <FontSetter increaseFont={this.fontSetterOnClick} />}
-          {screenfull.isEnabled && (
-            <IconButton
-              aria-label="Fullscreen"
-              onClick={this.fullscreenOnClick}
-              title="Fullscreen mode"
-              className={classes.button}
-            >
-              {this.state.fullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-            </IconButton>
-          )}
+          <IconButton
+            aria-label="Menu"
+            onClick={() => { }}
+            title="Menu"
+            className={classes.button}
+          >
+            <MenuIcon />
+          </IconButton>
+          {/* 
           <IconButton aria-label="Back to top" onClick={this.arrowUpOnClick} title="Scroll to top">
             <ArrowUpwardIcon className={classes.button} />
-          </IconButton>
+          </IconButton> */}
         </div>
       </div>
     );
   }
 }
 
-ActionsBar.propTypes = {
+TopBar.propTypes = {
   classes: PropTypes.object.isRequired,
   navigatorPosition: PropTypes.string.isRequired,
   navigatorShape: PropTypes.string.isRequired,
@@ -236,4 +260,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(ActionsBar));
+)(withStyles(styles)(TopBar));

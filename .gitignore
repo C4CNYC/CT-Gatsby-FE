@@ -199,3 +199,5 @@ bower_components
 # dotenv environment variables file
 #.env
 #.env.test
+.firebaserc
+firebase.json
