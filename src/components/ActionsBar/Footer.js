@@ -22,7 +22,7 @@ import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
 import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { featureNavigator, moveNavigatorAside } from "./../../utils/shared";
 import FontSetter from "./FontSetter";
 import CategoryFilter from "./CategoryFilter";
@@ -36,7 +36,7 @@ import {
 } from '../../state';
 import { createSelector } from 'reselect';
 import { currentTabSelector, moveToTab } from "../../templates/Units/redux";
-import { Button } from "@material-ui/core";
+import { Button, Menu, MenuItem } from "@material-ui/core";
 
 const styles = theme => ({
   footer: {
@@ -127,7 +127,10 @@ const styles = theme => ({
 
 class Footer extends React.Component {
   state = {
-    fullscreen: false
+    fullscreen: false,
+    open: false,
+    anchorEl: null,
+    isHideQickKeyBar: false
   };
 
   componentDidMount() {
@@ -164,10 +167,27 @@ class Footer extends React.Component {
   categoryFilterOnClick = val => {
     this.props.setCategoryFilter(val);
   };
+  handleClickMore = (event) => {
+    this.setState({
+      open: !this.state.open,
+      anchorEl: event.currentTarget
+    });
+  };
+  handleCloseMore = () => {
+    if (!this.state.open) {
+      return;
+    }
 
+    this.timeout = setTimeout(() => {
+      this.setState({ open: false });
+    });
+  };
+  hideQuickKeyBar = () => {
+    this.setState({ isHideQickKeyBar: true });
+  }
   render() {
     const { classes, navigatorPosition, navigatorShape, isWideScreen, categories, currentTab } = this.props;
-
+    const { anchorEl, open, isHideQickKeyBar } = this.state;
     return (
       <>
         <div className={classes.footer}>
@@ -209,7 +229,7 @@ class Footer extends React.Component {
             </div>
           </div>
         </div>
-        <div className={`${classes.footer} ${classes.footerMobile}`}>
+        {!isHideQickKeyBar && <div className={`${classes.footer} ${classes.footerMobile}`}>
           {currentTab === 0 && <>
             <div>
               <IconButton
@@ -288,13 +308,26 @@ class Footer extends React.Component {
             <div className={classes.keyBoardBar}>
               <IconButton
                 aria-label="More"
-                onClick={() => { }}
+                onClick={this.handleClickMore}
                 title="More"
                 className={classes.button}
               >
                 <MoreHorizIcon />
               </IconButton>
             </div>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(open)}
+              onClose={this.handleCloseMore}>
+              <MenuItem
+                onClick={e => {
+                  this.hideQuickKeyBar();
+                  this.handleCloseMore();
+                }}>
+                <VisibilityOffIcon />
+              </MenuItem>
+            </Menu>
           </>}
           {currentTab === 2 && <>
             <div>
@@ -325,7 +358,7 @@ class Footer extends React.Component {
               <span className={classes.span}>Save As</span>
             </div>
           </>}
-        </div>
+        </div>}
       </>
     );
   }
