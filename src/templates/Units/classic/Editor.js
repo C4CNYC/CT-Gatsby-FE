@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-
+import KeyboardHideIcon from '@material-ui/icons/KeyboardHide';
 import {
   canFocusEditorSelector,
   executeUnit,
@@ -13,6 +13,7 @@ import {
 } from '../redux';
 import { userSelector, isDonationModalOpenSelector } from '../../../state';
 import { Loader } from '../../../components/helpers';
+import { IconButton } from '@material-ui/core';
 
 const MonacoEditor = React.lazy(() => import('react-monaco-editor'));
 
@@ -219,6 +220,14 @@ class Editor extends Component {
           automaticLayout={true}
           height="100%"
         />
+        <IconButton
+          aria-label="Keyboard Hide"
+          onClick={() => { }}
+          title="Keyboard Hide"
+        // className={classes.button}
+        >
+          <KeyboardHideIcon />
+        </IconButton>
       </Suspense>
     );
   }
