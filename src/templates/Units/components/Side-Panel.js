@@ -12,7 +12,8 @@ import { createSelector } from 'reselect';
 import './side-panel.css';
 import { mathJaxScriptLoader } from '../../../utils/scriptLoaders';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
-
+import ScrollPagedView from 'react-scroll-paged-view'
+import InsideScrollView from './InsideScrollView'
 const mapStateToProps = createSelector(
   isUnitCompletedSelector,
   unitTestsSelector,
@@ -61,6 +62,9 @@ export class SidePanel extends Component {
       mathJaxScriptLoader();
     }
   }
+  onChange = (pageIndex) => {
+    console.log(pageIndex)
+  }
 
   render() {
     const {
@@ -75,27 +79,35 @@ export class SidePanel extends Component {
       videoUrl
     } = this.props;
     return (
-      <ReflexContainer orientation='horizontal'  className='instructions-panel' role='complementary' tabIndex='-1'>
-        <ReflexElement flex={1}>
-          <UnitTitle isCompleted={isUnitCompleted}>
-            {title}
-          </UnitTitle>
-          <hr />
-        </ReflexElement>
-        <ReflexElement flex={4}>
-          <UnitDescription
-            description={description}
-            instructions={instructions}
-            section={section}
-          />
-        </ReflexElement>
-        <ReflexElement flex={2}>
-          <hr />
-          {showToolPanel && <ToolPanel guideUrl={guideUrl} videoUrl={videoUrl} />}
-          <TestSuite tests={tests} />
-        </ReflexElement>
+      // <ReflexContainer orientation='horizontal' className='instructions-panel' role='complementary' tabIndex='-1'>
+      //   <ReflexElement flex={1}>
+      //     <UnitTitle isCompleted={isUnitCompleted}>
+      //       {title}
+      //     </UnitTitle>
+      //     <hr />
+      //   </ReflexElement>
+      //   <ReflexElement flex={4}>
+      //     <UnitDescription
+      //       description={description}
+      //       instructions={instructions}
+      //       section={section}
+      //     />
+      //   </ReflexElement>
+      //   <ReflexElement flex={2}>
+      //     <hr />
+      //     {showToolPanel && <ToolPanel guideUrl={guideUrl} videoUrl={videoUrl} />}
+      //     <TestSuite tests={tests} />
+      //   </ReflexElement>
 
-      </ReflexContainer>
+      // </ReflexContainer>
+      <ScrollPagedView
+        onChange={this.onChange}
+        onResponder={() => { }}
+      >
+        <InsideScrollView />
+        <InsideScrollView />
+        <InsideScrollView />
+      </ScrollPagedView>
     );
   }
 }
