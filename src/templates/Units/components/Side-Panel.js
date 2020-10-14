@@ -12,7 +12,9 @@ import { createSelector } from 'reselect';
 import './side-panel.css';
 import { mathJaxScriptLoader } from '../../../utils/scriptLoaders';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
-
+import ReactPageScroller from "react-page-scroller";
+import PageProgress from "react-page-progress";
+import { lesson_data } from '../utils/lesson_data';
 const mapStateToProps = createSelector(
   isUnitCompletedSelector,
   unitTestsSelector,
@@ -62,6 +64,13 @@ export class SidePanel extends Component {
     }
   }
 
+  goToPage = (pageNumber) => {
+    this.reactPageScroller.goToPage(pageNumber);
+    console.log(pageNumber)
+  }
+  renderSlide = (slide) => {
+    return <div>{slide.html_content}</div>;
+  }
   render() {
     const {
       title,
@@ -74,28 +83,35 @@ export class SidePanel extends Component {
       showToolPanel,
       videoUrl
     } = this.props;
+    console.log(lesson_data)
     return (
-      <ReflexContainer orientation='horizontal' className='instructions-panel' role='complementary' tabIndex='-1'>
-        <ReflexElement flex={1}>
-          <UnitTitle isCompleted={isUnitCompleted}>
-            {title}
-          </UnitTitle>
-          <hr />
-        </ReflexElement>
-        <ReflexElement flex={4}>
-          <UnitDescription
-            description={description}
-            instructions={instructions}
-            section={section}
-          />
-        </ReflexElement>
-        <ReflexElement flex={2}>
-          <hr />
-          {showToolPanel && <ToolPanel guideUrl={guideUrl} videoUrl={videoUrl} />}
-          <TestSuite tests={tests} />
-        </ReflexElement>
+      // <ReflexContainer orientation='horizontal' className='instructions-panel' role='complementary' tabIndex='-1'>
+      //   <ReflexElement flex={1}>
+      //     <UnitTitle isCompleted={isUnitCompleted}>
+      //       {title}
+      //     </UnitTitle>
+      //     <hr />
+      //   </ReflexElement>
+      //   <ReflexElement flex={4}>
+      //     <UnitDescription
+      //       description={description}
+      //       instructions={instructions}
+      //       section={section}
+      //     />
+      //   </ReflexElement>
+      //   <ReflexElement flex={2}>
+      //     <hr />
+      //     {showToolPanel && <ToolPanel guideUrl={guideUrl} videoUrl={videoUrl} />}
+      //     <TestSuite tests={tests} />
+      //   </ReflexElement>
 
-      </ReflexContainer>
+      // </ReflexContainer>
+      <>
+        <PageProgress color={'skyblue'} height={5} />
+        <ReactPageScroller ref={c => this.reactPageScroller = c}>
+          {lesson_data.slides.map(this.renderSlide)}
+        </ReactPageScroller>
+      </>
     );
   }
 }
