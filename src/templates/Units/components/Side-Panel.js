@@ -10,11 +10,14 @@ import TestSuite from './Test-Suite';
 import { unitTestsSelector, isUnitCompletedSelector } from '../redux';
 import { createSelector } from 'reselect';
 import './side-panel.css';
+import './custom.css'
 import { mathJaxScriptLoader } from '../../../utils/scriptLoaders';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
 import ReactPageScroller from "react-page-scroller";
 import PageProgress from "react-page-progress";
 import { lesson_data } from '../utils/lesson_data';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+
 const mapStateToProps = createSelector(
   isUnitCompletedSelector,
   unitTestsSelector,
@@ -69,7 +72,7 @@ export class SidePanel extends Component {
     console.log(pageNumber)
   }
   renderSlide = (slide) => {
-    return <div>{slide.html_content}</div>;
+    return <div style={{ height: '87%' }}>{ReactHtmlParser(slide.html_content)}</div>;
   }
   render() {
     const {
@@ -83,7 +86,6 @@ export class SidePanel extends Component {
       showToolPanel,
       videoUrl
     } = this.props;
-    console.log(lesson_data)
     return (
       // <ReflexContainer orientation='horizontal' className='instructions-panel' role='complementary' tabIndex='-1'>
       //   <ReflexElement flex={1}>
