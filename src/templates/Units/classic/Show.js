@@ -309,7 +309,7 @@ class ShowClassic extends Component {
               })}
               preview={this.renderPreview()}
               resizeProps={this.resizeProps}
-              // testOutput={this.renderTestOutput()}
+            // testOutput={this.renderTestOutput()}
             />
           </Media>
           <CompletionModal blockName={blockName} />

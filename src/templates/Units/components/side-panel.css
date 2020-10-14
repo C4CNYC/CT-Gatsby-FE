@@ -12,3 +12,34 @@
   width: 100%;
   overflow-y: auto;
 }
+
+/* for lesson */
+.checkpoint {
+  background: #F7705A;
+}
+
+#lesson-page .checkpoint {
+  background: #F7705A !important;
+}
+
+#lesson-page .bonus-challenge {
+  background: #00D2AA !important;
+}
+
+.checkpoint,
+.actions,
+li {
+  font-family: 'Rajdhani', sans-serif !important;
+}
+
+.challenge-content {
+  font-size: 175%;
+}
+
+.challenge-content2 {
+  font-size: 120%;
+}
+
+.challenge-tip {
+  font-size: 100%;
+}

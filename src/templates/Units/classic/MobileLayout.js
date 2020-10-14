@@ -188,7 +188,7 @@ class MobileLayout extends Component {
               </IconButton>}
             </div>
           </AppBar>
-          <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
+          <SwipeableViews displaySameSlide index={index} onChangeIndex={this.handleChangeIndex}>
             <TabPanel index={0}>
               {instructions}
             </TabPanel>
