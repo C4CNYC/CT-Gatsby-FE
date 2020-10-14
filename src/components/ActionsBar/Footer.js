@@ -22,6 +22,7 @@ import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
 import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import KeyboardHideIcon from '@material-ui/icons/KeyboardHide';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { featureNavigator, moveNavigatorAside } from "./../../utils/shared";
 import FontSetter from "./FontSetter";
@@ -70,6 +71,13 @@ const styles = theme => ({
     display: "flex",
     [`@media (min-width: ${theme.mediaQueryTresholds.P}px)`]: {
       display: "none",
+    }
+  },
+  hideQuickKeybar: {
+    background: "transparent",
+    justifyContent: "flex-end",
+    "&::before": {
+      borderTop: "none"
     }
   },
   group: {
@@ -130,7 +138,7 @@ class Footer extends React.Component {
     fullscreen: false,
     open: false,
     anchorEl: null,
-    isHideQickKeyBar: false
+    isHideQuickKeyBar: false
   };
 
   componentDidMount() {
@@ -183,11 +191,14 @@ class Footer extends React.Component {
     });
   };
   hideQuickKeyBar = () => {
-    this.setState({ isHideQickKeyBar: true });
+    this.setState({ isHideQuickKeyBar: true });
+  }
+  showQuickKeyBar = () => {
+    this.setState({ isHideQuickKeyBar: false });
   }
   render() {
     const { classes, navigatorPosition, navigatorShape, isWideScreen, categories, currentTab } = this.props;
-    const { anchorEl, open, isHideQickKeyBar } = this.state;
+    const { anchorEl, open, isHideQuickKeyBar } = this.state;
     return (
       <>
         <div className={classes.footer}>
@@ -229,7 +240,7 @@ class Footer extends React.Component {
             </div>
           </div>
         </div>
-        {!isHideQickKeyBar && <div className={`${classes.footer} ${classes.footerMobile}`}>
+        <div className={`${classes.footer} ${classes.footerMobile} ${isHideQuickKeyBar && currentTab === 1 && classes.hideQuickKeybar}`}>
           {currentTab === 0 && <>
             <div>
               <IconButton
@@ -253,7 +264,7 @@ class Footer extends React.Component {
               </IconButton>
             )}
           </>}
-          {currentTab === 1 && <>
+          {currentTab === 1 && (!isHideQuickKeyBar ? <>
             <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
               <IconButton
                 aria-label="tab"
@@ -328,7 +339,14 @@ class Footer extends React.Component {
                 <VisibilityOffIcon />
               </MenuItem>
             </Menu>
-          </>}
+          </> : <IconButton
+            aria-label="Keyboard Hide"
+            onClick={this.showQuickKeyBar}
+            title="Keyboard Hide"
+            className={classes.button}
+          >
+              <KeyboardHideIcon />
+            </IconButton>)}
           {currentTab === 2 && <>
             <div>
               <IconButton
@@ -358,7 +376,7 @@ class Footer extends React.Component {
               <span className={classes.span}>Save As</span>
             </div>
           </>}
-        </div>}
+        </div>
       </>
     );
   }
