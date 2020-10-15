@@ -14,7 +14,6 @@ import './custom.css'
 import { mathJaxScriptLoader } from '../../../utils/scriptLoaders';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
 import ReactPageScroller from "react-page-scroller";
-import PageProgress from "react-page-progress";
 import { lesson_data } from '../utils/lesson_data';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
@@ -109,7 +108,6 @@ export class SidePanel extends Component {
 
       // </ReflexContainer>
       <>
-        <PageProgress color={'skyblue'} height={5} />
         <ReactPageScroller ref={c => this.reactPageScroller = c}>
           {lesson_data.slides.map(this.renderSlide)}
         </ReactPageScroller>
