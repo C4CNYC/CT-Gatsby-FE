@@ -192,7 +192,7 @@ class MobileLayout extends Component {
             <TabPanel index={0}>
               {instructions}
             </TabPanel>
-            <TabPanel index={1}>
+            <TabPanel index={1} >
               {editor}
             </TabPanel>
             {/*<TabPanel value={value} index={2}>*/}

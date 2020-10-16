@@ -136,9 +136,6 @@ const styles = theme => ({
 class Footer extends React.Component {
   state = {
     fullscreen: false,
-    open: false,
-    anchorEl: null,
-    isHideQuickKeyBar: false
   };
 
   componentDidMount() {
@@ -175,30 +172,10 @@ class Footer extends React.Component {
   categoryFilterOnClick = val => {
     this.props.setCategoryFilter(val);
   };
-  handleClickMore = (event) => {
-    this.setState({
-      open: !this.state.open,
-      anchorEl: event.currentTarget
-    });
-  };
-  handleCloseMore = () => {
-    if (!this.state.open) {
-      return;
-    }
 
-    this.timeout = setTimeout(() => {
-      this.setState({ open: false });
-    });
-  };
-  hideQuickKeyBar = () => {
-    this.setState({ isHideQuickKeyBar: true });
-  }
-  showQuickKeyBar = () => {
-    this.setState({ isHideQuickKeyBar: false });
-  }
   render() {
     const { classes, navigatorPosition, navigatorShape, isWideScreen, categories, currentTab } = this.props;
-    const { anchorEl, open, isHideQuickKeyBar } = this.state;
+    console.log("current tab", currentTab)
     return (
       <>
         <div className={classes.footer}>
@@ -240,7 +217,7 @@ class Footer extends React.Component {
             </div>
           </div>
         </div>
-        { currentTab !== 1 && <div className={`${classes.footer} ${classes.footerMobile} ${isHideQuickKeyBar && currentTab === 1 && classes.hideQuickKeybar}`}>
+        { (currentTab === 0 || currentTab === 2) && <div className={`${classes.footer} ${classes.footerMobile}`}>
           {currentTab === 0 && <>
             <div>
               <IconButton
@@ -253,6 +230,7 @@ class Footer extends React.Component {
               </IconButton>
               <span className={classes.span}>Lesson Structure Breadcrumbs</span>
             </div>
+            {/* current tab1 removed */}
             {screenfull.isEnabled && (
               <IconButton
                 aria-label="Fullscreen"
@@ -264,89 +242,6 @@ class Footer extends React.Component {
               </IconButton>
             )}
           </>}
-          {currentTab === 1 && (!isHideQuickKeyBar ? <>
-            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-              <IconButton
-                aria-label="tab"
-                onClick={() => { }}
-                title="tab"
-                className={classes.button}
-              >
-                <span className={classes.span}>tab</span>
-              </IconButton>
-            </div>
-            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-              <IconButton
-                aria-label="ArrowBack"
-                onClick={() => { }}
-                title="ArrowBack"
-                className={classes.button}
-              >
-                <ArrowBackIosOutlinedIcon />
-              </IconButton>
-            </div>
-            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-              <IconButton
-                aria-label="ArrowForward"
-                onClick={() => { }}
-                title="ArrowForward"
-                className={classes.button}
-              >
-                <ArrowForwardIosOutlinedIcon />
-              </IconButton>
-            </div>
-            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-              <IconButton
-                aria-label="Slash"
-                onClick={() => { }}
-                title="Slash"
-                className={classes.button}
-              >
-                <span className={classes.span} style={{ fontSize: "30px" }}>/</span>
-              </IconButton>
-
-            </div>
-            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-              <IconButton
-                aria-label="Quote"
-                onClick={() => { }}
-                title="Quote"
-                className={classes.button}
-              >
-                <FormatQuoteIcon />
-              </IconButton>
-            </div>
-            <div className={classes.keyBoardBar}>
-              <IconButton
-                aria-label="More"
-                onClick={this.handleClickMore}
-                title="More"
-                className={classes.button}
-              >
-                <MoreHorizIcon />
-              </IconButton>
-            </div>
-            <Menu
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(open)}
-              onClose={this.handleCloseMore}>
-              <MenuItem
-                onClick={e => {
-                  this.hideQuickKeyBar();
-                  this.handleCloseMore();
-                }}>
-                <VisibilityOffIcon />
-              </MenuItem>
-            </Menu>
-          </> : <IconButton
-            aria-label="Keyboard Hide"
-            onClick={this.showQuickKeyBar}
-            title="Keyboard Hide"
-            className={classes.button}
-          >
-              <KeyboardHideIcon />
-            </IconButton>)}
           {currentTab === 2 && <>
             <div>
               <IconButton
