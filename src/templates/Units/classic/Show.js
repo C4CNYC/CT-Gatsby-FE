@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
-import { first } from 'lodash';
+import { first, last } from 'lodash';
 import Media from 'react-responsive';
 
 import LearnLayout from '../../../components/layouts/Learn';
@@ -229,7 +229,6 @@ class ShowClassic extends Component {
     // );
 
     const { files } = this.props;
-
     const unitFile = first(Object.keys(files).map(key => files[key]));
     return (
       unitFile && (

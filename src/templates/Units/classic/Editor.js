@@ -88,9 +88,12 @@ const defineMonacoThemes = monaco => {
 };
 
 class Editor extends Component {
+
   constructor(...props) {
     super(...props);
-
+    this.state = {
+      codeContent: props.contents
+    }
     this.options = {
       fontSize: '18px',
       scrollBeyondLastLine: false,
@@ -193,6 +196,11 @@ class Editor extends Component {
 
   onChange = editorValue => {
     const { updateFile, fileKey } = this.props;
+    console.log("change value :", editorValue);
+
+    console.log("update :", updateFile);
+    console.log("key :", fileKey);
+    this.setState({ codeContent: editorValue })
     updateFile({ key: fileKey, editorValue });
     this.props.executeUnit();
   };
@@ -205,6 +213,7 @@ class Editor extends Component {
 
   render() {
     const { contents, ext, theme, fileKey } = this.props;
+    const { codeContent } = this.state
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
     return (
       <Suspense fallback={<Loader timeout={600} />}>
@@ -216,18 +225,11 @@ class Editor extends Component {
           onChange={this.onChange}
           options={this.options}
           theme={editorTheme}
-          value={contents}
+          value={codeContent}
+          defaultValue={contents}
           automaticLayout={true}
           height="100%"
         />
-        <IconButton
-          aria-label="Keyboard Hide"
-          onClick={() => { }}
-          title="Keyboard Hide"
-        // className={classes.button}
-        >
-          <KeyboardHideIcon />
-        </IconButton>
       </Suspense>
     );
   }
