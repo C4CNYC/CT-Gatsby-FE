@@ -9,7 +9,8 @@ import {
   inAccessibilityModeSelector,
   setEditorFocusability,
   setAccessibilityMode,
-  updateFile
+  updateFile,
+  setMonacoEditor
 } from '../redux';
 import { userSelector, isDonationModalOpenSelector } from '../../../state';
 import { Loader } from '../../../components/helpers';
@@ -29,7 +30,8 @@ const propTypes = {
   setAccessibilityMode: PropTypes.func.isRequired,
   setEditorFocusability: PropTypes.func,
   theme: PropTypes.string,
-  updateFile: PropTypes.func.isRequired
+  updateFile: PropTypes.func.isRequired,
+  setMonacoEditor: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createSelector(
@@ -48,7 +50,8 @@ const mapDispatchToProps = {
   setEditorFocusability,
   setAccessibilityMode,
   executeUnit,
-  updateFile
+  updateFile,
+  setMonacoEditor
 };
 
 const modeMap = {
@@ -91,9 +94,6 @@ class Editor extends Component {
 
   constructor(...props) {
     super(...props);
-    this.state = {
-      codeContent: props.contents
-    }
     this.options = {
       fontSize: '18px',
       scrollBeyondLastLine: false,
@@ -128,7 +128,9 @@ class Editor extends Component {
   };
 
   editorDidMount = (editor, monaco) => {
+    const { setMonacoEditor } = this.props;
     this._editor = editor;
+    setMonacoEditor(editor)
     this._editor.updateOptions({
       accessibilitySupport: this.props.inAccessibilityMode ? 'on' : 'auto'
     });
@@ -196,13 +198,8 @@ class Editor extends Component {
 
   onChange = editorValue => {
     const { updateFile, fileKey } = this.props;
-    console.log("change value :", editorValue);
-
-    console.log("update :", updateFile);
-    console.log("key :", fileKey);
-    this.setState({ codeContent: editorValue })
     updateFile({ key: fileKey, editorValue });
-    this.props.executeUnit();
+    // this.props.executeUnit();
   };
 
   componentDidUpdate(prevProps) {
@@ -213,7 +210,6 @@ class Editor extends Component {
 
   render() {
     const { contents, ext, theme, fileKey } = this.props;
-    const { codeContent } = this.state
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
     return (
       <Suspense fallback={<Loader timeout={600} />}>
@@ -225,7 +221,6 @@ class Editor extends Component {
           onChange={this.onChange}
           options={this.options}
           theme={editorTheme}
-          value={codeContent}
           defaultValue={contents}
           automaticLayout={true}
           height="100%"

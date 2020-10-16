@@ -36,7 +36,7 @@ import {
   wideScreenStatusChange,
 } from '../../state';
 import { createSelector } from 'reselect';
-import { currentTabSelector, moveToTab } from "../../templates/Units/redux";
+import { currentTabSelector, moveToTab, monacoeditorSelector } from "../../templates/Units/redux";
 import { Button, Menu, MenuItem } from "@material-ui/core";
 
 const styles = theme => ({
@@ -179,7 +179,7 @@ class Footer extends React.Component {
     this.setState({
       open: !this.state.open,
       anchorEl: event.currentTarget
-    });
+    }, () => this.focusOnEditor());
   };
   handleCloseMore = () => {
     if (!this.state.open) {
@@ -196,9 +196,49 @@ class Footer extends React.Component {
   showQuickKeyBar = () => {
     this.setState({ isHideQuickKeyBar: false });
   }
+
+  insertCharacter = (location, character) => {
+    this.props.monacoEditor.executeEdits("", [{
+      range: {
+        startLineNumber: location.getPosition().lineNumber,
+        startColumn: location.getPosition().column,
+        endLineNumber: location.getPosition().lineNumber,
+        endColumn: location.getPosition().column
+      },
+      text: character,
+      forceMoveMarkers: true
+    }]);
+    this.focusOnEditor();
+  }
+  focusOnEditor() {
+    this.props.monacoEditor.focus();
+  }
+  addQuickKey = (keytype) => {
+    switch (keytype) {
+      case "tab":
+        this.insertCharacter(this.props.monacoEditor.getSelection(), '\t');
+        break;
+      case "back":
+        this.insertCharacter(this.props.monacoEditor.getSelection(), '<');
+        break;
+      case "forward":
+        this.insertCharacter(this.props.monacoEditor.getSelection(), '>');
+        break;
+      case "slash":
+        this.insertCharacter(this.props.monacoEditor.getSelection(), '/');
+        break;
+      case "quote":
+        this.insertCharacter(this.props.monacoEditor.getSelection(), '"');
+        break;
+      default:
+        return;
+    }
+
+  }
   render() {
     const { classes, navigatorPosition, navigatorShape, isWideScreen, categories, currentTab } = this.props;
     const { anchorEl, open, isHideQuickKeyBar } = this.state;
+
     return (
       <>
         <div className={classes.footer}>
@@ -268,7 +308,7 @@ class Footer extends React.Component {
             <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
               <IconButton
                 aria-label="tab"
-                onClick={() => { }}
+                onClick={() => this.addQuickKey('tab')}
                 title="tab"
                 className={classes.button}
               >
@@ -278,7 +318,7 @@ class Footer extends React.Component {
             <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
               <IconButton
                 aria-label="ArrowBack"
-                onClick={() => { }}
+                onClick={() => this.addQuickKey('back')}
                 title="ArrowBack"
                 className={classes.button}
               >
@@ -288,7 +328,7 @@ class Footer extends React.Component {
             <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
               <IconButton
                 aria-label="ArrowForward"
-                onClick={() => { }}
+                onClick={() => this.addQuickKey('forward')}
                 title="ArrowForward"
                 className={classes.button}
               >
@@ -298,7 +338,7 @@ class Footer extends React.Component {
             <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
               <IconButton
                 aria-label="Slash"
-                onClick={() => { }}
+                onClick={() => this.addQuickKey('slash')}
                 title="Slash"
                 className={classes.button}
               >
@@ -309,7 +349,7 @@ class Footer extends React.Component {
             <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
               <IconButton
                 aria-label="Quote"
-                onClick={() => { }}
+                onClick={() => this.addQuickKey('quote')}
                 title="Quote"
                 className={classes.button}
               >
@@ -335,16 +375,21 @@ class Footer extends React.Component {
                 onClick={e => {
                   this.hideQuickKeyBar();
                   this.handleCloseMore();
+                  this.focusOnEditor();
                 }}>
                 <VisibilityOffIcon />
               </MenuItem>
             </Menu>
-          </> : <IconButton
-            aria-label="Keyboard Hide"
-            onClick={this.showQuickKeyBar}
-            title="Keyboard Hide"
-            className={classes.button}
-          >
+          </> :
+            <IconButton
+              aria-label="Keyboard Hide"
+              onClick={() => {
+                this.showQuickKeyBar();
+                this.focusOnEditor();
+              }}
+              title="Keyboard Hide"
+              className={classes.button}
+            >
               <KeyboardHideIcon />
             </IconButton>)}
           {currentTab === 2 && <>
@@ -390,6 +435,7 @@ Footer.propTypes = {
   scrollToTopStatusChange: PropTypes.func.isRequired,
   fontSizeChange: PropTypes.func.isRequired,
   currentTab: PropTypes.number,
+  monacoEditor: PropTypes.object.isRequired,
   // categories: PropTypes.array.isRequired,
   // setCategoryFilter: PropTypes.func.isRequired,
   // categoryFilter: PropTypes.string.isRequired
@@ -402,12 +448,14 @@ const mapStateToProps = createSelector(
   navigatorShapeSelector,
   fontSizeIncreaseSelector,
   currentTabSelector,
-  (isWideScreen, navigatorPosition, navigatorShape, fontSizeIncrease, currentTab) => ({
+  monacoeditorSelector,
+  (isWideScreen, navigatorPosition, navigatorShape, fontSizeIncrease, currentTab, monacoEditor) => ({
     isWideScreen,
     navigatorPosition,
     navigatorShape,
     fontSizeIncrease,
-    currentTab
+    currentTab,
+    monacoEditor
   })
 );
 
