@@ -36,7 +36,7 @@ import {
   wideScreenStatusChange,
 } from '../../state';
 import { createSelector } from 'reselect';
-import { currentTabSelector, moveToTab } from "../../templates/Units/redux";
+import { currentTabSelector, moveToTab, monacoeditorSelector } from "../../templates/Units/redux";
 import { Button, Menu, MenuItem } from "@material-ui/core";
 
 const styles = theme => ({
@@ -174,8 +174,8 @@ class Footer extends React.Component {
   };
 
   render() {
-    const { classes, navigatorPosition, navigatorShape, isWideScreen, categories, currentTab } = this.props;
-    console.log("current tab", currentTab)
+    const { classes, navigatorPosition, navigatorShape, isWideScreen, categories, currentTab, monacoEditor } = this.props;
+    console.log("monacoeditor", monacoEditor)
     return (
       <>
         <div className={classes.footer}>
@@ -297,12 +297,14 @@ const mapStateToProps = createSelector(
   navigatorShapeSelector,
   fontSizeIncreaseSelector,
   currentTabSelector,
-  (isWideScreen, navigatorPosition, navigatorShape, fontSizeIncrease, currentTab) => ({
+  monacoeditorSelector,
+  (isWideScreen, navigatorPosition, navigatorShape, fontSizeIncrease, currentTab, monacoEditor) => ({
     isWideScreen,
     navigatorPosition,
     navigatorShape,
     fontSizeIncrease,
-    currentTab
+    currentTab,
+    monacoEditor
   })
 );
 

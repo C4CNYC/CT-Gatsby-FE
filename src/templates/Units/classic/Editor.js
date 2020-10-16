@@ -14,7 +14,8 @@ import {
   inAccessibilityModeSelector,
   setEditorFocusability,
   setAccessibilityMode,
-  updateFile
+  updateFile,
+  setMonacoEditor,
 } from '../redux';
 import { userSelector, isDonationModalOpenSelector } from '../../../state';
 import { Loader } from '../../../components/helpers';
@@ -35,7 +36,8 @@ const propTypes = {
   setAccessibilityMode: PropTypes.func.isRequired,
   setEditorFocusability: PropTypes.func,
   theme: PropTypes.string,
-  updateFile: PropTypes.func.isRequired
+  updateFile: PropTypes.func.isRequired,
+  setMonacoEditor: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createSelector(
@@ -54,7 +56,8 @@ const mapDispatchToProps = {
   setEditorFocusability,
   setAccessibilityMode,
   executeUnit,
-  updateFile
+  updateFile,
+  setMonacoEditor
 };
 
 const modeMap = {
@@ -96,12 +99,12 @@ const defineMonacoThemes = monaco => {
 
 const styles = theme => ({
   footer: {
-    position: "absolute",
+    position: "relative",
     zIndex: 100,
     background: theme.bars.colors.background,
-    left: 0,
+    // left: 0,
     //top: `calc(100vh - ${theme.bars.sizes.actionsBar}px)`,
-    bottom: 0,
+    bottom: '140px',
     flexDirection: "row",
     padding: `0 ${theme.base.sizes.linesMargin}`,
     justifyContent: "space-between",
@@ -135,41 +138,6 @@ const styles = theme => ({
       borderTop: "none"
     }
   },
-  group: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: `calc(100% / 3)`,
-    padding: "30px",
-  },
-  group1: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: `37%`,
-    padding: "0 20px",
-    height: "100%",
-  },
-  group2: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: `38%`,
-    padding: "0 20px",
-    height: "100%",
-  },
-  group3: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: `25%`,
-    padding: "0 20px",
-    height: "100%",
-  },
   button: {
     color: theme.bars.colors.icon
   },
@@ -190,7 +158,6 @@ const styles = theme => ({
 
 class Editor extends Component {
   state = {
-    codeContent: "",
     open: false,
     anchorEl: null,
     isHideQuickKeyBar: false
@@ -199,9 +166,6 @@ class Editor extends Component {
   constructor(...props) {
     super(...props);
 
-    this.state = {
-      codeContent: Object.assign({}, ...props).contents
-    }
     this.options = {
       fontSize: '18px',
       scrollBeyondLastLine: false,
@@ -241,6 +205,7 @@ class Editor extends Component {
 
     this._editor = editor;
     this._monaco = monaco;
+    this.props.setMonacoEditor(editor)
     this._editor.updateOptions({
       accessibilitySupport: this.props.inAccessibilityMode ? 'on' : 'auto'
     });
@@ -308,23 +273,11 @@ class Editor extends Component {
 
   onChange = editorValue => {
     const { updateFile, fileKey } = this.props;
-    this.setState({ codeContent: editorValue })
     updateFile({ key: fileKey, editorValue });
     this.props.executeUnit();
   };
 
   insertCharacter = (location, character) => {
-    const { updateFile, fileKey, executeUnit } = this.props;
-    const { codeContent } = this.state;
-    String.prototype.splice = function (idx, rem, str) {
-      return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
-    };
-    var linedString = codeContent.split("\n");
-    linedString[location.positionLineNumber - 1] = linedString[location.positionLineNumber - 1].splice(location.positionColumn - 1, 0, character);
-    const insertedString = linedString.join('\n');
-    // this.setState({ codeContent: insertedString });
-    updateFile({ key: fileKey, editorValue: insertedString });
-    executeUnit();
     this._editor.executeEdits("", [{
       range: {
         startLineNumber: location.getPosition().lineNumber,
@@ -364,8 +317,8 @@ class Editor extends Component {
   showQuickKeyBar = () => {
     this.setState({ isHideQuickKeyBar: false });
   }
-  addQuickKey = (keytype) => {
 
+  addQuickKey = (keytype) => {
     switch (keytype) {
       case "tab":
         this.insertCharacter(this._editor.getSelection(), '\t');
@@ -389,108 +342,106 @@ class Editor extends Component {
   }
   render() {
     const { contents, ext, theme, fileKey, classes } = this.props;
-    const { codeContent, anchorEl, open, isHideQuickKeyBar } = this.state
+    const { anchorEl, open, isHideQuickKeyBar } = this.state
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
     return (
       <Suspense fallback={<Loader timeout={600} />} style={{ background: 'red' }}>
-        <div style={{ position: "relative", width: '100%', height: 'calc(100% - 40px)' }}>
-          <MonacoEditor
-            editorDidMount={this.editorDidMount}
-            editorWillMount={this.editorWillMount}
-            key={`${editorTheme}-${fileKey}`}
-            language={modeMap[ext]}
-            onChange={this.onChange}
-            options={this.options}
-            theme={editorTheme}
-            value={codeContent}
-            automaticLayout={true}
-            height="100%"
-          />
-          <div className={`${classes.footer} ${classes.footerMobile} ${isHideQuickKeyBar && classes.hideQuickKeybar}`}>
-            {!isHideQuickKeyBar ? <>
-              <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-                <IconButton
-                  aria-label="tab"
-                  onClick={() => this.addQuickKey('tab')}
-                  title="tab"
-                  className={classes.button}
-                >
-                  <span className={classes.span}>tab</span>
-                </IconButton>
-              </div>
-              <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-                <IconButton
-                  aria-label="ArrowBack"
-                  onClick={() => this.addQuickKey('back')}
-                  title="ArrowBack"
-                  className={classes.button}
-                >
-                  <ArrowBackIosOutlinedIcon />
-                </IconButton>
-              </div>
-              <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-                <IconButton
-                  aria-label="ArrowForward"
-                  onClick={() => this.addQuickKey('forward')}
-                  title="ArrowForward"
-                  className={classes.button}
-                >
-                  <ArrowForwardIosOutlinedIcon />
-                </IconButton>
-              </div>
-              <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-                <IconButton
-                  aria-label="Slash"
-                  onClick={() => this.addQuickKey('slash')}
-                  title="Slash"
-                  className={classes.button}
-                >
-                  <span className={classes.span} style={{ fontSize: "30px" }}>/</span>
-                </IconButton>
+        <MonacoEditor
+          editorDidMount={this.editorDidMount}
+          editorWillMount={this.editorWillMount}
+          key={`${editorTheme}-${fileKey}`}
+          language={modeMap[ext]}
+          onChange={this.onChange}
+          options={this.options}
+          theme={editorTheme}
+          defaultValue={contents}
+          automaticLayout={true}
+          height="100%"
+        />
+        <div className={`${classes.footer} ${classes.footerMobile} ${isHideQuickKeyBar && classes.hideQuickKeybar}`}>
+          {!isHideQuickKeyBar ? <>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="tab"
+                onClick={() => this.addQuickKey('tab')}
+                title="tab"
+                className={classes.button}
+              >
+                <span className={classes.span}>tab</span>
+              </IconButton>
+            </div>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="ArrowBack"
+                onClick={() => this.addQuickKey('back')}
+                title="ArrowBack"
+                className={classes.button}
+              >
+                <ArrowBackIosOutlinedIcon />
+              </IconButton>
+            </div>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="ArrowForward"
+                onClick={() => this.addQuickKey('forward')}
+                title="ArrowForward"
+                className={classes.button}
+              >
+                <ArrowForwardIosOutlinedIcon />
+              </IconButton>
+            </div>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="Slash"
+                onClick={() => this.addQuickKey('slash')}
+                title="Slash"
+                className={classes.button}
+              >
+                <span className={classes.span} style={{ fontSize: "30px" }}>/</span>
+              </IconButton>
 
-              </div>
-              <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
-                <IconButton
-                  aria-label="Quote"
-                  onClick={() => this.addQuickKey('quote')}
-                  title="Quote"
-                  className={classes.button}
-                >
-                  <FormatQuoteIcon />
-                </IconButton>
-              </div>
-              <div className={classes.keyBoardBar}>
-                <IconButton
-                  aria-label="More"
-                  onClick={this.handleClickMore}
-                  title="More"
-                  className={classes.button}
-                >
-                  <MoreHorizIcon />
-                </IconButton>
-              </div>
-              <Menu
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(open)}
-                onClose={this.handleCloseMore}>
-                <MenuItem
-                  onClick={e => {
-                    this.hideQuickKeyBar();
-                    this.handleCloseMore();
-                  }}>
-                  <VisibilityOffIcon />
-                </MenuItem>
-              </Menu>
-            </> : <IconButton
-              aria-label="Keyboard Hide"
-              onClick={this.showQuickKeyBar}
-              title="Keyboard Hide"
-              className={classes.button}
-            >
-                <KeyboardHideIcon />
-              </IconButton>}
-          </div>
+            </div>
+            <div className={`${classes.keyBoardBar} ${classes.rightBorder}`}>
+              <IconButton
+                aria-label="Quote"
+                onClick={() => this.addQuickKey('quote')}
+                title="Quote"
+                className={classes.button}
+              >
+                <FormatQuoteIcon />
+              </IconButton>
+            </div>
+            <div className={classes.keyBoardBar}>
+              <IconButton
+                aria-label="More"
+                onClick={this.handleClickMore}
+                title="More"
+                className={classes.button}
+              >
+                <MoreHorizIcon />
+              </IconButton>
+            </div>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(open)}
+              onClose={this.handleCloseMore}>
+              <MenuItem
+                onClick={e => {
+                  this.hideQuickKeyBar();
+                  this.handleCloseMore();
+                }}>
+                <VisibilityOffIcon />
+              </MenuItem>
+            </Menu>
+          </> : <IconButton
+            aria-label="Keyboard Hide"
+            onClick={this.showQuickKeyBar}
+            title="Keyboard Hide"
+            className={classes.button}
+          >
+              <KeyboardHideIcon />
+            </IconButton>}
         </div>
       </Suspense>
     );
