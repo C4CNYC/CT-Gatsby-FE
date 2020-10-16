@@ -240,7 +240,7 @@ class Footer extends React.Component {
             </div>
           </div>
         </div>
-        <div className={`${classes.footer} ${classes.footerMobile} ${isHideQuickKeyBar && currentTab === 1 && classes.hideQuickKeybar}`}>
+        { currentTab !== 1 && <div className={`${classes.footer} ${classes.footerMobile} ${isHideQuickKeyBar && currentTab === 1 && classes.hideQuickKeybar}`}>
           {currentTab === 0 && <>
             <div>
               <IconButton
@@ -376,7 +376,7 @@ class Footer extends React.Component {
               <span className={classes.span}>Save As</span>
             </div>
           </>}
-        </div>
+        </div>}
       </>
     );
   }
