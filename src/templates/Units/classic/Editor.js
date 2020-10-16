@@ -120,6 +120,7 @@ class Editor extends Component {
     };
 
     this._editor = null;
+    this._monaco = null;
     this.focusOnEditor = this.focusOnEditor.bind(this);
   }
 
@@ -128,7 +129,9 @@ class Editor extends Component {
   };
 
   editorDidMount = (editor, monaco) => {
+
     this._editor = editor;
+    this._monaco = monaco;
     this._editor.updateOptions({
       accessibilitySupport: this.props.inAccessibilityMode ? 'on' : 'auto'
     });
@@ -196,15 +199,20 @@ class Editor extends Component {
 
   onChange = editorValue => {
     const { updateFile, fileKey } = this.props;
-    console.log("change value :", editorValue);
-
-    console.log("update :", updateFile);
-    console.log("key :", fileKey);
-    this.setState({ codeContent: editorValue })
-    updateFile({ key: fileKey, editorValue });
+    const insertedString = this.insertCharacter(this._editor.getSelection(), editorValue)
+    this.setState({ codeContent: insertedString })
+    updateFile({ key: fileKey, editorValue: insertedString });
     this.props.executeUnit();
   };
 
+  insertCharacter = (location, string) => {
+    String.prototype.splice = function (idx, rem, str) {
+      return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+    };
+    var linedString = string.split("\n");
+    linedString[location.positionLineNumber - 1] = linedString[location.positionLineNumber - 1].splice(location.positionColumn - 1, 1, "^");
+    return linedString.join('\n');
+  }
   componentDidUpdate(prevProps) {
     if (this.props.dimensions !== prevProps.dimensions && this._editor) {
       this._editor.layout();
