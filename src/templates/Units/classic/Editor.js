@@ -392,8 +392,8 @@ class Editor extends Component {
     const { codeContent, anchorEl, open, isHideQuickKeyBar } = this.state
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
     return (
-      <Suspense fallback={<Loader timeout={600} />} >
-        <div style={{ position: "relative", width: '100%', height: '95%' }}>
+      <Suspense fallback={<Loader timeout={600} />} style={{ background: 'red' }}>
+        <div style={{ position: "relative", width: '100%', height: 'calc(100% - 40px)' }}>
           <MonacoEditor
             editorDidMount={this.editorDidMount}
             editorWillMount={this.editorWillMount}
