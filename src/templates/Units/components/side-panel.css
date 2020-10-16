@@ -14,3 +14,7 @@
   width: 100%;
   overflow-y: auto;
 }
+
+.is-mobile #lesson-page .swiper-slide {
+  padding: 10px 16px 10px 16px;
+}

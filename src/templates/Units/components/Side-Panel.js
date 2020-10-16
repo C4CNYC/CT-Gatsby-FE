@@ -70,7 +70,7 @@ export class SidePanel extends Component {
     console.log(pageNumber)
   }
   renderSlide = (slide) => {
-    return <div id="lesson-page"><ReflexElement flex={1} className={slide.css_class}>{ReactHtmlParser(slide.html_content)}</ReflexElement></div>;
+    return <div id="lesson-page" style={{ height: "100%" }}><ReflexElement flex={1} style={{ height: "100%" }} className={`${slide.css_class} swiper-slide`}>{ReactHtmlParser(slide.html_content)}</ReflexElement></div>;
   }
   render() {
     const {
@@ -86,7 +86,7 @@ export class SidePanel extends Component {
     } = this.props;
     return (
 
-      <ReflexContainer orientation='horizontal' className='instructions-panel' role='complementary' tabIndex='-1' >
+      <ReflexContainer orientation='horizontal' className='instructions-panel is-mobile' role='complementary' tabIndex='-1' >
         <ReactPageScroller ref={c => this.reactPageScroller = c} >
           {lesson_data.slides.map(this.renderSlide)}
         </ReactPageScroller>
