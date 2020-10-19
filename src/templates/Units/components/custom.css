@@ -8,3 +8,10 @@
 #lesson-page .btn-success {
     width: auto;
 }
+
+.button-unlocked{
+    display: none;
+}
+.button-locked{
+    display: block;
+}
