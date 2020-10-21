@@ -130,6 +130,16 @@ const styles = theme => ({
   keyBoardBar: {
     textAlign: "center",
     width: `calc(100% / 6)`
+  },
+  moreOptions: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: theme.base.sizes.linesMargin,
+    marginRight: theme.base.sizes.linesMargin,
+    justifyContent: "space-between"
+  },
+  bottomBorder: {
+    borderBottom: `1px solid ${theme.base.colors.lines}`,
   }
 });
 
@@ -230,6 +240,15 @@ class Footer extends React.Component {
       case "quote":
         this.insertCharacter(this.props.monacoEditor.getSelection(), '"');
         break;
+      case "equal":
+        this.insertCharacter(this.props.monacoEditor.getSelection(), '=');
+        break;
+      case "semiquote":
+        this.insertCharacter(this.props.monacoEditor.getSelection(), "'");
+        break;
+      case "block":
+        this.insertCharacter(this.props.monacoEditor.getSelection(), "{}");
+        break;
       default:
         return;
     }
@@ -256,7 +275,6 @@ class Footer extends React.Component {
                 onClick={() => { }}
                 title="Gallery">
                 <CropOriginalIcon className={classes.button} />
-
               </IconButton>
               <span className={classes.span}>Gallery</span>
             </div>
@@ -371,14 +389,38 @@ class Footer extends React.Component {
               keepMounted
               open={Boolean(open)}
               onClose={this.handleCloseMore}>
-              <MenuItem
-                onClick={e => {
-                  this.hideQuickKeyBar();
-                  this.handleCloseMore();
-                  this.focusOnEditor();
-                }}>
-                <VisibilityOffIcon />
-              </MenuItem>
+              <div className={`${classes.moreOptions} ${classes.bottomBorder}`}>
+                <MenuItem
+                  onClick={e => {
+                    this.hideQuickKeyBar();
+                    this.handleCloseMore();
+                    this.focusOnEditor();
+                  }}>
+                  <VisibilityOffIcon />
+                </MenuItem>
+                <MenuItem
+                  onClick={() => this.addQuickKey('')}>
+                  <span className={classes.span} style={{ fontSize: "20px" }}>T</span>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => this.addQuickKey('')}>
+                  <span className={classes.span} style={{ fontSize: "30px" }}>T</span>
+                </MenuItem>
+              </div>
+              <div className={classes.moreOptions}>
+                <MenuItem
+                  onClick={() => this.addQuickKey('equal')}>
+                  <span className={classes.span} style={{ fontSize: "30px" }}>=</span>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => this.addQuickKey('semiquote')}>
+                  <span className={classes.span} style={{ fontSize: "30px" }}>   ' </span>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => this.addQuickKey('block')}>
+                  <span className={classes.span} style={{ fontSize: "25px" }}>{"{ }"}</span>
+                </MenuItem>
+              </div>
             </Menu>
           </> :
             <IconButton
