@@ -5,14 +5,14 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { forceCheck } from 'react-lazyload';
 import { createSelector } from 'reselect';
 import {
-    fontSizeChange,
-    fontSizeIncreaseSelector,
-    isWideScreenSelector,
-    navigatorPositionChange,
-    navigatorPositionSelector,
-    navigatorShapeChange,
-    navigatorShapeSelector,
-    wideScreenStatusChange
+  fontSizeChange,
+  fontSizeIncreaseSelector,
+  isWideScreenSelector,
+  navigatorPositionChange,
+  navigatorPositionSelector,
+  navigatorShapeChange,
+  navigatorShapeSelector,
+  wideScreenStatusChange
 } from '../../state';
 import { bindActionCreators } from 'redux';
 import Map from '../Map';
@@ -20,7 +20,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 const styles = theme => ({
   navigator: {
-      // zIndex: 99,
+    // zIndex: 99,
     transform: "translate3d(0, 0, 0)",
     willChange: "left, top, bottom, width",
     background: theme.navigator.colors.background,
@@ -113,8 +113,8 @@ const styles = theme => ({
 });
 
 const Navigator = props => {
-    const { classes, children, navigatorPosition, navigatorShape, categoryFilter } = props;
-  const { unitEdges, blockEdges} = useAllBlockAndUnitNodes();
+  const { classes, children, navigatorPosition, navigatorShape, categoryFilter } = props;
+  const { unitEdges, blockEdges } = useAllBlockAndUnitNodes();
 
   const expandOnClick = e => {
     props.navigatorShapeChange("open");
@@ -126,42 +126,41 @@ const Navigator = props => {
   };
 
   return (
-      <nav
-          onClick={expandOnClick}
-        className={`${classes.navigator} ${navigatorPosition ? navigatorPosition : ""} ${
-          navigatorShape ? navigatorShape : ""
+    <nav
+      onClick={expandOnClick}
+      className={`${classes.navigator} ${navigatorPosition ? navigatorPosition : ""} ${navigatorShape ? navigatorShape : ""
         } `}
-      >
-          {blockEdges && unitEdges && (
-          <Map
-              // hash={hashValue}
-              blockNodes={blockEdges.map(({ node }) => node)}
-              isSignedIn={props.isSignedIn}
-              nodes={unitEdges
-                  .map(({ node }) => node)
-                  .filter(({ isPrivate }) => !isPrivate)}
-          />
-          )}
-        {/*{props.children.length && (*/}
-        {/*  <List*/}
-        {/*    children={children}*/}
-        {/*    navigatorPosition={navigatorPosition}*/}
-        {/*    navigatorShape={navigatorShape}*/}
-        {/*    linkOnClick={moveNavigatorAside}*/}
-        {/*    expandOnClick={expandOnClick}*/}
-        {/*    categoryFilter={categoryFilter}*/}
-        {/*    removeFilter={removefilterOnClick}*/}
-        {/*  />*/}
-        {/*)}*/}
-      </nav>
-    );
+    >
+      {blockEdges && unitEdges && (
+        <Map
+          // hash={hashValue}
+          blockNodes={blockEdges.map(({ node }) => node)}
+          isSignedIn={props.isSignedIn}
+          nodes={unitEdges
+            .map(({ node }) => node)
+            .filter(({ isPrivate }) => !isPrivate)}
+        />
+      )}
+      {/*{props.children.length && (*/}
+      {/*  <List*/}
+      {/*    children={children}*/}
+      {/*    navigatorPosition={navigatorPosition}*/}
+      {/*    navigatorShape={navigatorShape}*/}
+      {/*    linkOnClick={moveNavigatorAside}*/}
+      {/*    expandOnClick={expandOnClick}*/}
+      {/*    categoryFilter={categoryFilter}*/}
+      {/*    removeFilter={removefilterOnClick}*/}
+      {/*  />*/}
+      {/*)}*/}
+    </nav>
+  );
 }
 
 const useAllBlockAndUnitNodes = () => {
-    const {
-        allUnitNode,
-        allBlockNode
-    } = useStaticQuery(graphql`
+  const {
+    allUnitNode,
+    allBlockNode
+  } = useStaticQuery(graphql`
         query getAllUnitNodesAndGetAllBlockNodes {
             allUnitNode(sort: { fields: [superOrder, order, unitOrder] }) {
                 edges {
@@ -197,15 +196,15 @@ const useAllBlockAndUnitNodes = () => {
         }
     `);
 
-    return {
-        unitEdges: allUnitNode.edges,
-        blockEdges: allBlockNode.edges
-    };
+  return {
+    unitEdges: allUnitNode.edges,
+    blockEdges: allBlockNode.edges
+  };
 };
 
 Navigator.propTypes = {
-    unitEdges: PropTypes.any,
-    blockEdges: PropTypes.any,
+  unitEdges: PropTypes.any,
+  blockEdges: PropTypes.any,
   // children: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   navigatorPosition: PropTypes.string.isRequired,

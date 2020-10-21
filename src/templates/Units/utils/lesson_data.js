@@ -154,7 +154,7 @@ export const lesson_data =
     "html_content": `
       <div class='container'>                    <h2 class='lesson-title pink '>CSS</h3>                      <p class='lesson-instructions fs-16 mb-4'>Cascading Style Sheets</p>                     <div style='position: relative'>                         <p class='lesson-instructions pink' style='position:absolute;top: 53%;left: 10%'>style='...'</p>                         <img data-src='../../../assets/img/lessons/css-girl.png' class='swiper-lazy mb-2' style='max-height: 50vh;'>                     </div>                     <div class='swiper-lazy-preloader'></div>                      <h3 class='lesson-title font-weight-normal mt-2'>                       <span class=' pink' style='margin-left: -25%'>CSS</span> is the <br>                        <span class='yellow' style='margin-left: 25%'>STYLE </span>                       <small> (BLING)</small></h3>                      </div> 
       `,
-    "sort_order": 17,
+    ////   "sort_order": 17,
     "updated_at": "2017-09-28T16:09:40.256Z"
   }, {
     "checkpoint": false,

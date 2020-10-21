@@ -18,3 +18,14 @@
 .is-mobile #lesson-page .swiper-slide {
   padding: 10px 16px 10px 16px;
 }
+
+.is-mobile #lesson-page .swiper-slide .c1-back {
+  background-color: #29c1c4 !important;
+}
+
+.is-mobile #lesson-page .slide2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: center;
+}

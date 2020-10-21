@@ -1,4 +1,4 @@
-/* @import "./learn.css"; */
+@import "./learn.css";
 @import "./lessons.css";
 
 #lesson-page .btn-main,
@@ -7,4 +7,12 @@
 #lesson-page .btn-action,
 #lesson-page .btn-success {
     width: auto;
+}
+
+.bounce-arrow {
+    position: relative !important;
+}
+
+.m-4 {
+    margin: 1.5rem !important;
 }
