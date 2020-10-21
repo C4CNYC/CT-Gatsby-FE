@@ -48,31 +48,28 @@ class UnitDescription extends Component {
     const { description, instructions, section } = this.props;
     return (
 
-          // <div className={`reveal unit-instructions ${section}`} style={{height: '100%%'}}
-        <SpringScrollbars>
-          <div className={`unit-instructions ${section}`} style={{height: '100%%'}}
-               ref={this.instructionsRef}>
-            <div className={'slides'}>
-              <section dangerouslySetInnerHTML={{ __html: description }} />
-              {/*<RevealJsWrapper revealJsConfig={{*/}
-              {/*  dependencies: [*/}
-              {/*    { src: "plugin/markdown/marked.js" },*/}
-              {/*    { src: "plugin/markdown/markdown.js" },*/}
-              {/*    { src: "plugin/highlight/highlight.js" },*/}
-              {/*    { src: "plugin/notes/notes.js" },*/}
-              {/*    { src: "plugin/zoom-js/zoom.js" }*/}
-              {/*  ],*/}
-              {/*  hash: true,*/}
-              {/*  pdfSeparateFragments: false*/}
-              {/*}} importBaseRevealJsCss={true}>*/}
-              {/*  <Slides content={description} />*/}
-              {/*</RevealJsWrapper>*/}
-            </div>
+      // <div className={`reveal unit-instructions ${section}`} style={{height: '100%%'}}
+      <SpringScrollbars>
+        <div className={`unit-instructions ${section}`} style={{ height: '100%%' }}
+          ref={this.instructionsRef}>
+          <div className={'slides'}>
+            <section dangerouslySetInnerHTML={{ __html: description }} />
+            {/*<RevealJsWrapper revealJsConfig={{*/}
+            {/*  dependencies: [*/}
+            {/*    { src: "plugin/markdown/marked.js" },*/}
+            {/*    { src: "plugin/markdown/markdown.js" },*/}
+            {/*    { src: "plugin/highlight/highlight.js" },*/}
+            {/*    { src: "plugin/notes/notes.js" },*/}
+            {/*    { src: "plugin/zoom-js/zoom.js" }*/}
+            {/*  ],*/}
+            {/*  hash: true,*/}
+            {/*  pdfSeparateFragments: false*/}
+            {/*}} importBaseRevealJsCss={true}>*/}
+            {/*  <Slides content={description} />*/}
+            {/*</RevealJsWrapper>*/}
           </div>
-        </SpringScrollbars>
-
-
-
+        </div>
+      </SpringScrollbars>
     );
   }
 }
