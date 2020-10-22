@@ -169,7 +169,7 @@ class TopBar extends React.Component {
         <div className={classes.group2}>
           <IconButton
             aria-label="Back to home"
-            onClick={this.homeOnClick}
+            onClick={() => { }}
             title="Back to home"
             className={classes.button}
           >

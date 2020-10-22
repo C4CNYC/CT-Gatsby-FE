@@ -389,38 +389,40 @@ class Footer extends React.Component {
               keepMounted
               open={Boolean(open)}
               onClose={this.handleCloseMore}>
-              <div className={`${classes.moreOptions} ${classes.bottomBorder}`}>
-                <MenuItem
-                  onClick={e => {
-                    this.hideQuickKeyBar();
-                    this.handleCloseMore();
-                    this.focusOnEditor();
-                  }}>
-                  <VisibilityOffIcon />
-                </MenuItem>
-                <MenuItem
-                  onClick={() => this.addQuickKey('')}>
-                  <span className={classes.span} style={{ fontSize: "20px" }}>T</span>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => this.addQuickKey('')}>
-                  <span className={classes.span} style={{ fontSize: "30px" }}>T</span>
-                </MenuItem>
-              </div>
-              <div className={classes.moreOptions}>
-                <MenuItem
-                  onClick={() => this.addQuickKey('equal')}>
-                  <span className={classes.span} style={{ fontSize: "30px" }}>=</span>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => this.addQuickKey('semiquote')}>
-                  <span className={classes.span} style={{ fontSize: "30px" }}>   ' </span>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => this.addQuickKey('block')}>
-                  <span className={classes.span} style={{ fontSize: "25px" }}>{"{ }"}</span>
-                </MenuItem>
-              </div>
+              {open && <>
+                <div className={`${classes.moreOptions} ${classes.bottomBorder}`}>
+                  <MenuItem
+                    onClick={e => {
+                      this.hideQuickKeyBar();
+                      this.handleCloseMore();
+                      this.focusOnEditor();
+                    }}>
+                    <VisibilityOffIcon />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => this.addQuickKey('')}>
+                    <span className={classes.span} style={{ fontSize: "20px" }}>T</span>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => this.addQuickKey('')}>
+                    <span className={classes.span} style={{ fontSize: "30px" }}>T</span>
+                  </MenuItem>
+                </div>
+                <div className={classes.moreOptions}>
+                  <MenuItem
+                    onClick={() => this.addQuickKey('equal')}>
+                    <span className={classes.span} style={{ fontSize: "30px" }}>=</span>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => this.addQuickKey('semiquote')}>
+                    <span className={classes.span} style={{ fontSize: "30px" }}>   ' </span>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => this.addQuickKey('block')}>
+                    <span className={classes.span} style={{ fontSize: "25px" }}>{"{ }"}</span>
+                  </MenuItem>
+                </div>
+              </>}
             </Menu>
           </> :
             <IconButton

@@ -67,10 +67,8 @@ export class SidePanel extends Component {
 
   goToPage = (pageNumber) => {
     this.reactPageScroller.goToPage(pageNumber);
-    console.log(pageNumber)
   }
   renderSlide = (slide, slideNumber) => {
-    console.log("slide number", slideNumber)
     switch (slideNumber) {
       case 0:
         return <div id="lesson-page" style={{ height: "100%" }}>
