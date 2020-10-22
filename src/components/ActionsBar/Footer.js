@@ -41,7 +41,7 @@ import { Button, Menu, MenuItem } from "@material-ui/core";
 
 const styles = theme => ({
   footer: {
-    position: "absolute",
+    position: "fixed",
     zIndex: 100,
     background: theme.bars.colors.background,
     left: 0,
