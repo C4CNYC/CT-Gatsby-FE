@@ -31,6 +31,8 @@ import {
 } from '../../state';
 import { createSelector } from 'reselect';
 
+import $ from 'jquery';
+
 const styles = theme => ({
   topBar: {
     position: "absolute",
@@ -208,13 +210,18 @@ class TopBar extends React.Component {
           </IconButton>
           <IconButton
             aria-label="Menu"
-            onClick={() => { }}
+            onClick={() => { 
+              $('.login-signup-container').css({
+                flex: '1.000468823 1 0%'
+              }).addClass('login-signup-panel-visible');
+              $('body').append('<div class="hide-body-shadow"></div>');                          
+            }}
             title="Menu"
             className={classes.button}
           >
             <MenuIcon />
           </IconButton>
-          {/* 
+          {/*
           <IconButton aria-label="Back to top" onClick={this.arrowUpOnClick} title="Scroll to top">
             <ArrowUpwardIcon className={classes.button} />
           </IconButton> */}

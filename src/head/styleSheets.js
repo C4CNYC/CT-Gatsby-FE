@@ -1,3 +1,5 @@
-const styleSheets = [];
+const styleSheets = [
+    ''
+];
 
 export default styleSheets;
