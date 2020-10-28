@@ -195,11 +195,11 @@ class MobileLayout extends Component {
             <TabPanel index={1} >
               {editor}
             </TabPanel>
-            {/*<TabPanel value={value} index={2}>*/}
-            {/*  {testOutput}*/}
-            {/*</TabPanel>*/}
+            {/* <TabPanel value={value} index={2}>
+             {testOutput}
+             </TabPanel> */}
             {hasPreview && (
-              <TabPanel index={2}>
+              <TabPanel index={2} >
                 {preview}
               </TabPanel>
             )}

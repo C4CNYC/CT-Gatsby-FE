@@ -2,13 +2,15 @@ const { css } = require("jquery");
 const $ = require("jquery");
 
 const { divide, result } = require("lodash");
-
+import React, { Profiler } from 'react';
+import * as Auth from './authmanager.js';
+var i,j,k;
 var challange_element_pest = '<div class="slider-card challange pest"><div class="row"><h2>challange</h2></div><div class="row"><hr/></div><div class="row excerpt">Excerpt</div><div class="row"><hr/></div><div class="row"><div class="success-next-button"></div><div class="row bottom-description"></div><div class="row top-label"></div></div>';
 var challange_element = '<div class="slider-card challange"><div class="row header"><h2>challange</h2><div class="row top-label"></div><hr/></div><div class="row excerpt"></div><div class="row"><hr/></div><div class="row"><div class="success-next-button"></div><div class="row bottom-description"></div>';
 var image_element  = '<div class="slider-card img"><div><img src=""/></div></div>';
 var image_button_element = '<div class="slider-card img-button"><div class="row"><img src=""/></div><div class="row"></div></div>';
 var check_svg = '<svg class="svg-inline--fa fa-check fa-w-16" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>';
-
+var validation_array = [false, false, false, false, false, false, false, false, false, false, false, false, false];
 var card = [
     ['A', 'CHALLANGE', 'Hi.... 👋<br/><span>Type <xmp><h1></xmp> in the editor below</span>', 'DESCRIPTION: Add <strong><xmp class="plain-text"><h1></xmp></strong>', 'step 1 of 2'],
     ['B', 'https://codejika.com/learn/lessons/INTRO-5MIN-D-V004/img/Slide2.PNG'],    
@@ -43,17 +45,6 @@ var card = [
     ['A', 'CHALLANGE', 'Try playing with the colors of the linear-gradient.', '', 'play: 2 of 2'], 
     ['C', [c_sub_header_normal('What would you like to do?'), c_line_break(), c_button('share to gallery', '#'), c_button('start project 1', '#')], ''],
 ];
-// var mobile_card = [
-//   ['A', 'CHALLANGE', 'Hi.... 👋<br/><span>Type <xmp><h1></xmp> in the editor below</span>', '']
-// ];
-// var card;
-// $(document).ready(()=>{
-//   if($('window').width() < 768){
-//     card = mobile_card;
-//   }else if($(window).width() >= 768){
-//     card = desktop_card;
-//   }
-// })
 
 var current_slide = 0;
 
@@ -75,29 +66,21 @@ function c_line_break(){
 
 var slider, size;
 
-function next(){
+export function next(){
   size = $('.slider-card').width();
   current_slide++;
-  slider.animate({scrollLeft: (size*current_slide)+1}, 300);
-  // slider.css({
-  //   transition: 'transform 0.4s ease-in-out',
-  //   transform: 'translateX(' +((-size*(current_slide))-1) + 'px)'
-  // });
+  $('#slider').animate({scrollLeft: (size*current_slide)+1}, 300);
   current_slide_status();
 }
-function previous(){
+export function previous(){
   size = $('.slider-card').width();
   current_slide--;
-  slider.animate({scrollLeft: (size*current_slide)+1}, 300);
-  // slider.css({
-  //   transition: 'transform 0.4s ease-in-out',
-  //   transform: 'translateX(' +((-size*(current_slide))-1) + 'px)'
-  // });
+  $('#slider').animate({scrollLeft: (size*current_slide)+1}, 300);
   current_slide_status();
 }
 
-function current_slide_status(){
-  var count = current_slide + 1;
+export function current_slide_status(){
+  var count = parseInt(current_slide) + 1;  
   $('#slide-count').text('Slide '  + count + ' of ' + $('.slider-card').length);
   if(current_slide > 0 && current_slide != card.length - 1){
     $('#next').text('Next >');
@@ -122,55 +105,25 @@ function current_slide_status(){
     }
   } else{
     $('#next').css({display:'inline-block'});
-  }
+  } 
 }
 
-
-function insert_cards(){          
-  //insert cards
-  $('#slider').html(''); 
-  for(i=0; i < card.length; i++){           
-    if(card[i][0] == 'A'){        
-      $('#slider').append(challange_element);    
-      var j = i+1;
-      $('.slider-card:last-child h2').text(card[i][1]);
-      $('.slider-card:last-child .excerpt').html('<div class="check" id="check'+i+'"></div><div class="execerpt-content">'+ card[i][2]+'</div>');
-      $('.slider-card:last-child .success-next-button').html('Skip this →').attr('id', 'btn' + i);  
-      $('.slider-card:last-child .bottom-description').html(card[i][3]);        
-      $('.slider-card:last-child .top-label').html(card[i][4]);
-      card[i].push(i, false);            
-    }else if(card[i][0] == 'B'){      
-      $('#slider').append(image_element);
-    
-      $('.img:last-child img').attr('src', card[i][1]);
-    }else if(card[i][0] == 'C'){  
-      $('#slider').append(image_button_element);
-
-      for(k = 0; k<card[i][1].length; k++){
-        $('.slider-card.img-button:last-child').append('<div class="img-button-row">'+card[i][1][k]+'</div>');        
-      }      
+export function get_current_slide_number(){
+  return current_slide;
+}
+function insert_cards(){
+  //insert cards  
+  for(i=0; i < card.length; i++){
+    if(card[i][0] == 'A'){
+      card[i].push(i, false);
     }else if(card[i][0] == 'D'){
-      $('#slider').append(challange_element_pest);    
-      var j = i+1;
-      $('.slider-card:last-child h2').text(card[i][1]);
-      $('.slider-card:last-child .excerpt').html('<div class="check" id="check'+i+'"></div><div class="execerpt-content">'+ card[i][2]+'</div>');
-      $('.slider-card:last-child .success-next-button').html('Skip this →').attr('id', 'btn' + i);  
-      $('.slider-card:last-child .bottom-description').html(card[i][3]);        
-      $('.slider-card:last-child .top-label').html(card[i][4]);
-      card[i].push(i, false);      
+      card[i].push(i, false);
     }
-  }
+}
    //pagination bar
   current_slide_status();
-  if(current_slide == 1){
-    $('#next').text("Start slider");
-  }
-  $('#next').click(()=>{
-    next();
-  })
-  $('#previous').click(()=>{
-    previous();
-  });
+  
+
 
 
   slider = $('#slider');
@@ -178,66 +131,37 @@ function insert_cards(){
   $('.reflex-splitter').eq(0).mouseup(()=>{  
      size = $('.slider-card').width();
      slider.animate({scrollLeft: (size*current_slide)+1}, 300)
-    //  slider.css({
-    //    transition: 'transform 0s',
-    //    transform: 'translateX(' +((-size*(current_slide))-1) + 'px)'
-    //  });  
   });
   $('.success-next-button').click(()=>next());
-
-}
-//ending of the insert card function
-
-
-var check_h1 = false, check_h1_h1 = false, check_body = false, check_body_style = false, check_body_style_pink = false, check_body_style_no_pink = false;
-
-
-function get_console_text(){
- var result='', elem=$('.view-lines span[class*="mtk"]');
- for(i=0; i<elem.length;i++){
-   result +=elem.eq(i).text();
- }
- return result;
 }
 
-function show_result(result_id){ 
- if(card[result_id][card[result_id].length-1] == false){
-  // alert("checked" + result_id);
-   $('#check' + result_id).show();
-   card[result_id][card[result_id].length-1] = true;
-   $('#check' + result_id).html(check_svg).css({'background-color':'#00A921', 'border':'none'});
-   $('#btn'+result_id).text('i did it 🙂').css({'background-color':'#68c300'}).addClass('didit');
-   current_slide_status();
- }   
-}
-function count_from_all(elem, cssproperty, cssvalue){
- for(i=0;i<$(elem).length;i++){
-     if($(elem).eq(i).css(cssproperty) == cssvalue){        
-       return true;
-     }
- }
- return false;
+export function slider_changed(){  
+    if($('#slider').length > 0){      
+      // let size = $('.slider-card').width();  
+      // $('#slider').animate({scrollLeft: (size*current_slide)+1}, 0)
+      // current_slide_status();
+      Auth.retrieve_slide_number()
+      insert_cards();
+    }
 }
 
-$(document).ready(()=>{
-      if($(window).width() >= 768){
-        var check = setInterval(() => {
-          if($('#slider').length > 0){
-            insert_cards();
-            clearInterval(check);
-          }
-       }, 500);
-        
-        var input_count = 0;
-        setInterval(() => {
-          var console_text = get_console_text();
-            if(console_text.length != input_count){
-              input_count = get_console_text().length;
-              validate_function();
-            }
-        }, 2000);        
-      }
-})
+export function fix_slider(id){  
+  current_slide = id;
+  let size = $('.slider-card').width();  
+  $('#slider').animate({scrollLeft: (size*current_slide)+1}, 0)
+  current_slide_status();
+}
+export function show_result(result_id){
+    if(card[result_id][card[result_id].length-1] == false){            
+      $('#check' + result_id).show();
+      card[result_id][card[result_id].length-1] = true;
+      $('#check' + result_id).html(check_svg).css({'background-color':'#00A921', 'border':'none'});
+      $('#btn'+result_id).text('i did it 🙂').css({'background-color':'#68c300'}).addClass('didit');
+      Auth.saveSlider(result_id)
+      current_slide_status();
+    }
+}
+
 function is_showed(id){
   if(!card[id][card[id].length-1]){
     return false;
@@ -245,10 +169,9 @@ function is_showed(id){
     return true;    
   }
 }
-function validate_function(){ 
-      var content = $('#fcc-main-frame').contents();      
-        
-        var console_text = get_console_text();
+
+export function validate_function(content){               
+        var console_text = content;
         if(console_text.match(/<h1>/) != null){
             show_result(0);
         }
@@ -287,4 +210,14 @@ function validate_function(){
         if(console_text.match(/<body(.*)style(.?)=(.?)"(.*)background:(.?)linear-gradient(.*)\(((.*)([0-9])(.?)deg(.*),(.*)((#(?:[0-9a-f]{ 2 }){ 2,4 }|(#[0-9a-f]{3})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[d\.]+%?\)|\b(black|silver|gray|whitesmoke|maroon|red|purple|fuchsia|green|lime|olivedrab|navy|teal|aquamarine|orange|aliceblue|antiquewhite|aqua|azure|beige|bisque|blanchedalmond|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|gainsboro|ghostwhite|goldenrod|gold|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavenderblush|lavender|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|limegreen|linen|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|oldlace|olive|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|thistle|tomato|turquoise|violet|wheat|white|yellowgreen|rebeccapurple)\b))(.*)([0-9])(.?)%(.*),(.*)((#(?:[0-9a-f]{ 2 }){ 2,4 }|(#[0-9a-f]{3})|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[d\.]+%?\)|\b(black|silver|gray|whitesmoke|maroon|red|purple|fuchsia|green|lime|olivedrab|navy|teal|aquamarine|orange|aliceblue|antiquewhite|aqua|azure|beige|bisque|blanchedalmond|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|gainsboro|ghostwhite|goldenrod|gold|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavenderblush|lavender|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|limegreen|linen|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|oldlace|olive|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|thistle|tomato|turquoise|violet|wheat|white|yellowgreen|rebeccapurple)\b))(.*)([0-9])%(.*))\);(.*)"(.*)>/) != null){
           show_result(30);
         }
-      }      
+      }
+
+
+      if(typeof window != 'undefined'){
+        $(document).ready(()=>{
+          $(window).resize(()=>{
+            let size = $('.slider-card').width();  
+            $('#slider').animate({scrollLeft: (size*current_slide)+1}, 0)
+          })
+        })
+      }

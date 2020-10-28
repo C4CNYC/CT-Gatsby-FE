@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import './loginSignupPanel.css';
 import $ from 'jquery';
 import robot from './img/robot_avatar_happy.png'
+import * as Auth from './authmanager.js';
+import * as popup from './popups.js';
 
 const login = ()=>(
     <div id="signupPanel" className="bottom-arrow" style={{
@@ -32,7 +34,7 @@ const login = ()=>(
             </div><br/><br/>
             <div className="input-box" >
                 <label>Date of Birth</label>
-                <select name="day" id="B-day" class="custom-select mb-0" required="">
+                <select name="bday" id="bday" class="custom-select mb-0" required="">
                     <option value="" disabled="" selected="" hidden="">Day</option>
                     <option value="01">01</option>
                     <option value="02">02</option>
@@ -66,7 +68,7 @@ const login = ()=>(
                     <option value="30">30</option>
                     <option value="31">31</option>
                 </select>
-                <select name="month" id="B-month" class="custom-select mb-0" required="">
+                <select name="bmonth" id="bmonth" class="custom-select mb-0" required="">
                     <option value="" disabled="" selected="" hidden="">Month</option>
                     <option value="01">Jan</option>
                     <option value="02">Feb</option>
@@ -81,7 +83,7 @@ const login = ()=>(
                     <option value="11">Nov</option>
                     <option value="12">Dec</option>
                 </select>
-                <select name="year" id="B-year" class="custom-select mb-0" required="">
+                <select name="byear" id="byear" class="custom-select mb-0" required="">
                     <option value="" disabled="" selected="" hidden="">Year</option>
                     <option value="2020">2020</option>
                     <option value="2019">2019</option>
@@ -185,13 +187,39 @@ const login = ()=>(
                     <option value="1921">1921</option>
                     <option value="1920">1920</option>
                 </select>
-            </div><br/><br/>                
+            </div><br/><span style={{color: '#28a745', fontSize: '80%'}}>Please enter your full date of birth.</span><br/>            
         </div><br/>
         <div className="input-box">
-            <button style={{backgroundColor: '#777'}}>MAYBE LATER</button>
-            <button style={{backgroundColor: '#ff6a00'}}>SIGN UP</button>
+            <button style={{backgroundColor: '#777'}} onClick={()=>{
+                   location.reload();
+            }}>MAYBE LATER</button>
+            <button style={{backgroundColor: '#ff6a00'}} onClick={()=>{
+                if(Auth.validateForm('#signupPanel input[type="text"], #signupPanel select')){
+                    var info = Auth.getValue('#signupPanel input[type="text"], #signupPanel select');
+                    Auth.createUser(info.join('').toLowerCase().replace(' ', '') + '@codejika.org', info.join('').toLowerCase().replace(' ', ''));
+                    Auth.change((user)=>{                        
+                        if(Auth.islogged()){
+                            Auth.firebaseInsert('Users/profile/' + info.join('').toLowerCase().replace(' ', ''),{
+                                firstname: info[0],
+                                lastname: info[1],
+                                day: info[2],
+                                month: info[3],
+                                year: info[4],
+                            });
+                            Auth.setUser(info.join('').toLowerCase().replace(' ', ''), info[0]);
+                            Auth.clearShadow();
+                            $('.login-signup-container').css({'z-index':0});
+                            ReactDOM.render(<popup.Aftersignup/>, document.querySelector('.hide-body-shadow'));                                      
+                        }
+                    })
+                    
+                }
+            }}>SIGN UP</button>
         </div><br/><br/>
-        <label style={{color: 'black', cursor: 'pointer', margin: '5px'}}>Already have an account? <span style={{color: 'blue'}}>Sign in</span></label>
+        <label style={{color: 'black', cursor: 'pointer', margin: '5px'}} onClick={()=>{
+             ReactDOM.render(<Signup />, document.querySelector('.hide-body-shadow'));                      
+             $('.login-signup-container').css({'z-index': 0});
+        }}>Already have an account? <span style={{color: 'blue'}}>Sign in</span></label>
         <div style={{
              position: 'absolute',
              top: '5px',

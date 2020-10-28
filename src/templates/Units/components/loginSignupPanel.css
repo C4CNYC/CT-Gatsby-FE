@@ -7,7 +7,7 @@
     padding: 20px 0px;    
 }
 .login-signup-container{
-    transition: flex 1s;
+    transition: flex .2s;
 }
 #login-signup *{
     font-family: 'Rajdhani', sans-serif;
@@ -104,7 +104,7 @@
     font-size: 25px;
     font-weight: bold;
 }
-#loginPanel *, #signupPanel *, #profilePanel *, #resetPanel *{
+#loginPanel *, #signupPanel *, #profilePanel *, #resetPanel *, #aftersignupPanel *, #signupsuccessPanel *, #loginsuccessPanel *{
     font-family: 'Rajdhani', sans-serif;
 }
 #loginPanel h2{

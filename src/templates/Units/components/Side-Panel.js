@@ -17,6 +17,9 @@ import { lesson_data } from '../utils/lesson_data';
 import './slider_program.js';
 import './validation.js';
 
+import Sliders from './slider.js'
+import * as slider from './slider_program.js'
+
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 const mapStateToProps = createSelector(
@@ -314,8 +317,7 @@ export class SidePanel extends Component {
       showToolPanel,
       videoUrl
     } = this.props;
-
-    if (window.innerWidth < 786) {
+    if (window.innerWidth < 768) {
       return (
         <ReflexContainer orientation='horizontal' className='instructions-panel is-mobile' role='complementary' tabIndex='-1' >
           <ReactPageScroller
@@ -326,20 +328,15 @@ export class SidePanel extends Component {
             {lesson_data.slides.map(this.renderSlide)}
           </ReactPageScroller>
         </ReflexContainer>
-      );
-    } else if (window.innerWidth >= 768) {
+      )
+    } else {
       return (
-        <ReflexContainer orientation='horizontal' className='instructions-panel is-mobile' role='complementary' tabIndex='-1' >
-          <div id="slider"></div>
-          <div class="pagination-holder">
-            <div id="previous" class="pagi-item"></div>
-            <div id="slide-count" class="pagi-item">Slide 1 of 32</div>
-            <div id="next" class="pagi-item">Start slider</div>
-          </div>
-        </ReflexContainer>
-
-      );
+        <div>
+          <Sliders />
+        </div>
+      )
     }
+
   }
 }
 

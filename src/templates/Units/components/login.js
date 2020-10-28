@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom'
 import './loginSignupPanel.css';
 import $ from 'jquery';
 import robot from './img/robot_avatar_happy.png'
-import {setCookie, getCookie, firebaseInsert, firebaseGet, firebaseUpdate, firebaseRemove} from './authmanager';
+import * as Auth from './authmanager.js';
+import * as popup from './popups.js';
+import Signup from './signup.js';
 
 const login = ()=>(
     <div id="loginPanel" className="bottom-arrow" style={{
@@ -189,12 +191,25 @@ const login = ()=>(
             </div><br/>           
         </div><br/>
         <div className="input-box">
-            <button style={{backgroundColor: '#777'}}>MAYBE LATER</button>
+            <button style={{backgroundColor: '#777'}} onClick={()=>Auth.clearShadow()}>MAYBE LATER</button>
             <button style={{backgroundColor: '#ff6a00'}} onClick={()=>{
-             
+                if(Auth.validateForm('#loginPanel input[type="text"], #loginPanel select')){
+                    var info = Auth.getValue('#loginPanel input[type="text"], #loginPanel select');
+                    Auth.signIn(info.join('').toLowerCase().replace(' ', '') + '@codejika.org', info.join('').toLowerCase().replace(' ', ''));
+                    Auth.change((user)=>{
+                        if(user){
+                            Auth.setUser(info.join('').toLowerCase().replace(' ', ''), info[0]);
+                            ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
+                            ReactDOM.render(<popup.Loginsuccessfull/>, document.querySelector('.hide-body-shadow'));
+                        }
+                    })
+                }
             }}>SIGN IN</button>
         </div><br/><br/>
-        <label style={{color: 'black', cursor: 'pointer', margin: '5px'}}>Already have an account? <span style={{color: 'blue'}}>Sign in</span></label>
+        <label style={{color: 'black', cursor: 'pointer', margin: '5px'}} onClick={()=>{
+            ReactDOM.render(<Signup />, document.querySelector('.hide-body-shadow'));
+            $('.login-signup-container').css({'z-index': 0});
+        }}>Already have an account? <span style={{color: 'blue'}}>Sign up</span></label>
         <div style={{
             position: 'absolute',
             top: '5px',
