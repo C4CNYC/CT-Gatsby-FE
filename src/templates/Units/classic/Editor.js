@@ -15,6 +15,11 @@ import {
 import { userSelector, isDonationModalOpenSelector } from '../../../state';
 import { Loader } from '../../../components/helpers';
 import { IconButton } from '@material-ui/core';
+import * as slider from '../components/slider_program.js';
+import * as Auth from '../components/authmanager.js';
+import $ from 'jquery';
+
+var codeconsole;
 
 const MonacoEditor = React.lazy(() => import('react-monaco-editor'));
 
@@ -124,13 +129,16 @@ class Editor extends Component {
   }
 
   editorWillMount = monaco => {
-    defineMonacoThemes(monaco);
+    defineMonacoThemes(monaco);         
   };
 
   editorDidMount = (editor, monaco) => {
-    const { setMonacoEditor } = this.props;
+    
+    const { setMonacoEditor } = this.props; 
     this._editor = editor;
+    
     setMonacoEditor(editor)
+   
     this._editor.updateOptions({
       accessibilitySupport: this.props.inAccessibilityMode ? 'on' : 'auto'
     });
@@ -172,7 +180,7 @@ class Editor extends Component {
       }
     });
     this._editor.onDidFocusEditorWidget(() =>
-      this.props.setEditorFocusability(true)
+      this.props.setEditorFocusability(true)     
     );
     // This is to persist changes caused by the accessibility tooltip.
     // Unfortunately it relies on Monaco's implementation details
@@ -184,6 +192,11 @@ class Editor extends Component {
         this.props.setAccessibilityMode(true);
       }
     });
+      Auth.getCode((codes)=>{
+          if(typeof codes != 'null' && typeof codes != 'undefined'){
+            this._editor.setValue(codes);      
+          }
+      });
   };
 
   focusOnHotkeys() {
@@ -200,19 +213,21 @@ class Editor extends Component {
     const { updateFile, fileKey } = this.props;
     updateFile({ key: fileKey, editorValue });
     // this.props.executeUnit();
+    slider.validate_function(editorValue);
+    Auth.savCode(editorValue);     
   };
 
   componentDidUpdate(prevProps) {
     if (this.props.dimensions !== prevProps.dimensions && this._editor) {
       this._editor.layout();
-    }
-  }
-
+    }          
+  }    
+  
   render() {
     const { contents, ext, theme, fileKey } = this.props;
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
     return (
-      <Suspense fallback={<Loader timeout={600} />}>
+      <Suspense fallback={<Loader timeout={600} />}>         
         <MonacoEditor
           editorDidMount={this.editorDidMount}
           editorWillMount={this.editorWillMount}
@@ -220,14 +235,14 @@ class Editor extends Component {
           language={modeMap[ext]}
           onChange={this.onChange}
           options={this.options}
-          theme={editorTheme}
-          defaultValue={contents}
+          defaultValue={contents}         
+          theme={editorTheme}              
           automaticLayout={true}
           height="100%"
-        />
+        />                
       </Suspense>
     );
-  }
+  }  
 }
 
 Editor.displayName = 'Editor';

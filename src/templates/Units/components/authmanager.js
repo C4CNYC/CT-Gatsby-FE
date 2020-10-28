@@ -1,7 +1,37 @@
 import React from 'react';
-import $ from 'jquery';
+import ReactDOM from 'react-dom'
+import * as slider from './slider_program.js';
+const $ = require("jquery");
+var i,j,k;
+var app;
+var firebase;
+var Auth;
+if(typeof window != 'undefined'){
+    firebase = require('firebase');   
+    const firebaseConfig = {
+        apiKey: "AIzaSyAtq7Gql0b6IqhKL5Loi1YZ9U7PXIWNgQg",
+        authDomain: "ct-gatsby-fe.firebaseapp.com",
+        databaseURL: "https://ct-gatsby-fe.firebaseio.com",
+        projectId: "ct-gatsby-fe",
+        storageBucket: "ct-gatsby-fe.appspot.com",
+        messagingSenderId: "745697149367",
+        appId: "1:745697149367:web:4079e0f2c85c8c92646832",
+        measurementId: "G-62MYN5DBME"
+      };
+    app = firebase.initializeApp(firebaseConfig);  
+    Auth = firebase.auth();  
+}
+ 
 
 // global functions
+export function islogged(){
+    if (Auth.currentUser != null){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 export function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -37,22 +67,231 @@ if (user != "") {
 }
 
 export function firebaseInsert(state ,data){
-    firebase.database().ref(state).set(data);
+    firebase.database().ref(state).set(data).then();
 }
 export function firebaseUpdate(state ,data){
     firebase.database().ref(state).update(data);
 }
-export function firebaseGet(state){
-    var data;
-    firebase.database().ref(state).on('value', function(snapshot){
-       data = snapshot.val();
-    });
-    return data;
+export function firebaseGet(state, callback){        
+    var data; 
+    firebase.database().ref(state).once('value', function(snapshot){
+        data = snapshot.val();
+        callback(data);
+    });   
 }
 export function firebaseRemove(state){
     firebase.database().ref(state).remove();
 }
-// $(document).ready(()=>alert('Document is ready'));
-export function test(){
-    alert('Document is ready')
+export function firebaseCheck(state, callback){
+    var isex;
+    firebase.database().ref(state).on('value', function(snapshot){
+       callback(snapshot.exists());
+    });
+}
+export function getForm(identifier){
+    var elem = $(identifier);
+    var result = [];
+    for(i = 0; i<elem.length;i++){
+        result.push(elem.eq(i));
+    }
+    return result;
+}
+export function validateForm(elements){
+    elements = getForm(elements);  
+    var result = true;
+    for(i=0; i<elements.length; i++){
+        var element = $(elements[i]);              
+        if(element.val().toString().length == 0){
+            element.css({
+                border: '1px solid #28a745'
+            })
+            if(result){
+                result = false;
+            }
+        }else if(element.val().length>0){
+            element.css({
+                border: '1px solid #2288fd'
+            })
+        }
+    }
+    return result;
+}
+export function getValue(identifier){
+    identifier = getForm(identifier);
+    var result = []
+    for(i=0; i<identifier.length;i++){
+        var element = identifier[i];
+        result.push(element.val());
+    }
+    return result;
+}
+export function checkUser(info, callback){     
+    firebaseCheck('Users/profile/' + info.join('').toLowerCase().replace(' ', ''), callback);    
+}
+export function clearShadow(){
+    ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
+    $('.login-signup-container').css({'z-index':2000});
+}
+export function setUser(userid, userfirstname){
+    setCookie('userid', userid, 365);
+    setCookie('isauthenticate', true, 365);
+    setCookie('user_firstname', userfirstname, 365);
+}
+
+export function getProfile(){    
+    var elem = $('#profilePanel input[type="text"], #profilePanel select, #profilePanel textarea');
+    var items = ['firstname', 'lastname', 'day', 'month', 'year', 'nickname', 'country', 'grade', 'dreamjob', 'schoolname', 'email', 'mobilernumber']; 
+            firebaseGet('Users/profile/' + currentUserId(), (data)=>{                
+            for(i=0; i<elem.length; i++){
+                elem.eq(i).val(data[items[i]]);
+            }
+        });
+}
+export function currentUserId(){
+    return Auth.currentUser.email.toString().replace('@codejika.org', '');
+}
+export function Logged(){    
+    if(islogged()){
+        $('#button-login, #button-register').css({display: 'none'});
+        $('#button-edit, #button-logout').css({display: 'flex'});
+    }else{
+        $('#button-login, #button-register').css({display: 'flex'});
+        $('#button-edit, #button-logout').css({display: 'none'});
+    }   
+}
+
+export function logout(){
+    setCookie('isauthenticate', false, 365);
+    setCookie('userid', '');
+    setCookie('user_firstname', '');
+    signOut();
+    location.reload();    
+}
+export function save_slide_number(id){
+    if(islogged()){
+      firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswesbite/currentslidenumber/', {
+          slideid: id
+      });
+  }else{      
+        localStorage.setItem('currentslidenumber', id);
+    }
+}
+export function retrieve_slide_number(){
+    change((user)=>{
+        if(user){                         
+            firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswesbite/currentslidenumber/', (data)=>{                
+                if(data != null){                       
+                    slider.fix_slider(data.slideid);
+                }
+            })
+        }else{      
+            if(typeof localStorage.getItem('currentslidenumber') == 'undefined'){
+                localStorage.setItem('currentslidenumber', 0);
+                slider.fix_slider(localStorage.getItem('currentslidenumber'));
+            }else{
+                slider.fix_slider(localStorage.getItem('currentslidenumber'));
+            }
+           
+        }
+    })
+}
+
+
+
+export function saveSlider(id){    
+    if(islogged()){
+        firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswesbite/' + id, {
+            lessonid: id,
+            complete: true
+        })
+    }else{      
+        if(localStorage.getItem('slider') == null){
+            localStorage.setItem('slider', JSON.stringify({}));
+        }
+        var result = JSON.parse(localStorage.getItem('slider'));
+        result['slider_' + id] = {
+            lessonid: id,
+            complete: true
+        }        
+        localStorage.setItem('slider', JSON.stringify(result));
+    }
+}
+
+export function retrieveSlider(){
+    if(islogged()){
+        firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswesbite/', (data)=>{
+            if(data != null && data != undefined) {
+                for (const key of Object.keys(data)) {                         
+                    if(data[key].complete == true){                    
+                        slider.show_result(data[key].lessonid);
+                    }
+                }
+           }
+         })
+    }else{
+        var data = JSON.parse(localStorage.getItem('slider'));        
+        if(data != null && data != undefined) {
+            for (const key of Object.keys(data)) {                
+                if(data[key].complete == true){                    
+                    slider.show_result(data[key].lessonid);
+                }
+            }
+       }
+    }
+}
+export function change(func){
+    Auth.onAuthStateChanged(func);
+}
+
+
+export function savCode(code_text){   
+    if(islogged()){
+        firebaseInsert('Users/profile/' + currentUserId() + '/currentcodeconsole', {
+            code: code_text
+        });
+    }else{
+        localStorage.setItem('currentcodeconsole', code_text);
+    }
+}
+export function getCode(callback){
+    if(islogged()){
+        firebaseGet('Users/profile/' + currentUserId() + '/currentcodeconsole', (codes)=>{
+            if(codes != null){
+                callback(codes.code);
+            }            
+        });
+    }else{
+        callback(localStorage.currentcodeconsole);
+    }
+}
+
+export function createUser(userid, userpass){
+    const promise = Auth.createUserWithEmailAndPassword(userid, userpass);
+	promise.catch(e => alert(e.message));
+}
+export function signIn(userid, userpass){
+    const promise = Auth.signInWithEmailAndPassword(userid, userpass);
+    promise.catch(e => alert(e.message));
+}
+export function signOut(){
+    if(islogged()){
+        Auth.signOut();
+    }
+}
+
+//operational functions
+if(typeof window != 'undefined'){
+    $(document).ready(()=>{       
+        var checklog = setInterval(() => {
+            if($('.login-signup-container, #button-login, #button-register, #button-edit, #button-logout, #slider, .slider-card').length > 0){
+                clearInterval(checklog);
+            }
+        }, 500);    
+        var rtrv = setInterval(() => {
+            if($('.slider-card').length > 0){
+                retrieveSlider();                
+                clearInterval(rtrv);
+            }
+        }, 500);       
+    })
 }

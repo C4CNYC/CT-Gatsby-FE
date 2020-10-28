@@ -8,24 +8,26 @@ function get_console_text(){
     return result;
 }
 
-$(document).ready(()=>{
-    if($(window).width() < 768){
-        setInterval(() => {
-            var console_text = get_console_text();
-            if(console_text.length != clength){
-                mobile_check_validation();
-            }
-            if($('.button-unlocked').length != card_length){
-                for(i=0; i<validation_id.length;i++){
-                    if(validation_id[i] && $('.button-unlocked').eq(i).css('display') == 'none'){                   
-                        mobile_show_result(i+1);
+if(typeof document != 'undefined'){
+    $(document).ready(()=>{
+        if($(window).width() < 768){
+            setInterval(() => {
+                var console_text = get_console_text();
+                if(console_text.length != clength){
+                    mobile_check_validation();
+                }
+                if($('.button-unlocked').length != card_length){
+                    for(i=0; i<validation_id.length;i++){
+                        if(validation_id[i] && $('.button-unlocked').eq(i).css('display') == 'none'){                   
+                            mobile_show_result(i+1);
+                        }
                     }
                 }
-            }
-        }, 2000);
-    }
-});
-
+            }, 2000);
+        }
+    });
+    
+}
 
 function mobile_show_result(id){    
     validation_id[id-1] = true;

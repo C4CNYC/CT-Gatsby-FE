@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom'
 import './loginSignupPanel.css';
 import $ from 'jquery';
 import robot from './img/robot_avatar_scared.png'
+import * as Auth from './authmanager.js';
 
-const login = ()=>(
+const Logout = ()=>(
     <div id="resetPanel" className="bottom-arrow" style={{
         height: '200px',
         minWidth: '400px',
@@ -17,8 +18,12 @@ const login = ()=>(
     }}>       
         <h2 style={{color: 'black', fontSize: '20px'}}>ARE YOU SURE YOU WANT TO SIGN<br/>OUT NOW?</h2>
         <div className="input-box">
-            <button style={{backgroundColor: '#777'}}>HMMM, MAYBE NOT</button>
-            <button style={{backgroundColor: '#ff6a00'}}>YES</button>
+            <button style={{backgroundColor: '#777'}} onClick={()=>{
+                Auth.clearShadow()
+            }}>HMMM, MAYBE NOT</button>
+            <button style={{backgroundColor: '#ff6a00'}} onClick={()=>{
+                Auth.logout();
+            }}>YES</button>
         </div><br/><br/>       
         <div style={{
             position: 'absolute',
@@ -50,4 +55,4 @@ const login = ()=>(
         </div>    
     </div>
 )
-export default login
+export default Logout

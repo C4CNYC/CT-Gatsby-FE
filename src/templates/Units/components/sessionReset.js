@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import './loginSignupPanel.css';
 import $ from 'jquery';
 import robot from './img/robot_avatar_scared.png'
+import * as Auth from './authmanager.js'
+
 
 const login = ()=>(
     <div id="resetPanel" className="bottom-arrow" style={{
@@ -17,9 +19,18 @@ const login = ()=>(
     }}>       
         <h2 style={{color: 'black', fontSize: '20px'}}>ARE YOU SURE YOU WANT TO RESET<br/>THIS LESSON?</h2>
         <div className="input-box">
-            <button style={{backgroundColor: '#777'}}>HMMM, MAYBE NOT</button>
-            <button style={{backgroundColor: '#ff6a00'}}>YES</button>
-        </div><br/><br/>       
+            <button style={{backgroundColor: '#777'}} onClick={()=>{
+                Auth.clearShadow();
+            }}>HMMM, MAYBE NOT</button>
+            <button style={{backgroundColor: '#ff6a00'}} onClick={()=>{
+                if(Auth.islogged()){
+                    Auth.firebaseRemove('Users/profile/' + Auth.currentUserId() + '/lessons/5minuteswesbite/');
+                }else{
+                    localStorage.setItem('slider', '');
+                }
+                location.reload();
+            }}>YES</button>
+        </div><br/><br/>
         <div style={{
             position: 'absolute',
             top: '5px',
