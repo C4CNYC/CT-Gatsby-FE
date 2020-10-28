@@ -16,3 +16,11 @@
 .m-4 {
     margin: 1.5rem !important;
 }
+
+.button-unlocked {
+    display: none;
+}
+
+.button-locked {
+    display: block;
+}
