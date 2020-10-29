@@ -205,7 +205,7 @@ const login = ()=>(
                                 day: info[2],
                                 month: info[3],
                                 year: info[4],
-                            });
+                            });                
                             Auth.setUser(info.join('').toLowerCase().replace(' ', ''), info[0]);
                             Auth.clearShadow();
                             $('.login-signup-container').css({'z-index':0});

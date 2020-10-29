@@ -169,27 +169,28 @@ export function logout(){
 }
 export function save_slide_number(id){
     if(islogged()){
-      firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswesbite/currentslidenumber/', {
+      firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentslidenumber/', {
           slideid: id
       });
+        localStorage.setItem('5minuteswebsitecurrentslidenumber', id);
   }else{      
-        localStorage.setItem('currentslidenumber', id);
+        localStorage.setItem('5minuteswebsitecurrentslidenumber', id);
     }
 }
 export function retrieve_slide_number(){
     change((user)=>{
         if(user){                         
-            firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswesbite/currentslidenumber/', (data)=>{                
+            firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentslidenumber/', (data)=>{                
                 if(data != null){                       
                     slider.fix_slider(data.slideid);
                 }
             })
-        }else{      
-            if(typeof localStorage.getItem('currentslidenumber') == 'undefined'){
-                localStorage.setItem('currentslidenumber', 0);
-                slider.fix_slider(localStorage.getItem('currentslidenumber'));
+        }else{                  
+            if(localStorage.getItem('5minuteswebsitecurrentslidenumber') == null){                
+                localStorage.setItem('5minuteswebsitecurrentslidenumber', 0);
+                slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
             }else{
-                slider.fix_slider(localStorage.getItem('currentslidenumber'));
+                slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
             }
            
         }
@@ -200,26 +201,35 @@ export function retrieve_slide_number(){
 
 export function saveSlider(id){    
     if(islogged()){
-        firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswesbite/' + id, {
+        firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/' + id, {
             lessonid: id,
             complete: true
         })
-    }else{      
-        if(localStorage.getItem('slider') == null){
-            localStorage.setItem('slider', JSON.stringify({}));
+        if(localStorage.getItem('5miunteswebsiteslider') == null){
+            localStorage.setItem('5miunteswebsiteslider', JSON.stringify({}));
         }
-        var result = JSON.parse(localStorage.getItem('slider'));
+        var result = JSON.parse(localStorage.getItem('5miunteswebsiteslider'));
         result['slider_' + id] = {
             lessonid: id,
             complete: true
         }        
-        localStorage.setItem('slider', JSON.stringify(result));
+        localStorage.setItem('5miunteswebsiteslider', JSON.stringify(result));
+    }else{      
+        if(localStorage.getItem('5miunteswebsiteslider') == null){
+            localStorage.setItem('5miunteswebsiteslider', JSON.stringify({}));
+        }
+        var result = JSON.parse(localStorage.getItem('5miunteswebsiteslider'));
+        result['slider_' + id] = {
+            lessonid: id,
+            complete: true
+        }        
+        localStorage.setItem('5miunteswebsiteslider', JSON.stringify(result));
     }
 }
 
 export function retrieveSlider(){
     if(islogged()){
-        firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswesbite/', (data)=>{
+        firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/', (data)=>{
             if(data != null && data != undefined) {
                 for (const key of Object.keys(data)) {                         
                     if(data[key].complete == true){                    
@@ -229,7 +239,7 @@ export function retrieveSlider(){
            }
          })
     }else{
-        var data = JSON.parse(localStorage.getItem('slider'));        
+        var data = JSON.parse(localStorage.getItem('5miunteswebsiteslider'));        
         if(data != null && data != undefined) {
             for (const key of Object.keys(data)) {                
                 if(data[key].complete == true){                    
@@ -246,22 +256,23 @@ export function change(func){
 
 export function savCode(code_text){   
     if(islogged()){
-        firebaseInsert('Users/profile/' + currentUserId() + '/currentcodeconsole', {
+        firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentcodeconsole', {
             code: code_text
         });
+        localStorage.setItem('5minuteswebsitecurrentcodeconsole', code_text);
     }else{
-        localStorage.setItem('currentcodeconsole', code_text);
+        localStorage.setItem('5minuteswebsitecurrentcodeconsole', code_text);
     }
 }
 export function getCode(callback){
     if(islogged()){
-        firebaseGet('Users/profile/' + currentUserId() + '/currentcodeconsole', (codes)=>{
+        firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentcodeconsole', (codes)=>{
             if(codes != null){
                 callback(codes.code);
             }            
         });
     }else{
-        callback(localStorage.currentcodeconsole);
+        callback(localStorage.getItem('5minuteswebsitecurrentcodeconsole'));
     }
 }
 
@@ -279,9 +290,19 @@ export function signOut(){
     }
 }
 
+// change((user)=>{
+//     if(user){     
+//         var url = window.location.href + '?' + btoa(currentUserId());    
+//         window.history.pushState({path: url}, '', url);
+//         alert(window.location.href)
+//     }
+// })
+
+
 //operational functions
 if(typeof window != 'undefined'){
-    $(document).ready(()=>{       
+    $(document).ready(()=>{
+
         var checklog = setInterval(() => {
             if($('.login-signup-container, #button-login, #button-register, #button-edit, #button-logout, #slider, .slider-card').length > 0){
                 clearInterval(checklog);
@@ -295,3 +316,46 @@ if(typeof window != 'undefined'){
         }, 500);       
     })
 }
+export function combine(){
+    change((user)=>{
+        if(user){
+            //insert slides
+            if(typeof localStorage.getItem('5miunteswebsiteslider') != null){
+                var data = JSON.parse(localStorage.getItem('5miunteswebsiteslider'));              
+                    if(data != null){
+                        for (const key of Object.keys(data)) {                                 
+                            if(data[key].complete == true){                    
+                                firebaseInsert('Users/profile/' + currentUserId()+ '/lessons/5minuteswebsite/' + data[key].lessonid, {
+                                    complete: true,
+                                    lessonid: data[key].lessonid
+                                });
+                            }
+                    }
+                    }
+            }         
+            //isert codes
+            firebaseGet('Users/profile/' + currentUserId()+ '/lessons/5minuteswebsite/currentcodeconsole', (data)=>{
+                if(data == null && localStorage.getItem('5minuteswebsitecurrentcodeconsole') != null){
+                    firebaseInsert('Users/profile/' + currentUserId()+ '/lessons/5minuteswebsite/currentcodeconsole', {
+                        code: localStorage.getItem('5minuteswebsitecurrentcodeconsole')
+                    })
+                }
+            })
+            //insert current slide number
+            firebaseGet('Users/profile/' + currentUserId()+ '/lessons/5minuteswebsite/currentslidenumber', (data)=>{          
+                if(data == null && localStorage.getItem('5minuteswebsitecurrentslidenumber') != null){                    
+                    firebaseInsert('Users/profile/' + currentUserId()+ '/lessons/5minuteswebsite/currentslidenumber', {
+                        slideid: localStorage.getItem('5minuteswebsitecurrentslidenumber')
+                    })
+                   slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
+                }
+            })
+        }
+        
+    })
+}
+change((user)=>{
+    if(user){
+        combine()
+    }
+})
