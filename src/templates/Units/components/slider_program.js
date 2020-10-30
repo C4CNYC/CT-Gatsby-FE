@@ -80,7 +80,13 @@ export function previous(){
 }
 
 export function current_slide_status(){
-  var count = parseInt(current_slide) + 1;  
+  var count;
+  if(current_slide == null){
+    count = 0;
+  }else{
+    var count = parseInt(current_slide) + 1;  
+  }
+  // alert(count)
   $('#slide-count').text('Slide '  + count + ' of ' + $('.slider-card').length);
   if(current_slide > 0 && current_slide != card.length - 1){
     $('#next').text('Next >');
@@ -145,7 +151,7 @@ export function slider_changed(){
     }
 }
 
-export function fix_slider(id){  
+export function fix_slider(id){      
   current_slide = id;
   let size = $('.slider-card').width();  
   $('#slider').animate({scrollLeft: (size*current_slide)+1}, 0)
