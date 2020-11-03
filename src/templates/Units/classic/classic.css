@@ -55,3 +55,17 @@
   color: var(--quaternary-color);
   background-color: var(--quaternary-background);
 }
+
+.margin-view-overlays div ::before{
+  font-family: "Font Awesome 5 Free";
+   content: "\f142";
+   display: inline-block;
+   padding-right: 8px;
+   font-size: 0.8rem;
+   vertical-align: middle;
+   align-content: left;
+   font-weight: 900;
+   float: left;
+   margin-left: 13px;
+}
+
