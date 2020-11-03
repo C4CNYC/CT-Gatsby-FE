@@ -1,6 +1,6 @@
  # Codetribe on gatsby
 
-![Codetribe-Logo](.var/geli-readme-icon.png  .src/assets/images/logo-jika.png)
+![Codetribe-Logo](.src/assets/images/logo-jika.png)
 
 ### Commands on local
 
