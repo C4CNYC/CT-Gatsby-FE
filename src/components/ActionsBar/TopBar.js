@@ -138,7 +138,9 @@ class TopBar extends React.Component {
   categoryFilterOnClick = val => {
     this.props.setCategoryFilter(val);
   };
-
+  handleTutorMenu = () => {
+    console.log("tutor")
+  }
   render() {
     const { classes, navigatorPosition, navigatorShape, isWideScreen, categories } = this.props;
 
@@ -179,7 +181,7 @@ class TopBar extends React.Component {
           </IconButton>
           <IconButton
             aria-label="person"
-            onClick={() => { }}
+            onClick={this.handleTutorMenu}
             title="person"
             className={classes.button}
           >
@@ -210,11 +212,11 @@ class TopBar extends React.Component {
           </IconButton>
           <IconButton
             aria-label="Menu"
-            onClick={() => { 
+            onClick={() => {
               $('.login-signup-container').css({
                 flex: '1.000468823 1 0%'
               }).addClass('login-signup-panel-visible');
-              $('body').append('<div class="hide-body-shadow"></div>');                          
+              $('body').append('<div class="hide-body-shadow"></div>');
             }}
             title="Menu"
             className={classes.button}

@@ -19,12 +19,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 import TimerIcon from '@material-ui/icons/Timer';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import FaceIcon from '@material-ui/icons/Face';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import Switch from '@material-ui/core/Switch';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import CloseIcon from '@material-ui/icons/Close';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 import Paper from '@material-ui/core/Paper';
 // import Swiper from 'react-id-swiper';
 // import 'swiper/css/swiper.css';
 import SwipeableViews from 'react-swipeable-views';
 import IconButton from "@material-ui/core/IconButton";
+import { Grid, Menu, MenuItem } from '@material-ui/core';
 function TabPanel(props) {
   const { children, index, ...other } = props;
 
@@ -66,10 +72,148 @@ const styles = theme => ({
   },
   button: {
     color: theme.bars.colors.icon
-  }
+  },
+  span: {
+    color: theme.bars.colors.icon,
+    fontSize: '12px',
+    textTransform: "uppercase",
+    fontWeight: "bold",
+  },
+  progress: {
+    color: "#76dc37",
+    position: "absolute",
+    right: "22px",
+    top: "76px",
+    zIndex: 1,
+    "&::before": {
+      content: `""`,
+      position: "absolute",
+      background: "#46748e",
+      width: "18px",
+      height: "18px",
+      left: "3px",
+      top: "3px",
+      borderRadius: "50%",
+    }
+  },
+  panelContainer: {
+    borderRadius: "20px",
+    position: "absolute",
+    right: "10px",
+    top: "56px",
+    width: 'calc(100% - 20px)',
+    // height: '300px',
+    border: '3px solid #43d4dd',
+    zIndex: 1,
+    background: "white"
+  },
+  gridParent: {
+    // height: "calc(100% + 9px)",
+
+  },
+  leftGridItem: {
+    display: "flex",
+    background: '#43d4dd',
+    // height: "100%",
+    borderRadius: "20px",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#216a6f",
+    width: "40px"
+
+  },
+  checkGridItem: {
+    color: "#43d4dd",
+    justifyContent: "space-between",
+    padding: "10px 0 20px",
+
+  },
+  rightGridItem: {
+    padding: "10px!important",
+    color: "black",
+    display: "flex",
+    flexDirection: "column",
+    width: "calc(100% - 40px)",
+    fontWeight: "bold",
+    padding: "10px 20px 20px",
+
+  },
+  compressedPanelContainer: {
+    borderRadius: "20px",
+    position: "absolute",
+    right: "10px",
+    top: "56px",
+    width: '40px',
+    border: '3px solid #43d4dd',
+    zIndex: 1,
+    background: "white",
+    justifyContent: "space-around",
+    alignItems: "center",
+    display: "flex",
+    minHeight: "251px",
+    flexDirection: "column",
+    opacity: 0.5
+  },
 });
 
-
+const CheckerSwitch = withStyles((theme) => ({
+  root: {
+    width: 42,
+    height: 26,
+    padding: 0,
+    margin: theme.spacing(1),
+  },
+  switchBase: {
+    padding: 1,
+    '&$checked': {
+      transform: 'translateX(16px)',
+      color: theme.palette.common.white,
+      '& + $track': {
+        backgroundColor: '#43d4dd',
+        opacity: 1,
+        border: 'none',
+      },
+    },
+    '&$focusVisible $thumb': {
+      color: '#43d4dd',
+      border: '6px solid #fff',
+    },
+  },
+  thumb: {
+    width: 24,
+    height: 24,
+    backgroundImage: `url("${require("../img/icons/checker.png")}")`,
+    backgroundPosition: "center",
+    backgroundSize: "cover"
+  },
+  track: {
+    borderRadius: 26 / 2,
+    border: `1px solid ${theme.palette.grey[400]}`,
+    backgroundColor: theme.palette.grey[50],
+    opacity: 1,
+    transition: theme.transitions.create(['background-color', 'border']),
+  },
+  checked: {},
+  focusVisible: {},
+}))(({ classes, ...props }) => {
+  return (
+    <Switch
+      focusVisibleClassName={classes.focusVisible}
+      disableRipple
+      classes={{
+        root: classes.root,
+        switchBase: classes.switchBase,
+        thumb: classes.thumb,
+        track: classes.track,
+        checked: classes.checked,
+      }}
+      {...props}
+    />
+  );
+});
+const PlaskChecker = () => {
+  return <img src={require("../img/icons/plask.png")} alt="plask" style={{ width: "25px", height: "25px" }} />
+}
 const mapStateToProps = createStructuredSelector({
   currentTab: currentTabSelector
 });
@@ -99,6 +243,11 @@ class MobileLayout extends Component {
 
   state = {
     index: 0,
+    openTutor: false,
+    anchorEl: null,
+    checkedChecker: false,
+    showTutorPanel: false,
+    compressedTutorPanel: false
   };
 
   handleChange = (event, value) => {
@@ -118,9 +267,42 @@ class MobileLayout extends Component {
   componentDidMount() {
     if (this.props.currentTab !== 1) this.props.moveToTab(1);
   }
+  handleTutorMenu = (event) => {
+    this.setState({
+      openTutor: !this.state.openTutor,
+      anchorEl: event.currentTarget
+    })
+  }
+
+  handleCloseTutorMenu = () => {
+    if (!this.state.openTutor) {
+      return;
+    }
+
+    this.timeout = setTimeout(() => {
+      this.setState({ openTutor: false });
+    });
+  };
+
+  handleCheckerSwitch = (event) => {
+    console.log(event.target.checked);
+    this.setState({
+      checkedChecker: event.target.checked
+    })
+  }
+
+  handleTutorPanel = () => {
+    this.setState({ showTutorPanel: !this.state.showTutorPanel })
+  }
+
+  handleCompressedTutorPanel = () => {
+    this.setState({ compressedTutorPanel: !this.state.compressedTutorPanel })
+  }
+
   render() {
 
-    const { index } = this.state;
+    const { index, anchorEl, openTutor, checkedChecker, showTutorPanel,
+      compressedTutorPanel } = this.state;
     const {
       currentTab,
       moveToTab,
@@ -178,15 +360,125 @@ class MobileLayout extends Component {
               >
                 <MenuIcon />
               </IconButton>}
-              {index === 1 && <IconButton
-                aria-label="person"
-                onClick={() => { }}
-                title="person"
-                className={classes.button}
-              >
-                <FaceIcon />
-              </IconButton>}
+              {index === 1 && <>
+                <IconButton
+                  aria-label="person"
+                  onClick={this.handleTutorMenu}
+                  title="person"
+                  className={classes.button}
+                >
+                  <FaceIcon />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(openTutor)}
+                  onClose={this.handleCloseTutorMenu}>
+                  {openTutor && <>
+                    <MenuItem>
+                      <Grid container spacing={1} style={{ alignItems: "center" }}>
+                        <Grid item>
+                          <CheckCircleOutlineIcon />
+                        </Grid>
+                        <Grid item>
+                          <span className={classes.span} style={{ fontSize: "20px" }}>Checker</span>
+                        </Grid>
+                        <Grid item>
+                          <CheckerSwitch
+                            onChange={this.handleCheckerSwitch}
+                            checked={checkedChecker}
+                            name="checkedChecker"
+                          />
+                        </Grid>
+                      </Grid>
+                    </MenuItem>
+                  </>}
+                </Menu></>}
             </div>
+            {currentTab === 1 && checkedChecker && !showTutorPanel && <div >
+              <CircularProgress
+                className={classes.progress}
+                variant="static"
+                value={75}
+                size={24}
+                thickness={6}
+                onClick={this.handleTutorPanel} />
+            </div>}
+            {currentTab === 1 && checkedChecker && showTutorPanel && (compressedTutorPanel ? <div
+              className={classes.compressedPanelContainer}
+              onClick={this.handleCompressedTutorPanel}
+            >
+              <CloseIcon
+                onClick={this.handleTutorPanel}
+                style={{ color: "#808080" }}
+              />
+              <CheckCircleOutlineIcon style={{ color: "black" }} />
+              <PlaskChecker />
+              <PlaskChecker />
+              <PlaskChecker />
+              <PlaskChecker />
+            </div> :
+              <div className={classes.panelContainer}>
+                <Grid container spacing={1} className={classes.gridParent}>
+                  <div className={classes.leftGridItem} onClick={this.handleCompressedTutorPanel}>
+                    <ArrowForwardIosIcon />
+                  </div>
+                  <div className={classes.rightGridItem}>
+                    <Grid container item xs={12} className={classes.checkGridItem}>
+                      <Grid item>
+                        <Typography>CHECKER</Typography>
+                      </Grid>
+                      <Grid item style={{ color: "#808080" }}>
+                        <CloseIcon
+                          onClick={this.handleTutorPanel}
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      <Grid container item xs={12} spacing={1} >
+                        <Grid item >
+                          <CheckCircleOutlineIcon />
+                        </Grid>
+                        <Grid item xs>
+                          <Typography>Your page should have three checkbox elements.</Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid container item xs={12} spacing={1} >
+                        <Grid item>
+                          <PlaskChecker />
+                        </Grid>
+                        <Grid item xs>
+                          <Typography>Each of your three checkbox elements should be nested in its own label element.</Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid container item xs={12} spacing={1} >
+                        <Grid item>
+                          <PlaskChecker />
+                        </Grid>
+                        <Grid item xs>
+                          <Typography>Make sure each of your label elements has a closing tag.</Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid container item xs={12} spacing={1} >
+                        <Grid item>
+                          <PlaskChecker />
+                        </Grid>
+                        <Grid item xs>
+                          <Typography>Your checkboxes should be given the name attribute of personality.</Typography>
+                        </Grid>
+                      </Grid>
+                      <Grid container item xs={12} spacing={1} >
+                        <Grid item>
+                          <PlaskChecker />
+                        </Grid>
+                        <Grid item xs>
+                          <Typography>Each of your checkboxes should be added within the form tag.</Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </div>
+                </Grid>
+              </div>)}
           </AppBar>
           <SwipeableViews displaySameSlide index={index} onChangeIndex={this.handleChangeIndex}>
             <TabPanel index={0}>
