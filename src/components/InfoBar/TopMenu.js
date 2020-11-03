@@ -79,7 +79,7 @@ class TopMenu extends React.Component {
             open={Boolean(open)}
             onClose={this.handleClose}
           >
-            <MenuItem
+            {open && <> <MenuItem
               onClick={e => {
                 this.props.homeLinkOnClick(e);
                 this.handleClose();
@@ -87,52 +87,53 @@ class TopMenu extends React.Component {
             >
               Home
             </MenuItem>
-            {pages.map((page, i) => {
-              const { fields, frontmatter } = page.node;
+              {pages.map((page, i) => {
+                const { fields, frontmatter } = page.node;
 
-              return (
-                <Link key={fields.slug} to={fields.slug} style={{ display: "block" }}>
-                  <MenuItem
-                    onClick={e => {
-                      this.props.pageLinkOnClick(e);
-                      this.handleClose();
-                    }}
-                  >
-                    {frontmatter.menuTitle ? frontmatter.menuTitle : frontmatter.title}
-                  </MenuItem>
-                </Link>
-              );
-            })}
-            <Link to="/learn/" style={{ display: "block" }}>
-              <MenuItem
-                onClick={e => {
-                  this.props.pageLinkOnClick(e);
-                  this.handleClose();
-                }}
-              >
-                Learn
+                return (
+                  <Link key={fields.slug} to={fields.slug} style={{ display: "block" }}>
+                    <MenuItem
+                      onClick={e => {
+                        this.props.pageLinkOnClick(e);
+                        this.handleClose();
+                      }}
+                    >
+                      {frontmatter.menuTitle ? frontmatter.menuTitle : frontmatter.title}
+                    </MenuItem>
+                  </Link>
+                );
+              })}
+              <Link to="/learn/" style={{ display: "block" }}>
+                <MenuItem
+                  onClick={e => {
+                    this.props.pageLinkOnClick(e);
+                    this.handleClose();
+                  }}
+                >
+                  Learn
               </MenuItem>
-            </Link>
-            <Link to="/about/" style={{ display: "block" }}>
-              <MenuItem
-                onClick={e => {
-                  this.props.pageLinkOnClick(e);
-                  this.handleClose();
-                }}
-              >
-                About
+              </Link>
+              <Link to="/about/" style={{ display: "block" }}>
+                <MenuItem
+                  onClick={e => {
+                    this.props.pageLinkOnClick(e);
+                    this.handleClose();
+                  }}
+                >
+                  About
               </MenuItem>
-            </Link>
-            <Link to="/contact/" style={{ display: "block" }}>
-              <MenuItem
-                onClick={e => {
-                  this.props.pageLinkOnClick(e);
-                  this.handleClose();
-                }}
-              >
-                Contact
+              </Link>
+              <Link to="/contact/" style={{ display: "block" }}>
+                <MenuItem
+                  onClick={e => {
+                    this.props.pageLinkOnClick(e);
+                    this.handleClose();
+                  }}
+                >
+                  Contact
               </MenuItem>
-            </Link>
+              </Link>
+            </>}
           </Menu>
         </div>
       </nav>

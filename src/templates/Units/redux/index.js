@@ -20,6 +20,7 @@ export const backendNS = 'backendUnit';
 const initialState = {
   canFocusEditor: true,
   unitFiles: {},
+  monacoEditor: null,
   unitMeta: {
     superBlock: '',
     block: '',
@@ -56,6 +57,7 @@ export const types = createTypes(
     'updateConsole',
     'updateUnitMeta',
     'updateFile',
+    'setMonacoEditor',
     'updateJSEnabled',
     'updateProjectFormValues',
     'updateSuccessMessage',
@@ -132,6 +134,7 @@ export const updateBackendFormValues = createAction(
 );
 export const updateUnitMeta = createAction(types.updateUnitMeta);
 export const updateFile = createAction(types.updateFile);
+export const setMonacoEditor = createAction(types.setMonacoEditor);
 export const updateConsole = createAction(types.updateConsole);
 export const updateLogs = createAction(types.updateLogs);
 export const updateJSEnabled = createAction(types.updateJSEnabled);
@@ -169,6 +172,7 @@ export const lastBlockChalSubmitted = createAction(
 
 export const currentTabSelector = state => state[ns].currentTab;
 export const unitFilesSelector = state => state[ns].unitFiles;
+export const monacoeditorSelector = state => state[ns].monacoEditor;
 export const unitMetaSelector = state => state[ns].unitMeta;
 export const unitTestsSelector = state => state[ns].unitTests;
 export const consoleOutputSelector = state => state[ns].consoleOut;
@@ -259,6 +263,10 @@ export const reducer = handleActions(
           contents: editorValue
         }
       }
+    }),
+    [types.setMonacoEditor]: (state, { payload }) => ({
+      ...state,
+      monacoEditor: payload
     }),
     [types.storedCodeFound]: (state, { payload }) => ({
       ...state,

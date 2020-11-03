@@ -29,45 +29,48 @@ import LayoutWrapper from '../LayoutWrapper/LayoutWrapper';
 import WithInstantSearch from '../search/WithInstantSearch';
 import SpringScrollbars from '../SpringScrollbars/SpringScrollbars';
 import withStyles from '@material-ui/core/styles/withStyles';
+import TopBar from '../ActionsBar/TopBar';
+import Footer from '../ActionsBar/Footer';
 
 const styles = theme => ({
-    main: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        width: '100%',
-        animationName: 'main-entry',
-        animationDuration: '.5s',
-        [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
-            // width: `100vw`,
-        },
-        [`@media (max-width: ${theme.mediaQueryTresholds.L}px)`]: {
-            top: '61px' // todo
-        },
-        '& > div': {
-            height: '100%'
-        }
-        // '@media print': {
-        //     position: 'relative',
-        //     '& > div': {
-        //         overflow: 'visible!important'
-        //     },
-        //     '& > div > div': {
-        //         position: 'relative!important'
-        //     }
-        // }
+  main: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    width: '100%',
+    animationName: 'main-entry',
+    animationDuration: '.5s',
+    top: '61px',
+    [`@media (min-width: ${theme.mediaQueryTresholds.L}px)`]: {
+      // width: `100vw`,
     },
-    // '@keyframes main-entry': {
-    //     '0%': {
-    //         opacity: 0,
-    //         transform: 'translateY(20px)'
+    [`@media (max-width: ${theme.mediaQueryTresholds.L}px)`]: {
+      top: '61px' // todo
+    },
+    '& > div': {
+      height: '100%'
+    }
+    // '@media print': {
+    //     position: 'relative',
+    //     '& > div': {
+    //         overflow: 'visible!important'
     //     },
-    //     '100%': {
-    //         opacity: 1,
-    //         transform: 'translateY(0)'
+    //     '& > div > div': {
+    //         position: 'relative!important'
     //     }
     // }
+  },
+  // '@keyframes main-entry': {
+  //     '0%': {
+  //         opacity: 0,
+  //         transform: 'translateY(20px)'
+  //     },
+  //     '100%': {
+  //         opacity: 1,
+  //         transform: 'translateY(0)'
+  //     }
+  // }
 });
 
 const mapStateToProps = createSelector(
@@ -122,20 +125,22 @@ class LearnLayout extends Component {
           <meta content='noindex' name='robots' />
         </Helmet>
         <WithInstantSearch>
-        {/*  <LayoutWrapper>*/}
-            {/*<OfflineWarning isOnline={isOnline} isSignedIn={isSignedIn} />*/}
-            {/*{hasMessage && flashMessage ? (*/}
-            {/*    <Flash flashMessage={flashMessage} onClose={removeFlashMessage} />*/}
-            {/*) : null}*/}
+          {/*  <LayoutWrapper>*/}
+          {/*<OfflineWarning isOnline={isOnline} isSignedIn={isSignedIn} />*/}
+          {/*{hasMessage && flashMessage ? (*/}
+          {/*    <Flash flashMessage={flashMessage} onClose={removeFlashMessage} />*/}
+          {/*) : null}*/}
 
           {/*{children}*/}
-              <main className={classes.main}>
-                  {/*<SpringScrollbars>*/}
-                      {children}
-                  {/*</SpringScrollbars>*/}
-              </main>
-            <ActionsBar categories={[]} />
-            {/*<InfoBar pages={[]} parts={[]} />*/}
+          <TopBar categories={[]} />
+          <main className={classes.main}>
+            {/*<SpringScrollbars>*/}
+            {children}
+            {/*</SpringScrollbars>*/}
+          </main>
+          <Footer categories={[]} />
+          {/* <ActionsBar categories={[]} /> */}
+          {/*<InfoBar pages={[]} parts={[]} />*/}
           {/*</LayoutWrapper>*/}
         </WithInstantSearch>
         {/*<Main id='learn-app-wrapper'>{children}</Main>*/}

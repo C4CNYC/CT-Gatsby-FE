@@ -139,7 +139,8 @@ const theme = createMuiTheme({
         colors: {
             background: colors.background,
             icon: colors.bright,
-            text: colors.bright
+            text: colors.bright,
+            borderRight: colors.gray
         },
         sizes: {
             actionsBar: 60,
@@ -148,6 +149,7 @@ const theme = createMuiTheme({
     },
     mediaQueryTresholds: {
         M: 600,
+        P: 768,
         L: 1024
     },
     palette: {

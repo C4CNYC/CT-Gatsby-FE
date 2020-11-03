@@ -121,7 +121,7 @@ const mapStateToProps = createSelector(
   navigatorPositionSelector,
   navigatorShapeSelector,
   fontSizeIncreaseSelector,
-  (isWideScreen, navigatorPosition, navigatorShape ) => ({
+  (isWideScreen, navigatorPosition, navigatorShape) => ({
     isWideScreen,
     navigatorPosition,
     navigatorShape,
@@ -130,7 +130,7 @@ const mapStateToProps = createSelector(
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
-    {  navigatorPositionChange, navigatorShapeChange },
+    { navigatorPositionChange, navigatorShapeChange },
     dispatch
   );
 
