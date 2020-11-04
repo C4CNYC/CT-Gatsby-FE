@@ -45,6 +45,7 @@ class Preview extends Component {
 
   render() {
     const iframeToggle = this.state.iframeStatus ? 'disable' : 'enable';
+
     return (
       <div className={`unit-preview ${iframeToggle}-iframe`}>
         <iframe

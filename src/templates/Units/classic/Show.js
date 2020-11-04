@@ -285,6 +285,7 @@ class ShowClassic extends Component {
       >
         <>
           <Helmet title={`Learn ${this.getBlockNameTitle()} | codetribe.com`} />
+          <div id="validate-html"></div>
           <Media maxWidth={MAX_MOBILE_WIDTH}>
             <MobileLayout
               editor={this.renderEditor()}

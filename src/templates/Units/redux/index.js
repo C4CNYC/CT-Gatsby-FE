@@ -21,6 +21,7 @@ const initialState = {
   canFocusEditor: true,
   unitFiles: {},
   monacoEditor: null,
+  validate: [],
   unitMeta: {
     superBlock: '',
     block: '',
@@ -58,6 +59,7 @@ export const types = createTypes(
     'updateUnitMeta',
     'updateFile',
     'setMonacoEditor',
+    'setValidate',
     'updateJSEnabled',
     'updateProjectFormValues',
     'updateSuccessMessage',
@@ -135,6 +137,7 @@ export const updateBackendFormValues = createAction(
 export const updateUnitMeta = createAction(types.updateUnitMeta);
 export const updateFile = createAction(types.updateFile);
 export const setMonacoEditor = createAction(types.setMonacoEditor);
+export const setValidate = createAction(types.setValidate)
 export const updateConsole = createAction(types.updateConsole);
 export const updateLogs = createAction(types.updateLogs);
 export const updateJSEnabled = createAction(types.updateJSEnabled);
@@ -173,6 +176,7 @@ export const lastBlockChalSubmitted = createAction(
 export const currentTabSelector = state => state[ns].currentTab;
 export const unitFilesSelector = state => state[ns].unitFiles;
 export const monacoeditorSelector = state => state[ns].monacoEditor;
+export const validateSelector = state => state[ns].validate;
 export const unitMetaSelector = state => state[ns].unitMeta;
 export const unitTestsSelector = state => state[ns].unitTests;
 export const consoleOutputSelector = state => state[ns].consoleOut;
@@ -267,6 +271,10 @@ export const reducer = handleActions(
     [types.setMonacoEditor]: (state, { payload }) => ({
       ...state,
       monacoEditor: payload
+    }),
+    [types.setValidate]: (state, { payload }) => ({
+      ...state,
+      validate: payload
     }),
     [types.storedCodeFound]: (state, { payload }) => ({
       ...state,
@@ -379,7 +387,7 @@ export const reducer = handleActions(
     }),
     [types.executeUnit]: state => ({
       ...state,
-      currentTab: 3
+      currentTab: 1
     }),
     [types.setEditorFocusability]: (state, { payload }) => ({
       ...state,

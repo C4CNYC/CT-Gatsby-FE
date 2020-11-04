@@ -14,11 +14,8 @@ import { mathJaxScriptLoader } from '../../../utils/scriptLoaders';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
 import ReactPageScroller from "react-page-scroller";
 import { lesson_data } from '../utils/lesson_data';
-import './slider_program.js';
-import './validation.js';
 
 import Sliders from './slider.js'
-import * as slider from './slider_program.js'
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -332,7 +329,7 @@ export class SidePanel extends Component {
     } else {
       return (
         <div>
-          <Sliders />
+          {/* <Sliders /> */}
         </div>
       )
     }

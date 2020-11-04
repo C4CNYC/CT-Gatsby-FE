@@ -10,7 +10,8 @@ import {
   setEditorFocusability,
   setAccessibilityMode,
   updateFile,
-  setMonacoEditor
+  setMonacoEditor,
+  setValidate
 } from '../redux';
 import { userSelector, isDonationModalOpenSelector } from '../../../state';
 import { Loader } from '../../../components/helpers';
@@ -18,7 +19,7 @@ import { IconButton } from '@material-ui/core';
 import * as slider from '../components/slider_program.js';
 import * as Auth from '../components/authmanager.js';
 import $ from 'jquery';
-
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 var codeconsole;
 
 const MonacoEditor = React.lazy(() => import('react-monaco-editor'));
@@ -37,6 +38,7 @@ const propTypes = {
   theme: PropTypes.string,
   updateFile: PropTypes.func.isRequired,
   setMonacoEditor: PropTypes.func.isRequired,
+  setValidate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createSelector(
@@ -56,7 +58,8 @@ const mapDispatchToProps = {
   setAccessibilityMode,
   executeUnit,
   updateFile,
-  setMonacoEditor
+  setMonacoEditor,
+  settingValidate: setValidate
 };
 
 const modeMap = {
@@ -135,6 +138,15 @@ class Editor extends Component {
     this.focusOnEditor = this.focusOnEditor.bind(this);
   }
 
+  componentDidMount() {
+    this.validatesFunc(this.state.currentCode);
+    // Auth.getCode((codes) => {
+    //   if (typeof codes != 'null' && typeof codes != 'undefined') {
+    //     this.validatesFunc(codes);
+    //   }
+    // });
+
+  }
   editorWillMount = monaco => {
     defineMonacoThemes(monaco);
   };
@@ -338,11 +350,11 @@ class Editor extends Component {
         this.props.setAccessibilityMode(true);
       }
     });
-    Auth.getCode((codes) => {
-      if (typeof codes != 'null' && typeof codes != 'undefined') {
-        this._editor.setValue(codes);
-      }
-    });
+    // Auth.getCode((codes) => {
+    //   if (typeof codes != 'null' && typeof codes != 'undefined') {
+    //     this._editor.setValue(codes);
+    //   }
+    // });
   };
 
   componentWillUnmount() {
@@ -362,10 +374,20 @@ class Editor extends Component {
   onChange = editorValue => {
     const { updateFile, fileKey } = this.props;
     updateFile({ key: fileKey, editorValue });
-    // this.props.executeUnit();
-    slider.validate_function(editorValue);
-    Auth.savCode(editorValue);
+    this.props.executeUnit();
+    // slider.validate_function(editorValue);
+    this.validatesFunc(editorValue)
+    // Auth.savCode(editorValue);
   };
+
+  validatesFunc = (context) => {
+    const { settingValidate } = this.props;
+    var validatedItems = slider.validate_test(context);
+
+    if (validatedItems.length) {
+      settingValidate(validatedItems)
+    }
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.dimensions !== prevProps.dimensions && this._editor) {

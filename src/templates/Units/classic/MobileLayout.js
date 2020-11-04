@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import withStyles from "@material-ui/core/styles/withStyles";
 import ToolPanel from '../components/Tool-Panel';
 import { createStructuredSelector } from 'reselect';
-import { currentTabSelector, moveToTab } from '../redux';
+import { currentTabSelector, moveToTab, validateSelector } from '../redux';
 import { bindActionCreators } from 'redux';
 import AppBar from '@material-ui/core/AppBar';
 import Card from '@material-ui/core/Card';
@@ -31,6 +31,8 @@ import Paper from '@material-ui/core/Paper';
 import SwipeableViews from 'react-swipeable-views';
 import IconButton from "@material-ui/core/IconButton";
 import { Grid, Menu, MenuItem } from '@material-ui/core';
+import { validate } from 'uuid';
+
 function TabPanel(props) {
   const { children, index, ...other } = props;
 
@@ -215,7 +217,8 @@ const PlaskChecker = () => {
   return <img src={require("../img/icons/plask.png")} alt="plask" style={{ width: "25px", height: "25px" }} />
 }
 const mapStateToProps = createStructuredSelector({
-  currentTab: currentTabSelector
+  currentTab: currentTabSelector,
+  validate: validateSelector,
 });
 
 const mapDispatchToProps = dispatch =>
@@ -228,6 +231,7 @@ const mapDispatchToProps = dispatch =>
 
 const propTypes = {
   currentTab: PropTypes.number,
+  validate: PropTypes.array,
   editor: PropTypes.element,
   guideUrl: PropTypes.string,
   hasPreview: PropTypes.bool,
@@ -299,8 +303,14 @@ class MobileLayout extends Component {
     this.setState({ compressedTutorPanel: !this.state.compressedTutorPanel })
   }
 
-  render() {
+  calculatePercentOfChecked = () => {
+    const { validate } = this.props
+    return 100 * validate.reduce((s, v) =>
+      v.checked ? s + 1 : s
+      , 0) / validate.length
+  }
 
+  render() {
     const { index, anchorEl, openTutor, checkedChecker, showTutorPanel,
       compressedTutorPanel } = this.state;
     const {
@@ -313,10 +323,13 @@ class MobileLayout extends Component {
       preview,
       guideUrl,
       videoUrl,
-      classes
+      classes,
+      validate
     } = this.props;
+
     return (
       <Fragment>
+
         <div style={{ flexGrow: 1, width: '100%', }}>
           <AppBar position="static" color={'transparent'}>
             <div className={classes.tabRow}>
@@ -399,7 +412,7 @@ class MobileLayout extends Component {
               <CircularProgress
                 className={classes.progress}
                 variant="static"
-                value={75}
+                value={this.calculatePercentOfChecked()}
                 size={24}
                 thickness={6}
                 onClick={this.handleTutorPanel} />
@@ -412,11 +425,8 @@ class MobileLayout extends Component {
                 onClick={this.handleTutorPanel}
                 style={{ color: "#808080" }}
               />
-              <CheckCircleOutlineIcon style={{ color: "black" }} />
-              <PlaskChecker />
-              <PlaskChecker />
-              <PlaskChecker />
-              <PlaskChecker />
+              {validate.map((v) => v.checked ? <CheckCircleOutlineIcon style={{ color: "black" }} /> : <PlaskChecker />)}
+
             </div> :
               <div className={classes.panelContainer}>
                 <Grid container spacing={1} className={classes.gridParent}>
@@ -435,46 +445,14 @@ class MobileLayout extends Component {
                       </Grid>
                     </Grid>
                     <Grid container>
-                      <Grid container item xs={12} spacing={1} >
+                      {validate.map((v) => <Grid container item xs={12} spacing={1} >
                         <Grid item >
-                          <CheckCircleOutlineIcon />
+                          {v.checked ? <CheckCircleOutlineIcon /> : <PlaskChecker />}
                         </Grid>
                         <Grid item xs>
-                          <Typography>Your page should have three checkbox elements.</Typography>
+                          <Typography>{v.text}</Typography>
                         </Grid>
-                      </Grid>
-                      <Grid container item xs={12} spacing={1} >
-                        <Grid item>
-                          <PlaskChecker />
-                        </Grid>
-                        <Grid item xs>
-                          <Typography>Each of your three checkbox elements should be nested in its own label element.</Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid container item xs={12} spacing={1} >
-                        <Grid item>
-                          <PlaskChecker />
-                        </Grid>
-                        <Grid item xs>
-                          <Typography>Make sure each of your label elements has a closing tag.</Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid container item xs={12} spacing={1} >
-                        <Grid item>
-                          <PlaskChecker />
-                        </Grid>
-                        <Grid item xs>
-                          <Typography>Your checkboxes should be given the name attribute of personality.</Typography>
-                        </Grid>
-                      </Grid>
-                      <Grid container item xs={12} spacing={1} >
-                        <Grid item>
-                          <PlaskChecker />
-                        </Grid>
-                        <Grid item xs>
-                          <Typography>Each of your checkboxes should be added within the form tag.</Typography>
-                        </Grid>
-                      </Grid>
+                      </Grid>)}
                     </Grid>
                   </div>
                 </Grid>
