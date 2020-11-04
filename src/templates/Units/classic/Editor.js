@@ -235,13 +235,13 @@ class Editor extends Component {
                 newCodeData = newCodeData + codeLines[i] + '\n';
                 newPerminantData.push(perminantData[i]);
               }
-              for (i = lineNumberFromID + 1; i <= lineNumberToID; i++) {
+              for (i = lineNumberFromID + 1; i < lineNumberToID; i++) {
                 newCodeData = newCodeData + codeLines[i] + '\n';
                 newPerminantData.push(perminantData[i]);
               }
               newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
               newPerminantData.push(perminantData[lineNumberFromID]);
-              for (i = lineNumberToID + 1; i < codeLines.length; i++) {
+              for (i = lineNumberToID; i < codeLines.length; i++) {
                 if (i != codeLines.length - 1)
                   newCodeData = newCodeData + codeLines[i] + '\n';
                 else
@@ -251,13 +251,13 @@ class Editor extends Component {
             }
 
             else {
-              for (i = 0; i <= lineNumberToID; i++) {
+              for (i = 0; i < lineNumberToID; i++) {
                 newCodeData = newCodeData + codeLines[i] + '\n';
                 newPerminantData.push(perminantData[i]);
               }
               newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
               newPerminantData.push(perminantData[lineNumberFromID]);
-              for (i = lineNumberToID + 1; i < lineNumberFromID; i++) {
+              for (i = lineNumberToID; i < lineNumberFromID; i++) {
                 newCodeData = newCodeData + codeLines[i] + '\n';
                 newPerminantData.push(perminantData[i]);
               }
