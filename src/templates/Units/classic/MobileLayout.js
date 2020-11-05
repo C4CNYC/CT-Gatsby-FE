@@ -154,6 +154,9 @@ const styles = theme => ({
     flexDirection: "column",
     opacity: 0.5
   },
+  checkerText: {
+    fontSize: "14px"
+  }
 });
 
 const CheckerSwitch = withStyles((theme) => ({
@@ -440,7 +443,7 @@ class MobileLayout extends Component {
                           <CheckCircleOutlineIcon />
                         </Grid>
                         <Grid item xs>
-                          <Typography>Your page should have three checkbox elements.</Typography>
+                          <Typography className={classes.checkerText}>Your page should have three checkbox elements.</Typography>
                         </Grid>
                       </Grid>
                       <Grid container item xs={12} spacing={1} >
@@ -448,7 +451,7 @@ class MobileLayout extends Component {
                           <PlaskChecker />
                         </Grid>
                         <Grid item xs>
-                          <Typography>Each of your three checkbox elements should be nested in its own label element.</Typography>
+                          <Typography className={classes.checkerText}>Each of your three checkbox elements should be nested in its own label element.</Typography>
                         </Grid>
                       </Grid>
                       <Grid container item xs={12} spacing={1} >
@@ -456,7 +459,7 @@ class MobileLayout extends Component {
                           <PlaskChecker />
                         </Grid>
                         <Grid item xs>
-                          <Typography>Make sure each of your label elements has a closing tag.</Typography>
+                          <Typography className={classes.checkerText}>Make sure each of your label elements has a closing tag.</Typography>
                         </Grid>
                       </Grid>
                       <Grid container item xs={12} spacing={1} >
@@ -464,7 +467,7 @@ class MobileLayout extends Component {
                           <PlaskChecker />
                         </Grid>
                         <Grid item xs>
-                          <Typography>Your checkboxes should be given the name attribute of personality.</Typography>
+                          <Typography className={classes.checkerText}>Your checkboxes should be given the name attribute of personality.</Typography>
                         </Grid>
                       </Grid>
                       <Grid container item xs={12} spacing={1} >
@@ -472,7 +475,7 @@ class MobileLayout extends Component {
                           <PlaskChecker />
                         </Grid>
                         <Grid item xs>
-                          <Typography>Each of your checkboxes should be added within the form tag.</Typography>
+                          <Typography className={classes.checkerText}>Each of your checkboxes should be added within the form tag.</Typography>
                         </Grid>
                       </Grid>
                     </Grid>
