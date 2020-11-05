@@ -156,6 +156,9 @@ const styles = theme => ({
     flexDirection: "column",
     opacity: 0.5
   },
+  checkerText: {
+    fontSize: "14px"
+  }
 });
 
 const CheckerSwitch = withStyles((theme) => ({
@@ -450,9 +453,10 @@ class MobileLayout extends Component {
                           {v.checked ? <CheckCircleOutlineIcon /> : <PlaskChecker />}
                         </Grid>
                         <Grid item xs>
-                          <Typography>{v.text}</Typography>
+                          <Typography className={classes.checkerText}>{v.text}</Typography>
                         </Grid>
                       </Grid>)}
+
                     </Grid>
                   </div>
                 </Grid>
