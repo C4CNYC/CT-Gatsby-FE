@@ -99,7 +99,7 @@ const defineMonacoThemes = monaco => {
 };
 
 var lineNumberPos = [], lineNumbers, perminantData = [];
-var lineNumberElementFromID = 0, lineNumberFromID = 0, lineNumberElementToID = 0, lineNumberToID = 0, clock = 1;
+var lineNumberElementFromID = 0, lineNumberFromID = 0, lineNumberElementToID = 0, lineNumberToID = 0, clock = 1, is_mobile;
 
 class Editor extends Component {
 
@@ -152,6 +152,9 @@ class Editor extends Component {
   };
 
   editorDidMount = (editor, monaco) => {
+    // detect mobile responsive or normal
+    is_mobile = (window.innerWidth <= 600) && (window.innerHeight <= 800);
+
     this.interval = setInterval(() => {
       // get elements data after all elements are loaded
       clock = clock - 1;
@@ -177,117 +180,236 @@ class Editor extends Component {
         lineNumberPos = pos;
         perminantData = per;
 
-        document.getElementsByClassName('margin')[0].addEventListener("mousedown", function (element) {
-          // update line number elements position data with current updated element
-          pos = [];
-          for (i = 0; i < lineNumbers.children.length; i++) {
-            var line = lineNumbers.children[i];
-            if (lineNumbers.children[i].children.length > 0) {
-              j = j + 1;
-              var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
-              pos.push(position)
-            }
-          }
-          // init line number position array with beginning element's position
-          lineNumberPos = pos;
-
-          // get clicked element code editor ID
-          var posX = element.clientX, posY = element.clientY;
-          for (i = 0; i < lineNumberPos.length; i++) {
-            var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
-            var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
-            if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
-              lineNumberFromID = i;
-          }
-
-          // get clicked element line number element ID
-          j = 0;
-          for (i = 0; i < lineNumbers.children.length; i++) {
-            if (lineNumbers.children[i].children.length > 0) {
-              if (j == lineNumberFromID)
-                lineNumberElementFromID = i;
-              j = j + 1;
-            }
-          }
-        })
-
-        document.getElementsByClassName('margin')[0].addEventListener("mouseup", (element) => {
-          // get dropped element code editor ID
-          var posX = element.clientX, posY = element.clientY;
-          for (i = 0; i < lineNumberPos.length; i++) {
-            var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
-            var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
-            if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
-              lineNumberToID = i;
-          }
-
-          // get dropped element line number element ID
-          j = 0;
-          for (i = 0; i < lineNumbers.children.length; i++) {
-            if (lineNumbers.children[i].children.length > 0) {
-              if (j == lineNumberToID)
-                lineNumberElementToID = i;
-              j = j + 1;
-            }
-          }
-
-          // get current code's command array data
-          var codeData = this.state.currentCode;
-          var codeLines = codeData.split(/\r?\n/);
-
-          // make new code's command array after drag-drop with clicked command
-          var newCodeData = "";
-          var newPerminantData = [];
-          if (lineNumberFromID == lineNumberToID)
-            newCodeData = codeData;
-          else {
-            // make new from->to drag-droped code content and perminantData            
-            if (lineNumberFromID < lineNumberToID) {
-              for (i = 0; i < lineNumberFromID; i++) {
-                newCodeData = newCodeData + codeLines[i] + '\n';
-                newPerminantData.push(perminantData[i]);
+        // normal case
+        if (!is_mobile) {
+          document.getElementsByClassName('margin')[0].addEventListener("mousedown", function (element) {
+            // update line number elements position data with current updated element
+            pos = [];
+            for (i = 0; i < lineNumbers.children.length; i++) {
+              var line = lineNumbers.children[i];
+              if (lineNumbers.children[i].children.length > 0) {
+                j = j + 1;
+                var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
+                pos.push(position)
               }
-              for (i = lineNumberFromID + 1; i <= lineNumberToID; i++) {
-                newCodeData = newCodeData + codeLines[i] + '\n';
-                newPerminantData.push(perminantData[i]);
+            }
+            // init line number position array with beginning element's position
+            lineNumberPos = pos;
+
+            // get clicked element code editor ID
+            var posX = element.clientX, posY = element.clientY;
+            for (i = 0; i < lineNumberPos.length; i++) {
+              var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
+              var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
+              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
+                lineNumberFromID = i;
+            }
+
+            // get clicked element line number element ID
+            j = 0;
+            for (i = 0; i < lineNumbers.children.length; i++) {
+              if (lineNumbers.children[i].children.length > 0) {
+                if (j == lineNumberFromID)
+                  lineNumberElementFromID = i;
+                j = j + 1;
               }
-              newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
-              newPerminantData.push(perminantData[lineNumberFromID]);
-              for (i = lineNumberToID + 1; i < codeLines.length; i++) {
-                if (i != codeLines.length - 1)
-                  newCodeData = newCodeData + codeLines[i] + '\n';
-                else
-                  newCodeData = newCodeData + codeLines[i];
-                newPerminantData.push(perminantData[i]);
+            }
+          })
+
+          document.getElementsByClassName('margin')[0].addEventListener("mouseup", (element) => {
+            // get dropped element code editor ID
+            var posX = element.clientX, posY = element.clientY;
+            for (i = 0; i < lineNumberPos.length; i++) {
+              var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
+              var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
+              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
+                lineNumberToID = i;
+            }
+
+            // get dropped element line number element ID
+            j = 0;
+            for (i = 0; i < lineNumbers.children.length; i++) {
+              if (lineNumbers.children[i].children.length > 0) {
+                if (j == lineNumberToID)
+                  lineNumberElementToID = i;
+                j = j + 1;
               }
             }
 
+            // get current code's command array data
+            var codeData = this.state.currentCode;
+            var codeLines = codeData.split(/\r?\n/);
+
+            // make new code's command array after drag-drop with clicked command
+            var newCodeData = "";
+            var newPerminantData = [];
+            if (lineNumberFromID == lineNumberToID)
+              newCodeData = codeData;
             else {
-              for (i = 0; i <= lineNumberToID; i++) {
-                newCodeData = newCodeData + codeLines[i] + '\n';
-                newPerminantData.push(perminantData[i]);
-              }
-              newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
-              newPerminantData.push(perminantData[lineNumberFromID]);
-              for (i = lineNumberToID + 1; i < lineNumberFromID; i++) {
-                newCodeData = newCodeData + codeLines[i] + '\n';
-                newPerminantData.push(perminantData[i]);
-              }
-              for (i = lineNumberFromID + 1; i < codeLines.length; i++) {
-                if (i != codeLines.length - 1)
+              // make new from->to drag-droped code content and perminantData            
+              if (lineNumberFromID < lineNumberToID) {
+                for (i = 0; i < lineNumberFromID; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
-                else
-                  newCodeData = newCodeData + codeLines[i];
-                newPerminantData.push(perminantData[i]);
+                  newPerminantData.push(perminantData[i]);
+                }
+                for (i = lineNumberFromID + 1; i <= lineNumberToID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
+                newPerminantData.push(perminantData[lineNumberFromID]);
+                for (i = lineNumberToID + 1; i < codeLines.length; i++) {
+                  if (i != codeLines.length - 1)
+                    newCodeData = newCodeData + codeLines[i] + '\n';
+                  else
+                    newCodeData = newCodeData + codeLines[i];
+                  newPerminantData.push(perminantData[i]);
+                }
+              }
+
+              else {
+                for (i = 0; i <= lineNumberToID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
+                newPerminantData.push(perminantData[lineNumberFromID]);
+                for (i = lineNumberToID + 1; i < lineNumberFromID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                for (i = lineNumberFromID + 1; i < codeLines.length; i++) {
+                  if (i != codeLines.length - 1)
+                    newCodeData = newCodeData + codeLines[i] + '\n';
+                  else
+                    newCodeData = newCodeData + codeLines[i];
+                  newPerminantData.push(perminantData[i]);
+                }
+              }
+
+              // set upgraded content and perminantData and reload the page
+              perminantData = newPerminantData;
+              this.setState({ currentCode: newCodeData });
+              this.forceUpdate();
+            }
+          })
+        }
+
+        // mobile responsive case
+        else {
+          document.getElementsByClassName('margin')[0].addEventListener("touchstart", function (element) {
+            // update line number elements position data with current updated element
+            pos = [];
+            for (i = 0; i < lineNumbers.children.length; i++) {
+              var line = lineNumbers.children[i];
+              if (lineNumbers.children[i].children.length > 0) {
+                j = j + 1;
+                var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
+                pos.push(position)
+              }
+            }
+            // init line number position array with beginning element's position
+            lineNumberPos = pos;
+
+            // get clicked element code editor ID
+            var posX = element.changedTouches[0].clientX, posY = element.changedTouches[0].clientY;
+            for (i = 0; i < lineNumberPos.length; i++) {
+              var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
+              var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
+              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
+                lineNumberFromID = i;
+            }
+
+            // get clicked element line number element ID
+            j = 0;
+            for (i = 0; i < lineNumbers.children.length; i++) {
+              if (lineNumbers.children[i].children.length > 0) {
+                if (j == lineNumberFromID)
+                  lineNumberElementFromID = i;
+                j = j + 1;
+              }
+            }
+          })
+
+          document.getElementsByClassName('margin')[0].addEventListener("touchend", (element) => {
+            // get dropped element code editor ID
+            var posX = element.changedTouches[0].clientX, posY = element.changedTouches[0].clientY;
+            for (i = 0; i < lineNumberPos.length; i++) {
+              var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
+              var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
+              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
+                lineNumberToID = i;
+            }
+
+            // get dropped element line number element ID
+            j = 0;
+            for (i = 0; i < lineNumbers.children.length; i++) {
+              if (lineNumbers.children[i].children.length > 0) {
+                if (j == lineNumberToID)
+                  lineNumberElementToID = i;
+                j = j + 1;
               }
             }
 
-            // set upgraded content and perminantData and reload the page
-            perminantData = newPerminantData;
-            this.setState({ currentCode: newCodeData });
-            this.forceUpdate();
-          }
-        })
+            // get current code's command array data
+            var codeData = this.state.currentCode;
+            var codeLines = codeData.split(/\r?\n/);
+
+            // make new code's command array after drag-drop with clicked command
+            var newCodeData = "";
+            var newPerminantData = [];
+            if (lineNumberFromID == lineNumberToID)
+              newCodeData = codeData;
+            else {
+              // make new from->to drag-droped code content and perminantData            
+              if (lineNumberFromID < lineNumberToID) {
+                for (i = 0; i < lineNumberFromID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                for (i = lineNumberFromID + 1; i <= lineNumberToID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
+                newPerminantData.push(perminantData[lineNumberFromID]);
+                for (i = lineNumberToID + 1; i < codeLines.length; i++) {
+                  if (i != codeLines.length - 1)
+                    newCodeData = newCodeData + codeLines[i] + '\n';
+                  else
+                    newCodeData = newCodeData + codeLines[i];
+                  newPerminantData.push(perminantData[i]);
+                }
+              }
+
+              else {
+                for (i = 0; i <= lineNumberToID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
+                newPerminantData.push(perminantData[lineNumberFromID]);
+                for (i = lineNumberToID + 1; i < lineNumberFromID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                for (i = lineNumberFromID + 1; i < codeLines.length; i++) {
+                  if (i != codeLines.length - 1)
+                    newCodeData = newCodeData + codeLines[i] + '\n';
+                  else
+                    newCodeData = newCodeData + codeLines[i];
+                  newPerminantData.push(perminantData[i]);
+                }
+              }
+
+              // set upgraded content and perminantData and reload the page
+              perminantData = newPerminantData;
+              this.setState({ currentCode: newCodeData });
+              this.forceUpdate();
+            }
+          })
+        }
+
 
         clearInterval(this.interval)
       }
