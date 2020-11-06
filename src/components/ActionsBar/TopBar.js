@@ -11,6 +11,7 @@ import * as screenfull from "screenfull";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
@@ -32,6 +33,10 @@ import {
 import { createSelector } from 'reselect';
 
 import $ from 'jquery';
+import { Grid, Menu, MenuItem } from "@material-ui/core";
+import { CheckerSwitch } from "../../templates/Units/components/CheckerSwitch";
+
+import { setValidateChecked, validateCheckedSelector } from "../../templates/Units/redux";
 
 const styles = theme => ({
   topBar: {
@@ -96,12 +101,22 @@ const styles = theme => ({
   },
   button: {
     color: theme.bars.colors.icon
-  }
+  },
+  span: {
+    color: theme.bars.colors.icon,
+    fontSize: '12px',
+    textTransform: "uppercase",
+    fontWeight: "bold",
+  },
 });
 
 class TopBar extends React.Component {
   state = {
-    fullscreen: false
+    fullscreen: false,
+    openTutor: false,
+    anchorEl: null,
+    showTutorPanel: false,
+    compressedTutorPanel: false
   };
 
   componentDidMount() {
@@ -138,12 +153,39 @@ class TopBar extends React.Component {
   categoryFilterOnClick = val => {
     this.props.setCategoryFilter(val);
   };
-  handleTutorMenu = () => {
-    console.log("tutor")
-  }
-  render() {
-    const { classes, navigatorPosition, navigatorShape, isWideScreen, categories } = this.props;
 
+  handleTutorMenu = (event) => {
+    this.setState({
+      openTutor: !this.state.openTutor,
+      anchorEl: event.currentTarget
+    })
+  }
+
+  handleCloseTutorMenu = () => {
+    if (!this.state.openTutor) {
+      return;
+    }
+
+    this.timeout = setTimeout(() => {
+      this.setState({ openTutor: false });
+    });
+  };
+
+  handleCheckerSwitch = (event) => {
+
+    this.props.setValidateChecked(event.target.checked)
+
+  }
+
+
+  render() {
+    const { classes, navigatorPosition, navigatorShape, isWideScreen, categories, validateChecked } = this.props;
+    const {
+      anchorEl,
+      openTutor,
+      showTutorPanel,
+      compressedTutorPanel
+    } = this.state
     return (
       <div className={classes.topBar}>
         <div className={classes.group1}>
@@ -187,6 +229,31 @@ class TopBar extends React.Component {
           >
             <FaceIcon />
           </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(openTutor)}
+            onClose={this.handleCloseTutorMenu}>
+            {openTutor && <>
+              <MenuItem>
+                <Grid container spacing={1} style={{ alignItems: "center" }}>
+                  <Grid item>
+                    <CheckCircleOutlineIcon />
+                  </Grid>
+                  <Grid item>
+                    <span className={classes.span} style={{ fontSize: "20px" }}>Checker</span>
+                  </Grid>
+                  <Grid item>
+                    <CheckerSwitch
+                      onChange={this.handleCheckerSwitch}
+                      checked={validateChecked}
+                      name="checkedChecker"
+                    />
+                  </Grid>
+                </Grid>
+              </MenuItem>
+            </>}
+          </Menu>
 
           {/* {navigatorPosition === "is-aside" && <FontSetter increaseFont={this.fontSetterOnClick} />} */}
         </div>
@@ -251,18 +318,20 @@ const mapStateToProps = createSelector(
   navigatorPositionSelector,
   navigatorShapeSelector,
   fontSizeIncreaseSelector,
-  (isWideScreen, navigatorPosition, navigatorShape, fontSizeIncrease) => ({
+  validateCheckedSelector,
+  (isWideScreen, navigatorPosition, navigatorShape, fontSizeIncrease, validateChecked) => ({
     isWideScreen,
     navigatorPosition,
     navigatorShape,
     fontSizeIncrease,
+    validateChecked
   })
 );
 
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
-    { wideScreenStatusChange, navigatorPositionChange, navigatorShapeChange, fontSizeChange, scrollToTopStatusChange },
+    { wideScreenStatusChange, navigatorPositionChange, navigatorShapeChange, fontSizeChange, scrollToTopStatusChange, setValidateChecked },
     dispatch
   );
 

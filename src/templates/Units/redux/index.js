@@ -22,6 +22,7 @@ const initialState = {
   unitFiles: {},
   monacoEditor: null,
   validate: [],
+  validateChecked: false,
   unitMeta: {
     superBlock: '',
     block: '',
@@ -60,6 +61,7 @@ export const types = createTypes(
     'updateFile',
     'setMonacoEditor',
     'setValidate',
+    'setValidateChecked',
     'updateJSEnabled',
     'updateProjectFormValues',
     'updateSuccessMessage',
@@ -138,6 +140,7 @@ export const updateUnitMeta = createAction(types.updateUnitMeta);
 export const updateFile = createAction(types.updateFile);
 export const setMonacoEditor = createAction(types.setMonacoEditor);
 export const setValidate = createAction(types.setValidate)
+export const setValidateChecked = createAction(types.setValidateChecked)
 export const updateConsole = createAction(types.updateConsole);
 export const updateLogs = createAction(types.updateLogs);
 export const updateJSEnabled = createAction(types.updateJSEnabled);
@@ -177,6 +180,7 @@ export const currentTabSelector = state => state[ns].currentTab;
 export const unitFilesSelector = state => state[ns].unitFiles;
 export const monacoeditorSelector = state => state[ns].monacoEditor;
 export const validateSelector = state => state[ns].validate;
+export const validateCheckedSelector = state => state[ns].validateChecked;
 export const unitMetaSelector = state => state[ns].unitMeta;
 export const unitTestsSelector = state => state[ns].unitTests;
 export const consoleOutputSelector = state => state[ns].consoleOut;
@@ -275,6 +279,10 @@ export const reducer = handleActions(
     [types.setValidate]: (state, { payload }) => ({
       ...state,
       validate: payload
+    }),
+    [types.setValidateChecked]: (state, { payload }) => ({
+      ...state,
+      validateChecked: payload
     }),
     [types.storedCodeFound]: (state, { payload }) => ({
       ...state,

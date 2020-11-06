@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import KeyboardHideIcon from '@material-ui/icons/KeyboardHide';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   canFocusEditorSelector,
   executeUnit,
@@ -11,15 +12,21 @@ import {
   setAccessibilityMode,
   updateFile,
   setMonacoEditor,
-  setValidate
+  setValidate,
+  validateSelector,
+  validateCheckedSelector
 } from '../redux';
 import { userSelector, isDonationModalOpenSelector } from '../../../state';
 import { Loader } from '../../../components/helpers';
-import { IconButton } from '@material-ui/core';
+import { CircularProgress, Grid, IconButton, Typography } from '@material-ui/core';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import * as slider from '../components/slider_program.js';
 import * as Auth from '../components/authmanager.js';
 import $ from 'jquery';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import { withStyles } from '@material-ui/styles';
+import { calculatePercentOfChecked } from '../utils/helpers';
 var codeconsole;
 
 const MonacoEditor = React.lazy(() => import('react-monaco-editor'));
@@ -38,7 +45,9 @@ const propTypes = {
   theme: PropTypes.string,
   updateFile: PropTypes.func.isRequired,
   setMonacoEditor: PropTypes.func.isRequired,
-  setValidate: PropTypes.func.isRequired,
+  settingValidate: PropTypes.func.isRequired,
+  validateChecked: PropTypes.bool.isRequired,
+  validate: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createSelector(
@@ -46,10 +55,14 @@ const mapStateToProps = createSelector(
   inAccessibilityModeSelector,
   isDonationModalOpenSelector,
   userSelector,
-  (canFocus, accessibilityMode, open, { theme = 'night' }) => ({
+  validateCheckedSelector,
+  validateSelector,
+  (canFocus, accessibilityMode, open, { theme = 'night' }, validateChecked, validate) => ({
     canFocus: open ? false : canFocus,
     inAccessibilityMode: accessibilityMode,
-    theme
+    theme,
+    validateChecked,
+    validate
   })
 );
 
@@ -101,6 +114,98 @@ const defineMonacoThemes = monaco => {
 var lineNumberPos = [], lineNumbers, perminantData = [];
 var lineNumberElementFromID = 0, lineNumberFromID = 0, lineNumberElementToID = 0, lineNumberToID = 0, clock = 1, is_mobile;
 
+const styles = theme => ({
+  progress: {
+    color: "#76dc37",
+    position: "absolute",
+    right: "22px",
+    top: "27px",
+    zIndex: 1,
+    "&::before": {
+      content: `""`,
+      position: "absolute",
+      background: "#46748e",
+      width: "18px",
+      height: "18px",
+      left: "3px",
+      top: "3px",
+      borderRadius: "50%",
+    }
+  },
+  panelContainer: {
+    borderRadius: "20px",
+    position: "absolute",
+    right: "10px",
+    top: "7px",
+    width: 'calc(100% - 20px)',
+    // height: '300px',
+    border: '3px solid #43d4dd',
+    zIndex: 1,
+    background: "white"
+  },
+  gridParent: {
+    // height: "calc(100% + 9px)",
+
+  },
+  leftGridItem: {
+    display: "flex",
+    background: '#43d4dd',
+    // height: "100%",
+    borderRadius: "20px",
+    alignItems: "center",
+    // justifyContent: "center",
+    flexDirection: "column",
+    color: "#216a6f",
+    width: "40px"
+
+  },
+  checkGridItem: {
+    color: "#43d4dd",
+    justifyContent: "space-between",
+    padding: "10px 0 20px",
+
+  },
+  arrowIcon: {
+    padding: "10px 0 20px",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  iconsContainer: {
+    justifyContent: "center",
+  },
+  rightGridItem: {
+    padding: "10px!important",
+    color: "black",
+    display: "flex",
+    flexDirection: "column",
+    width: "calc(100% - 40px)",
+    fontWeight: "bold",
+    padding: "10px 20px 20px",
+
+  },
+  compressedPanelContainer: {
+    borderRadius: "20px",
+    position: "absolute",
+    right: "10px",
+    top: "7px",
+    width: '40px',
+    border: '3px solid #43d4dd',
+    zIndex: 1,
+    background: "white",
+    justifyContent: "space-around",
+    alignItems: "center",
+    display: "flex",
+    minHeight: "251px",
+    flexDirection: "column",
+    opacity: 0.5
+  },
+  checkerText: {
+    fontSize: "14px"
+  }
+});
+const PlaskChecker = () => {
+  return <img src={require("../img/icons/plask.png")} alt="plask" style={{ width: "25px", height: "25px" }} />
+}
 class Editor extends Component {
 
   constructor(...props) {
@@ -131,7 +236,9 @@ class Editor extends Component {
     };
 
     this.state = {
-      currentCode: this.props.contents
+      currentCode: this.props.contents,
+      showTutorPanel: false,
+      compressedTutorPanel: false,
     };
 
     this._editor = null;
@@ -505,7 +612,6 @@ class Editor extends Component {
   validatesFunc = (context) => {
     const { settingValidate } = this.props;
     var validatedItems = slider.validate_test(context);
-
     if (validatedItems.length) {
       settingValidate(validatedItems)
     }
@@ -517,11 +623,83 @@ class Editor extends Component {
     }
   }
 
+  handleTutorPanel = () => {
+    this.setState({ showTutorPanel: !this.state.showTutorPanel })
+  }
+
+  handleCompressedTutorPanel = () => {
+    this.setState({ compressedTutorPanel: !this.state.compressedTutorPanel })
+  }
+
+
   render() {
-    const { contents, ext, theme, fileKey } = this.props;
+    const { classes, contents, ext, theme, fileKey, validateChecked, validate } = this.props;
+    const {
+      showTutorPanel,
+      compressedTutorPanel,
+    } = this.state
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
+    console.log("validate", validate)
     return (
-      <Suspense fallback={<Loader timeout={600} />}>
+      <Suspense fallback={<Loader timeout={600} />} >
+        <div style={{ position: 'relative' }}>
+          {validateChecked && !showTutorPanel && <div >
+            <CircularProgress
+              className={classes.progress}
+              variant="static"
+              value={calculatePercentOfChecked(validate)}
+              size={24}
+              thickness={6}
+              onClick={this.handleTutorPanel} />
+          </div>}
+          {validateChecked && showTutorPanel && (compressedTutorPanel ? <div
+            className={classes.compressedPanelContainer}
+            onClick={this.handleCompressedTutorPanel}
+          >
+            <CloseIcon
+              onClick={this.handleTutorPanel}
+              style={{ color: "#808080" }}
+            />
+            {validate.map((v) => v.checked ? <CheckCircleOutlineIcon style={{ color: "black" }} /> : <PlaskChecker />)}
+
+          </div> :
+            <div className={classes.panelContainer}>
+              <Grid container spacing={1} className={classes.gridParent}>
+                <div className={classes.leftGridItem} onClick={this.handleCompressedTutorPanel}>
+                  <Grid container item xs={12} className={classes.arrowIcon}>
+                    <Grid item>
+                      <ArrowForwardIosIcon />
+                    </Grid>
+                  </Grid>
+                  {validate.map((v) => <Grid container item xs={12} spacing={1} className={classes.iconsContainer} >
+                    <Grid item >
+                      {v.checked ? <CheckCircleOutlineIcon /> : <PlaskChecker />}
+                    </Grid>
+                  </Grid>)}
+
+                </div>
+                <div className={classes.rightGridItem}>
+                  <Grid container item xs={12} className={classes.checkGridItem}>
+                    <Grid item>
+                      <Typography>CHECKER</Typography>
+                    </Grid>
+                    <Grid item style={{ color: "#808080" }}>
+                      <CloseIcon
+                        onClick={this.handleTutorPanel}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container>
+                    {validate.map((v) => <Grid container item xs={12} spacing={1} >
+                      <Grid item xs>
+                        <Typography className={classes.checkerText}>{v.text}</Typography>
+                      </Grid>
+                    </Grid>)}
+                  </Grid>
+                </div>
+              </Grid>
+            </div>)}
+        </div>
         <MonacoEditor
           editorDidMount={this.editorDidMount}
           editorWillMount={this.editorWillMount}
@@ -549,4 +727,4 @@ export default connect(
   mapDispatchToProps,
   null,
   { withRef: true }
-)(Editor);
+)(withStyles(styles)(Editor));
