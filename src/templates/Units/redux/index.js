@@ -395,7 +395,7 @@ export const reducer = handleActions(
     }),
     [types.executeUnit]: state => ({
       ...state,
-      currentTab: 1
+      currentTab: 3
     }),
     [types.setEditorFocusability]: (state, { payload }) => ({
       ...state,

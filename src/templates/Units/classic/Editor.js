@@ -162,11 +162,11 @@ const styles = theme => ({
   checkGridItem: {
     color: "#43d4dd",
     justifyContent: "space-between",
-    padding: "10px 0 20px",
+    padding: "10px 0 5px",
 
   },
   arrowIcon: {
-    padding: "10px 0 20px",
+    padding: "10px 0 5px",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -239,6 +239,8 @@ class Editor extends Component {
       currentCode: this.props.contents,
       showTutorPanel: false,
       compressedTutorPanel: false,
+      validate: []
+
     };
 
     this._editor = null;
@@ -605,16 +607,17 @@ class Editor extends Component {
     updateFile({ key: fileKey, editorValue });
     this.props.executeUnit();
     // slider.validate_function(editorValue);
-    this.validatesFunc(editorValue)
+    this.validatesFunc(editorValue);
+    this.setState({ currentCode: editorValue })
     // Auth.savCode(editorValue);
   };
 
   validatesFunc = (context) => {
     const { settingValidate } = this.props;
     var validatedItems = slider.validate_test(context);
-    if (validatedItems.length) {
-      settingValidate(validatedItems)
-    }
+    this.setState({ validate: validatedItems })
+    // settingValidate(validatedItems)
+
   }
 
   componentDidUpdate(prevProps) {
@@ -633,10 +636,11 @@ class Editor extends Component {
 
 
   render() {
-    const { classes, contents, ext, theme, fileKey, validateChecked, validate } = this.props;
+    const { classes, contents, ext, theme, fileKey, validateChecked } = this.props;
     const {
       showTutorPanel,
       compressedTutorPanel,
+      validate
     } = this.state
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
     console.log("validate", validate)
@@ -707,6 +711,7 @@ class Editor extends Component {
           language={modeMap[ext]}
           onChange={this.onChange}
           options={this.options}
+          // defaultValue={this.state.currentCode}
           value={this.state.currentCode}
           theme={editorTheme}
           automaticLayout={true}
