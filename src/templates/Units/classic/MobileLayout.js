@@ -119,7 +119,8 @@ const styles = theme => ({
     // height: "100%",
     borderRadius: "20px",
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
+    flexDirection: "column",
     color: "#216a6f",
     width: "40px"
 
@@ -129,6 +130,14 @@ const styles = theme => ({
     justifyContent: "space-between",
     padding: "10px 0 20px",
 
+  },
+  arrowIcon: {
+    padding: "10px 0 20px",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  iconsContainer: {
+    justifyContent: "center",
   },
   rightGridItem: {
     padding: "10px!important",
@@ -434,7 +443,17 @@ class MobileLayout extends Component {
               <div className={classes.panelContainer}>
                 <Grid container spacing={1} className={classes.gridParent}>
                   <div className={classes.leftGridItem} onClick={this.handleCompressedTutorPanel}>
-                    <ArrowForwardIosIcon />
+                    <Grid container item xs={12} className={classes.arrowIcon}>
+                      <Grid item>
+                        <ArrowForwardIosIcon />
+                      </Grid>
+                    </Grid>
+                    {validate.map((v) => <Grid container item xs={12} spacing={1} className={classes.iconsContainer} >
+                      <Grid item >
+                        {v.checked ? <CheckCircleOutlineIcon /> : <PlaskChecker />}
+                      </Grid>
+                    </Grid>)}
+
                   </div>
                   <div className={classes.rightGridItem}>
                     <Grid container item xs={12} className={classes.checkGridItem}>
@@ -449,14 +468,10 @@ class MobileLayout extends Component {
                     </Grid>
                     <Grid container>
                       {validate.map((v) => <Grid container item xs={12} spacing={1} >
-                        <Grid item >
-                          {v.checked ? <CheckCircleOutlineIcon /> : <PlaskChecker />}
-                        </Grid>
                         <Grid item xs>
                           <Typography className={classes.checkerText}>{v.text}</Typography>
                         </Grid>
                       </Grid>)}
-
                     </Grid>
                   </div>
                 </Grid>
