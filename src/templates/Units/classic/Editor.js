@@ -95,8 +95,9 @@ const defineMonacoThemes = monaco => {
   });
 };
 
-var lineNumberPos = [], lineNumbers, perminantData = [];
-var lineNumberElementFromID = 0, lineNumberFromID = 0, lineNumberElementToID = 0, lineNumberToID = 0, clock = 1, is_mobile;
+var lineNumberPos = [], lineNumberID = [], lineNumberIDDrag = [], lineNumbers, perminantData = [];
+var lineNumberElementFromID = 0, lineNumberFromID = 0, lineNumberFromIDEnd = 0, lineNumberElementToID = 0, lineNumberToID = 0, lineNumberToIDEnd = 0;
+var clock = 1, is_mobile, clicked = false;
 
 class Editor extends Component {
 
@@ -146,7 +147,7 @@ class Editor extends Component {
     this.interval = setInterval(() => {
       // get elements data after all elements are loaded
       clock = clock - 1;
-      var pos, per;
+      var pos, per, ind;
       if (document.getElementsByClassName('margin-view-overlays')[0] != null && clock < 0) {
         var i, j = 0;
         lineNumbers = document.getElementsByClassName('margin-view-overlays')[0];
@@ -154,78 +155,142 @@ class Editor extends Component {
         // get all line number elements position with index for drag-drop event handler 
         pos = [];
         per = [];
+        ind = [];
         for (i = 0; i < lineNumbers.children.length; i++) {
           var line = lineNumbers.children[i];
           if (lineNumbers.children[i].children.length > 0) {
             j = j + 1;
             var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
+            var index = line.children.length == 1 ? line.children[0].innerHTML : line.children[1].innerHTML;
             pos.push(position)
+            ind.push(index);
             per.push(j);
           }
         }
         // init line number position array with beginning element's position
-        // init perminant array with first status
         lineNumberPos = pos;
+        // init line number index array with the real index even collapsed state
+        lineNumberID = ind;
+        // init perminant array with first status
         perminantData = per;
 
         // normal case
         if (!is_mobile) {
+          // drag start event handler
           document.getElementsByClassName('margin')[0].addEventListener("mousedown", function (element) {
+            clicked = true;
+            lineNumbers = document.getElementsByClassName('margin-view-overlays')[0];
             // update line number elements position data with current updated element
             pos = [];
+            ind = [];
             for (i = 0; i < lineNumbers.children.length; i++) {
               var line = lineNumbers.children[i];
               if (lineNumbers.children[i].children.length > 0) {
                 j = j + 1;
                 var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
-                pos.push(position)
+                var index = line.children.length == 1 ? line.children[0].innerHTML : line.children[1].innerHTML;
+                pos.push(position);
+                ind.push(index);
               }
             }
             // init line number position array with beginning element's position
             lineNumberPos = pos;
+            // init line number index normal array and dragging array with the real index even collapsed state
+            lineNumberID = lineNumberIDDrag = ind;
+
+            console.log(lineNumberPos)
 
             // get clicked element code editor ID
             var posX = element.clientX, posY = element.clientY;
             for (i = 0; i < lineNumberPos.length; i++) {
               var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
               var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
-              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
-                lineNumberFromID = i;
+              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height) {
+                lineNumberFromID = lineNumberID[i] - 1;
+                if (i != lineNumberPos.length - 1)
+                  lineNumberFromIDEnd = lineNumberID[i + 1] - 1;
+                else
+                  lineNumberFromIDEnd = lineNumberFromID;
+              }
             }
 
+            console.log(lineNumberFromID, lineNumberFromIDEnd)
+
             // get clicked element line number element ID
-            j = 0;
             for (i = 0; i < lineNumbers.children.length; i++) {
               if (lineNumbers.children[i].children.length > 0) {
-                if (j == lineNumberFromID)
+                var line = lineNumbers.children[i];
+                var index = line.children.length == 1 ? line.children[0].innerHTML : line.children[1].innerHTML;
+                if (index == lineNumberFromID)
                   lineNumberElementFromID = i;
-                j = j + 1;
               }
             }
           })
 
+          // dragging event handler
+          document.getElementsByClassName('margin')[0].addEventListener("mousemove", (element) => {
+            if (clicked == true) {
+              // make dragging effect with line number index
+              var posX = element.clientX, posY = element.clientY;
+              j = 0;
+              for (i = 0; i < lineNumbers.children.length; i++) {
+                var line = lineNumbers.children[i];
+                if (lineNumbers.children[i].children.length > 0) {
+                  console.log(lineNumberIDDrag[j])
+                  line.children.length == 1 ? line.children[0].innerHTML = lineNumberIDDrag[j] : line.children[1].innerHTML = lineNumberIDDrag[j];
+                  var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
+                  if (posX >= position.x && posX <= position.x + position.width && posY >= position.y && posY <= position.y + position.height)
+                    line.children.length == 1 ? line.children[0].innerHTML = lineNumberFromID + 1 : line.children[1].innerHTML = lineNumberFromID + 1;
+                  j = j + 1;
+                }
+              }
+            }
+          })
+
+          // drop event handler
           document.getElementsByClassName('margin')[0].addEventListener("mouseup", (element) => {
+            clicked = false;
+            // init line numbers index
+            j = 0;
+            for (i = 0; i < lineNumbers.children.length; i++) {
+              var line = lineNumbers.children[i];
+              if (lineNumbers.children[i].children.length > 0) {
+                line.children.length == 1 ? line.children[0].innerHTML = lineNumberIDDrag[j] : line.children[1].innerHTML = lineNumberIDDrag[j];
+                j = j + 1;
+              }
+            }
+
             // get dropped element code editor ID
             var posX = element.clientX, posY = element.clientY;
             for (i = 0; i < lineNumberPos.length; i++) {
               var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
               var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
-              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
-                lineNumberToID = i;
+              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height) {
+                lineNumberToID = lineNumberID[i] - 1;
+                if (i != lineNumberPos.length - 1)
+                  lineNumberToIDEnd = lineNumberID[i + 1] - 1;
+                else
+                  lineNumberToIDEnd = lineNumberToID;
+              }
             }
 
+            console.log(lineNumberToID, lineNumberToIDEnd)
+
             // get dropped element line number element ID
-            j = 0;
             for (i = 0; i < lineNumbers.children.length; i++) {
               if (lineNumbers.children[i].children.length > 0) {
-                if (j == lineNumberToID)
+                var line = lineNumbers.children[i];
+                var index = line.children.length == 1 ? line.children[0].innerHTML : line.children[1].innerHTML;
+                if (index == lineNumberToID)
                   lineNumberElementToID = i;
-                j = j + 1;
               }
             }
 
             // get current code's command array data
             var codeData = this.state.currentCode;
+
+            console.log(codeData)
+
             var codeLines = codeData.split(/\r?\n/);
 
             // make new code's command array after drag-drop with clicked command
@@ -240,13 +305,15 @@ class Editor extends Component {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromID + 1; i <= lineNumberToID; i++) {
+                for (i = lineNumberFromIDEnd + 1; i <= lineNumberToIDEnd; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
-                newPerminantData.push(perminantData[lineNumberFromID]);
-                for (i = lineNumberToID + 1; i < codeLines.length; i++) {
+                for (i = lineNumberFromID; i <= lineNumberFromIDEnd; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                for (i = lineNumberToIDEnd + 1; i < codeLines.length; i++) {
                   if (i != codeLines.length - 1)
                     newCodeData = newCodeData + codeLines[i] + '\n';
                   else
@@ -256,17 +323,19 @@ class Editor extends Component {
               }
 
               else {
-                for (i = 0; i <= lineNumberToID; i++) {
+                for (i = 0; i <= lineNumberToIDEnd; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
-                newPerminantData.push(perminantData[lineNumberFromID]);
-                for (i = lineNumberToID + 1; i < lineNumberFromID; i++) {
+                for (i = lineNumberFromID; i <= lineNumberFromIDEnd; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromID + 1; i < codeLines.length; i++) {
+                for (i = lineNumberToIDEnd + 1; i < lineNumberFromID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                for (i = lineNumberFromIDEnd + 1; i < codeLines.length; i++) {
                   if (i != codeLines.length - 1)
                     newCodeData = newCodeData + codeLines[i] + '\n';
                   else
@@ -285,57 +354,79 @@ class Editor extends Component {
 
         // mobile responsive case
         else {
+          // touch start event handler
           document.getElementsByClassName('margin')[0].addEventListener("touchstart", function (element) {
+            lineNumbers = document.getElementsByClassName('margin-view-overlays')[0];
             // update line number elements position data with current updated element
             pos = [];
+            ind = [];
             for (i = 0; i < lineNumbers.children.length; i++) {
               var line = lineNumbers.children[i];
               if (lineNumbers.children[i].children.length > 0) {
                 j = j + 1;
                 var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
+                var index = line.children.length == 1 ? line.children[0].innerHTML : line.children[1].innerHTML;
                 pos.push(position)
+                ind.push(index);
               }
             }
             // init line number position array with beginning element's position
             lineNumberPos = pos;
+            // init line number index normal array and dragging array with the real index even collapsed state
+            lineNumberID = lineNumberIDDrag = ind;
 
             // get clicked element code editor ID
             var posX = element.changedTouches[0].clientX, posY = element.changedTouches[0].clientY;
             for (i = 0; i < lineNumberPos.length; i++) {
               var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
               var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
-              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
-                lineNumberFromID = i;
+              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height) {
+                lineNumberFromID = lineNumberID[i] - 1;
+                if (i != lineNumberPos.length - 1)
+                  lineNumberFromIDEnd = lineNumberID[i + 1] - 1;
+                else
+                  lineNumberFromIDEnd = lineNumberFromID;
+              }
             }
 
+            console.log(lineNumberFromID, lineNumberFromIDEnd)
+
             // get clicked element line number element ID
-            j = 0;
             for (i = 0; i < lineNumbers.children.length; i++) {
               if (lineNumbers.children[i].children.length > 0) {
-                if (j == lineNumberFromID)
+                var line = lineNumbers.children[i];
+                var index = line.children.length == 1 ? line.children[0].innerHTML : line.children[1].innerHTML;
+                if (index == lineNumberFromID)
                   lineNumberElementFromID = i;
-                j = j + 1;
               }
             }
           })
 
+          // touch end event handler
           document.getElementsByClassName('margin')[0].addEventListener("touchend", (element) => {
             // get dropped element code editor ID
             var posX = element.changedTouches[0].clientX, posY = element.changedTouches[0].clientY;
             for (i = 0; i < lineNumberPos.length; i++) {
               var x = lineNumberPos[i].x, y = lineNumberPos[i].y;
               var width = lineNumberPos[i].width, height = lineNumberPos[i].height;
-              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height)
-                lineNumberToID = i;
+              if (posX >= x && posX <= x + width && posY >= y && posY <= y + height) {
+                lineNumberToID = lineNumberID[i] - 1;
+                if (i != lineNumberPos.length - 1)
+                  lineNumberToIDEnd = lineNumberID[i + 1] - 1;
+                else
+                  lineNumberToIDEnd = lineNumberToID;
+              }
             }
 
+            console.log(lineNumberToID, lineNumberToIDEnd)
+
             // get dropped element line number element ID
-            j = 0;
             for (i = 0; i < lineNumbers.children.length; i++) {
               if (lineNumbers.children[i].children.length > 0) {
-                if (j == lineNumberToID)
+                var line = lineNumbers.children[i];
+                var index = line.children.length == 1 ? line.children[0].innerHTML : line.children[1].innerHTML;
+                if (index == lineNumberToID)
                   lineNumberElementToID = i;
-                j = j + 1;
               }
             }
 
@@ -355,13 +446,15 @@ class Editor extends Component {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromID + 1; i <= lineNumberToID; i++) {
+                for (i = lineNumberFromIDEnd + 1; i <= lineNumberToIDEnd; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
-                newPerminantData.push(perminantData[lineNumberFromID]);
-                for (i = lineNumberToID + 1; i < codeLines.length; i++) {
+                for (i = lineNumberFromID; i <= lineNumberFromIDEnd; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                for (i = lineNumberToIDEnd + 1; i < codeLines.length; i++) {
                   if (i != codeLines.length - 1)
                     newCodeData = newCodeData + codeLines[i] + '\n';
                   else
@@ -371,17 +464,19 @@ class Editor extends Component {
               }
 
               else {
-                for (i = 0; i <= lineNumberToID; i++) {
+                for (i = 0; i <= lineNumberToIDEnd; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                newCodeData = newCodeData + codeLines[lineNumberFromID] + '\n';
-                newPerminantData.push(perminantData[lineNumberFromID]);
-                for (i = lineNumberToID + 1; i < lineNumberFromID; i++) {
+                for (i = lineNumberFromID; i <= lineNumberFromIDEnd; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromID + 1; i < codeLines.length; i++) {
+                for (i = lineNumberToIDEnd + 1; i < lineNumberFromID; i++) {
+                  newCodeData = newCodeData + codeLines[i] + '\n';
+                  newPerminantData.push(perminantData[i]);
+                }
+                for (i = lineNumberFromIDEnd + 1; i < codeLines.length; i++) {
                   if (i != codeLines.length - 1)
                     newCodeData = newCodeData + codeLines[i] + '\n';
                   else
