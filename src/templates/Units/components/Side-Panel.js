@@ -7,14 +7,15 @@ import UnitDescription from './Unit-Description';
 import ToolPanel from './Tool-Panel';
 import TestSuite from './Test-Suite';
 
-import { unitTestsSelector, isUnitCompletedSelector } from '../redux';
+import { unitTestsSelector, isUnitCompletedSelector, validateSelector } from '../redux';
 import { createSelector } from 'reselect';
 import './side-panel.css';
 import { mathJaxScriptLoader } from '../../../utils/scriptLoaders';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
 import ReactPageScroller from "react-page-scroller";
 import { lesson_data } from '../utils/lesson_data';
-
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Sliders from './slider.js'
 
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
@@ -22,9 +23,11 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 const mapStateToProps = createSelector(
   isUnitCompletedSelector,
   unitTestsSelector,
-  (isUnitCompleted, tests) => ({
+  validateSelector,
+  (isUnitCompleted, tests, validate) => ({
     isUnitCompleted,
-    tests
+    tests,
+    validate
   })
 );
 
@@ -36,6 +39,7 @@ const propTypes = {
   section: PropTypes.string,
   showToolPanel: PropTypes.bool,
   tests: PropTypes.arrayOf(PropTypes.object),
+  validate: PropTypes.array,
   title: PropTypes.string,
   videoUrl: PropTypes.string
 };
@@ -71,6 +75,10 @@ export class SidePanel extends Component {
   goToPage = (pageNumber) => {
     this.reactPageScroller.goToPage(pageNumber);
   }
+  isCheckedOf = (index) => {
+    const { validate } = this.props;
+    return validate[index] && validate[index].checked
+  }
   renderSlide = (slide, slideNumber) => {
     switch (slideNumber) {
       case 0:
@@ -80,8 +88,13 @@ export class SidePanel extends Component {
               <p class="slide-header h2">CHALLENGE</p>
             </div>
             <div>
-              <p class="h1 white">Hi,... <img class='swiper-lazy' src={require('../img/emoji/72/waving-hand-sign-type-3.png')} alt='' /> </p>
-              <div class="h2 white">Type <div class='inline-code bg-black p-2'>&lt;h1&gt;</div> in the code editor.</div>
+              <p class="h1 white">
+                {this.isCheckedOf(0) ?
+                  <CheckCircleIcon style={{ color: "green", fontSize: "40px" }} /> :
+                  <RadioButtonUncheckedIcon style={{ color: "black", fontSize: "40px" }} />}
+
+              Hi,... <img class='swiper-lazy' src={require('../img/emoji/72/waving-hand-sign-type-3.png')} alt='' /> </p>
+              <div class="h2 white">Type <div class='inline-code bg-black p-2'>&lt;img&gt;</div> in the code editor.</div>
             </div>
             <div class='white'>
               <p class="h5 pt-3 ">Tip: Swipe left <img class='swiper-lazy w-1em' src={require('../img/emoji/72/leftwards-black-arrow.png')} alt='' /> or click the button below.</p>
@@ -329,7 +342,7 @@ export class SidePanel extends Component {
     } else {
       return (
         <div>
-          {/* <Sliders /> */}
+          <Sliders />
         </div>
       )
     }

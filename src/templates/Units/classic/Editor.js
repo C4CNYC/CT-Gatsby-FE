@@ -701,7 +701,7 @@ class Editor extends Component {
     const { updateFile, fileKey } = this.props;
     updateFile({ key: fileKey, editorValue });
     this.props.executeUnit();
-    // slider.validate_function(editorValue);
+    slider.validate_function(editorValue);
     this.validatesFunc(editorValue);
     this.setState({ currentCode: editorValue })
     // Auth.savCode(editorValue);
@@ -711,7 +711,7 @@ class Editor extends Component {
     const { settingValidate } = this.props;
     var validatedItems = slider.validate_test(context);
     this.setState({ validate: validatedItems })
-    // settingValidate(validatedItems)
+    settingValidate(validatedItems)
 
   }
 
@@ -738,7 +738,6 @@ class Editor extends Component {
       validate
     } = this.state
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
-    console.log("validate", validate)
     return (
       <Suspense fallback={<Loader timeout={600} />} >
         <div style={{ position: 'relative' }}>

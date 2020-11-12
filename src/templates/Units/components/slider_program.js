@@ -226,7 +226,7 @@ export function validate_test(code) {
 }
 export function validate_function(content) {
   var console_text = content;
-  if (console_text.match(/<h1>/) != null) {
+  if (console_text.match(/<img>/) != null) {
     show_result(0);
   }
   if (console_text.match(/<h1>\w{1,}<\/h1>/) != null) {
