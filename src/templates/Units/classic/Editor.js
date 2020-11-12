@@ -701,7 +701,7 @@ class Editor extends Component {
     const { updateFile, fileKey } = this.props;
     updateFile({ key: fileKey, editorValue });
     this.props.executeUnit();
-    slider.validate_function(editorValue);
+    // slider.validate_function(editorValue);
     this.validatesFunc(editorValue);
     this.setState({ currentCode: editorValue })
     // Auth.savCode(editorValue);

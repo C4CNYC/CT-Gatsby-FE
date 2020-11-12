@@ -181,40 +181,46 @@ const validateItems = [
   {
     group: 1,
     index: 0,
-    text: "Your page should have an image element.",
+    text: "Type <h1> in the code editor.",
   },
   {
     group: 1,
     index: 1,
-    text: 'Your image should have a "src" attribute that points to the kitten image.'
-  },
-  {
-    group: 1,
-    index: 2,
-    text: `Your image element's "alt" attribute should not be empty.`
+    text: 'Type your name between tags'
   },
 ]
 
 export function validate_test(code) {
   $("#validate-html").html(code)
 
-  if ($("#validate-html img").length) {
+  if (($("#validate-html h1").length > 0)) {
     validateItems[0].checked = true;
   } else {
     validateItems[0].checked = false;
   }
 
-  if (/^https:\/\/bit\.ly\/fcc-relaxing-cat$/i.test($("#validate-html img").attr("src"))) {
+  if (code.match(/<\/h1>/g) && code.match(/<\/h1>/g).length === code.match(/<h1>/g).length && (/(\s)+/gi).test($("#validate-html h1").text())) {
     validateItems[1].checked = true;
   } else {
     validateItems[1].checked = false;
   }
+  // if ($("#validate-html img").length) {
+  //   validateItems[0].checked = true;
+  // } else {
+  //   validateItems[0].checked = false;
+  // }
 
-  if ($("#validate-html img").attr("alt") && $("#validate-html img").attr("alt").length && /<img\S*alt=(['"])(?!\1|>)\S+\1\S*\/?>/.test(__helpers.removeWhiteSpace(code))) {
-    validateItems[2].checked = true;
-  } else {
-    validateItems[2].checked = false;
-  }
+  // if (/^https:\/\/bit\.ly\/fcc-relaxing-cat$/i.test($("#validate-html img").attr("src"))) {
+  //   validateItems[1].checked = true;
+  // } else {
+  //   validateItems[1].checked = false;
+  // }
+
+  // if ($("#validate-html img").attr("alt") && $("#validate-html img").attr("alt").length && /<img\S*alt=(['"])(?!\1|>)\S+\1\S*\/?>/.test(__helpers.removeWhiteSpace(code))) {
+  //   validateItems[2].checked = true;
+  // } else {
+  //   validateItems[2].checked = false;
+  // }
 
   // if (getElement("form").children("button").length > 0) {
   //   validateItems[3].checked = true;
@@ -226,7 +232,7 @@ export function validate_test(code) {
 }
 export function validate_function(content) {
   var console_text = content;
-  if (console_text.match(/<img>/) != null) {
+  if (console_text.match(/<h1>/) != null) {
     show_result(0);
   }
   if (console_text.match(/<h1>\w{1,}<\/h1>/) != null) {

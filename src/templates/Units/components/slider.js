@@ -48,7 +48,7 @@ export class sliders extends Component {
                 Hi.... 👋
         <br />
                 <span>
-                  Type <xmp>&lt;img&gt;</xmp> in the editor below
+                  Type <xmp>&lt;h1&gt;</xmp> in the editor below
         </span>
               </div>
             </div>

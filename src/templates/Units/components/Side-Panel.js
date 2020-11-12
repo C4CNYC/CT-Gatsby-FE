@@ -79,6 +79,15 @@ export class SidePanel extends Component {
     const { validate } = this.props;
     return validate[index] && validate[index].checked
   }
+
+  renderChecker = (index) => {
+
+    return this.isCheckedOf(index) ?
+      <CheckCircleIcon style={{ color: "green", fontSize: "40px" }} /> :
+      <RadioButtonUncheckedIcon style={{ color: "black", fontSize: "40px" }} />
+
+
+  }
   renderSlide = (slide, slideNumber) => {
     switch (slideNumber) {
       case 0:
@@ -89,12 +98,9 @@ export class SidePanel extends Component {
             </div>
             <div>
               <p class="h1 white">
-                {this.isCheckedOf(0) ?
-                  <CheckCircleIcon style={{ color: "green", fontSize: "40px" }} /> :
-                  <RadioButtonUncheckedIcon style={{ color: "black", fontSize: "40px" }} />}
-
+                {this.renderChecker(0)}
               Hi,... <img class='swiper-lazy' src={require('../img/emoji/72/waving-hand-sign-type-3.png')} alt='' /> </p>
-              <div class="h2 white">Type <div class='inline-code bg-black p-2'>&lt;img&gt;</div> in the code editor.</div>
+              <div class="h2 white">Type <div class='inline-code bg-black p-2'>&lt;h1&gt;</div> in the code editor.</div>
             </div>
             <div class='white'>
               <p class="h5 pt-3 ">Tip: Swipe left <img class='swiper-lazy w-1em' src={require('../img/emoji/72/leftwards-black-arrow.png')} alt='' /> or click the button below.</p>
@@ -243,7 +249,7 @@ export class SidePanel extends Component {
             <div style={{ marginTop: '3rem' }}>
               <ol style={{ listStyle: 'none', paddingLeft: 0 }}>
                 <li class='task-1'>
-                  <p>Type your name between tags.</p>
+                  <p style={{ display: 'flex', alignItems: 'center' }}>{this.renderChecker(1)} Type your name between tags.</p>
                 </li>
               </ol>
             </div>
@@ -342,7 +348,7 @@ export class SidePanel extends Component {
     } else {
       return (
         <div>
-          <Sliders />
+          {/* <Sliders /> */}
         </div>
       )
     }
