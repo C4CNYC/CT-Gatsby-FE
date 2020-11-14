@@ -27,6 +27,7 @@ import $ from 'jquery';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import { withStyles } from '@material-ui/styles';
 import { calculatePercentOfChecked } from '../utils/helpers';
+import { async } from 'rxjs';
 var codeconsole;
 
 const MonacoEditor = React.lazy(() => import('react-monaco-editor'));
@@ -249,12 +250,12 @@ class Editor extends Component {
   }
 
   componentDidMount() {
-    this.validatesFunc(this.state.currentCode);
-    // Auth.getCode((codes) => {
-    //   if (typeof codes != 'null' && typeof codes != 'undefined') {
-    //     this.validatesFunc(codes);
-    //   }
-    // });
+    Auth.getCode((codes) => {
+      if (typeof codes != 'null' && typeof codes != 'undefined') {
+        this.validatesFunc(codes);
+        this.setState({ currentCode: codes })
+      }
+    });
 
   }
   editorWillMount = monaco => {
@@ -704,15 +705,22 @@ class Editor extends Component {
     // slider.validate_function(editorValue);
     this.validatesFunc(editorValue);
     this.setState({ currentCode: editorValue })
-    // Auth.savCode(editorValue);
+
   };
 
-  validatesFunc = (context) => {
+  checkReturnedCode = async (validatedItems) => {
+    let list = await Auth.getSlider();
+    return validatedItems.filter((e) => e.checked).length < list.length
+  }
+  validatesFunc = async (context) => {
     const { settingValidate } = this.props;
     var validatedItems = slider.validate_test(context);
-    this.setState({ validate: validatedItems })
-    settingValidate(validatedItems)
-
+    var returnedCode = await this.checkReturnedCode(validatedItems);
+    if (!returnedCode) {
+      this.setState({ validate: validatedItems })
+      settingValidate(validatedItems)
+      Auth.savCode(context);
+    }
   }
 
   componentDidUpdate(prevProps) {

@@ -181,11 +181,13 @@ const validateItems = [
   {
     group: 1,
     index: 0,
+    sliderID: 0,
     text: "Type <h1> in the code editor.",
   },
   {
     group: 1,
     index: 1,
+    sliderID: 10,
     text: 'Type your name between tags'
   },
 ]
@@ -195,12 +197,14 @@ export function validate_test(code) {
 
   if (($("#validate-html h1").length > 0)) {
     validateItems[0].checked = true;
+    Auth.saveSlider(validateItems[0].sliderID)
   } else {
     validateItems[0].checked = false;
   }
 
   if (code.match(/<\/h1>/g) && code.match(/<\/h1>/g).length === code.match(/<h1>/g).length && (/(\s)+/gi).test($("#validate-html h1").text())) {
     validateItems[1].checked = true;
+    Auth.saveSlider(validateItems[1].sliderID)
   } else {
     validateItems[1].checked = false;
   }

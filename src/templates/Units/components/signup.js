@@ -6,7 +6,7 @@ import robot from './img/robot_avatar_happy.png'
 import * as Auth from './authmanager.js';
 import * as popup from './popups.js';
 
-const login = ()=>(
+const login = () => (
     <div id="signupPanel" className="bottom-arrow" style={{
         height: '430px',
         minWidth: '400px',
@@ -15,23 +15,23 @@ const login = ()=>(
         marginTop: '10px',
         padding: '15px',
         textAlign: 'center',
-        position: 'relative'        
-    }}>       
-        <h2 style={{color: 'black', fontSize: '20px'}}>REGISTRATION IS SOOOO EASY. WE JUST NEED A FEW<br/>DETAILS TO GET STARTED</h2>
+        position: 'relative'
+    }}>
+        <h2 style={{ color: 'black', fontSize: '20px' }}>REGISTRATION IS SOOOO EASY. WE JUST NEED A FEW<br />DETAILS TO GET STARTED</h2>
         <div style={{
-            width:'100%',          
+            width: '100%',
             backgroundColor: '#ddf0fe',
             padding: '10px'
         }}>
-            
+
             <div className="input-box">
                 <label htmlFor="firstname">First name</label>
-                <input type="text" name="firstname" id="firstname" placeholder="First name"/>
+                <input type="text" name="firstname" id="firstname" placeholder="First name" />
             </div>
             <div className="input-box">
                 <label htmlFor="firstname">Last name</label>
-                <input type="text" name="lastname" id="last name" placeholder="Last name"/>
-            </div><br/><br/>
+                <input type="text" name="lastname" id="last name" placeholder="Last name" />
+            </div><br /><br />
             <div className="input-box" >
                 <label>Date of Birth</label>
                 <select name="bday" id="bday" class="custom-select mb-0" required="">
@@ -187,65 +187,65 @@ const login = ()=>(
                     <option value="1921">1921</option>
                     <option value="1920">1920</option>
                 </select>
-            </div><br/><span style={{color: '#28a745', fontSize: '80%'}}>Please enter your full date of birth.</span><br/>            
-        </div><br/>
+            </div><br /><span style={{ color: '#28a745', fontSize: '80%' }}>Please enter your full date of birth.</span><br />
+        </div><br />
         <div className="input-box">
-            <button style={{backgroundColor: '#777'}} onClick={()=>{
-                   location.reload();
+            <button style={{ backgroundColor: '#777' }} onClick={() => {
+                location.reload();
             }}>MAYBE LATER</button>
-            <button style={{backgroundColor: '#ff6a00'}} onClick={()=>{
-                if(Auth.validateForm('#signupPanel input[type="text"], #signupPanel select')){
+            <button style={{ backgroundColor: '#ff6a00' }} onClick={() => {
+                if (Auth.validateForm('#signupPanel input[type="text"], #signupPanel select')) {
                     var info = Auth.getValue('#signupPanel input[type="text"], #signupPanel select');
-                    Auth.createUser(info.join('').toLowerCase().replace(' ', '') + '@codejika.org', info.join('').toLowerCase().replace(' ', ''));
-                    Auth.change((user)=>{                        
-                        if(Auth.islogged()){
-                            Auth.firebaseInsert('Users/profile/' + info.join('').toLowerCase().replace(' ', ''),{
+                    Auth.createUser(info.join('').toLowerCase().replace(' ', '') + '@codetribe.org', info.join('').toLowerCase().replace(' ', ''));
+                    Auth.change((user) => {
+                        if (Auth.islogged()) {
+                            Auth.firebaseInsert('Users/profile/' + info.join('').toLowerCase().replace(' ', ''), {
                                 firstname: info[0],
                                 lastname: info[1],
                                 day: info[2],
                                 month: info[3],
                                 year: info[4],
-                            });                
+                            });
                             Auth.setUser(info.join('').toLowerCase().replace(' ', ''), info[0]);
                             Auth.clearShadow();
-                            $('.login-signup-container').css({'z-index':0});
-                            ReactDOM.render(<popup.Aftersignup/>, document.querySelector('.hide-body-shadow'));                                      
+                            $('.login-signup-container').css({ 'z-index': 0 });
+                            ReactDOM.render(<popup.Aftersignup />, document.querySelector('.hide-body-shadow'));
                         }
                     })
-                    
+
                 }
             }}>SIGN UP</button>
-        </div><br/><br/>
-        <label style={{color: 'black', cursor: 'pointer', margin: '5px'}} onClick={()=>{
-             ReactDOM.render(<Signup />, document.querySelector('.hide-body-shadow'));                      
-             $('.login-signup-container').css({'z-index': 0});
-        }}>Already have an account? <span style={{color: 'blue'}}>Sign in</span></label>
+        </div><br /><br />
+        <label style={{ color: 'black', cursor: 'pointer', margin: '5px' }} onClick={() => {
+            ReactDOM.render(<Signup />, document.querySelector('.hide-body-shadow'));
+            $('.login-signup-container').css({ 'z-index': 0 });
+        }}>Already have an account? <span style={{ color: 'blue' }}>Sign in</span></label>
         <div style={{
-             position: 'absolute',
-             top: '5px',
-             right: '10px',
-             cursor: 'pointer',           
-             color: 'gray',
-             padding: '5px',
-             fontSize: '25px',
-             fontWeight: 'bold'
+            position: 'absolute',
+            top: '5px',
+            right: '10px',
+            cursor: 'pointer',
+            color: 'gray',
+            padding: '5px',
+            fontSize: '25px',
+            fontWeight: 'bold'
         }} className="clear-login-panel"
-        onClick={()=>{
-            ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
-            $('.login-signup-container').css({'z-index':2000});
-        }}>X</div>
+            onClick={() => {
+                ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
+                $('.login-signup-container').css({ 'z-index': 2000 });
+            }}>X</div>
         <div style={{
-             height: '150px',
-             width: '150px',
-             position: 'absolute',
-             top: '105%',          
-             left: '50%',
+            height: '150px',
+            width: '150px',
+            position: 'absolute',
+            top: '105%',
+            left: '50%',
         }}>
             <img src={robot} alt="" style={{
                 height: '100%',
                 width: '100%',
-                position: 'relative',                         
-                left: '-50%',                
+                position: 'relative',
+                left: '-50%',
             }} />
         </div>
     </div>

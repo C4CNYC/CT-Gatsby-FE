@@ -55,7 +55,7 @@ class DesktopLayout extends Component {
     return (
       <ReflexContainer className='desktop-layout' orientation='vertical'>
         <ReflexElement flex={1} {...resizeProps}>
-           {instructions}
+          {instructions}
         </ReflexElement>
         <ReflexSplitter propagate={true} {...resizeProps} />
         <ReflexElement flex={1} {...resizeProps}>
@@ -68,7 +68,7 @@ class DesktopLayout extends Component {
                 renderOnResizeRate={20}
                 {...resizeProps}
               >
-                {editor}      
+                {editor}
               </ReflexElement>
               {/*<ReflexSplitter propagate={true} {...resizeProps} />*/}
               {/*<ReflexElement*/}
@@ -89,8 +89,8 @@ class DesktopLayout extends Component {
             {preview}
           </ReflexElement>
         )}
-        <ReflexElement className="login-signup-container">         
-           <Menu/>
+        <ReflexElement className="login-signup-container">
+          <Menu />
         </ReflexElement>
       </ReflexContainer>
     );
