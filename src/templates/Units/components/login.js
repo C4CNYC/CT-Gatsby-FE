@@ -195,7 +195,11 @@ const login = () => (
             <button style={{ backgroundColor: '#ff6a00' }} onClick={() => {
                 if (Auth.validateForm('#loginPanel input[type="text"], #loginPanel select')) {
                     var info = Auth.getValue('#loginPanel input[type="text"], #loginPanel select');
-                    Auth.signIn(info.join('').toLowerCase().replace(' ', '') + '@codetribe.org', info.join('').toLowerCase().replace(' ', ''));
+                    Auth.signIn(info.join('').toLowerCase().replace(' ', '') + '@codetribe.org', info.join('').toLowerCase().replace(' ', ''))
+                        .then(res => {
+                        }).catch(err => {
+                            ReactDOM.render(<popup.Loginfailed message={err.message} />, document.querySelector('.hide-body-shadow'));
+                        });
                     Auth.change((user) => {
                         if (user) {
                             Auth.setUser(info.join('').toLowerCase().replace(' ', ''), info[0]);

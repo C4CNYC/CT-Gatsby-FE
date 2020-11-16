@@ -42,6 +42,7 @@ const propTypes = {
 
 
 class DesktopLayout extends Component {
+
   render() {
     const {
       resizeProps,

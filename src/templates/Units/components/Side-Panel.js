@@ -348,7 +348,7 @@ export class SidePanel extends Component {
     } else {
       return (
         <div>
-          {/* <Sliders /> */}
+          <Sliders />
         </div>
       )
     }

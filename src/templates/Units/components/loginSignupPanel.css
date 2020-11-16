@@ -1,37 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
-#login-signup{
+
+#login-signup {
     background-color: #00bcd4;
     width: 100%;
     height: 100%;
     text-align: center;
-    padding: 20px 0px;    
+    padding: 20px 0px;
 }
-.login-signup-container{
+
+.login-signup-container {
     transition: flex .2s;
 }
-#login-signup *{
+
+#login-signup * {
     font-family: 'Rajdhani', sans-serif;
 }
-#login-signup h2,#login-signup h4{
+
+#login-signup h2,
+#login-signup h4 {
     color: black;
     margin: 5px;
 }
-#login-signup h2{
+
+#login-signup h2 {
     font-size: 2rem;
 }
-#login-signup h4{
+
+#login-signup h4 {
     font-size: 1.5rem;
 }
-.login-signup-menu{   
+
+.login-signup-menu {
     text-align: center;
     max-width: 330px;
     margin: auto;
     padding: 0px;
 }
 
-.login-signup-menu li{
-    list-style: none;    
-    background-color: rgba(239, 239, 239, 0.9);    
+.login-signup-menu li {
+    list-style: none;
+    background-color: rgba(239, 239, 239, 0.9);
     margin-bottom: 10px;
     text-align: left;
     width: 330px;
@@ -39,42 +47,51 @@
     display: flex;
     align-items: center;
 }
-.login-signup-menu li a{
+
+.login-signup-menu li a {
     text-decoration: none;
     color: black;
-    font-size: 14px;   
-    width: 100%; 
+    font-size: 14px;
+    width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     padding: 10px 16px;
 }
-.same-row{
-    width: 163px!important;
-    float: left;    
+
+.same-row {
+    width: 163px !important;
+    float: left;
 }
-.same-row:first-child{
+
+.same-row:first-child {
     margin-right: 4px;
 }
-.login-signup-icon{
-    height: 30px!important;
-    width: 30px!important;
+
+.login-signup-icon {
+    height: 30px !important;
+    width: 30px !important;
     margin: 10px;
 }
-.pest-button{
+
+.pest-button {
     background: #3ec9cb;
     color: white;
 }
-.dark-gray-button{
+
+.dark-gray-button {
     background: #333;
     color: white;
 }
-.pest-button, .dark-gray-button{
+
+.pest-button,
+.dark-gray-button {
     padding: 4px 10px;
     display: inline-block;
     margin: 2px;
 }
-.hide-body-shadow{
+
+.hide-body-shadow {
     width: 100vw;
     height: 100vw;
     background: rgba(12, 8, 8, 0.8);
@@ -84,10 +101,12 @@
     display: flex;
     justify-content: center;
 }
-.login-signup-container{
+
+.login-signup-container {
     z-index: 2000;
 }
-#close-button{
+
+#close-button {
     position: absolute;
     top: 0;
     left: 0px;
@@ -104,60 +123,79 @@
     font-size: 25px;
     font-weight: bold;
 }
-#loginPanel *, #signupPanel *, #profilePanel *, #resetPanel *, #aftersignupPanel *, #signupsuccessPanel *, #loginsuccessPanel *{
+
+#loginPanel *,
+#signupPanel *,
+#profilePanel *,
+#resetPanel *,
+#aftersignupPanel *,
+#signupsuccessPanel *,
+#loginsuccessPanel * {
     font-family: 'Rajdhani', sans-serif;
 }
-#loginPanel h2{
+
+#loginPanel h2 {
     word-break: break-all;
 }
-.input-box{
+
+.input-box {
     display: inline-block;
     justify-content: center;
     margin: 0 15px;
     min-width: 50px;
 }
-#loginPanel .input-box, #signupPanel .input-box{
+
+#loginPanel .input-box,
+#signupPanel .input-box {
     min-width: 240px;
 }
-.input-box label{
+
+.input-box label {
     width: 100%;
-    text-align: center;   
+    text-align: center;
     color: black;
     font-size: 14px;
     display: block;
 }
+
 /* .input-box *{
     display: block;
 } */
-.input-box input[type="text"], .input-box input[type="email"]{
+.input-box input[type="text"],
+.input-box input[type="email"] {
     padding: 8px 12px;
     border: 1px solid #ced4da;
     border-radius: .25rem;
     font-size: 16px;
     width: 100%;
 }
-.input-box input[type="text"]::placeholder, .input-box input[type="email"]::placeholder{
+
+.input-box input[type="text"]::placeholder,
+.input-box input[type="email"]::placeholder {
     color: gray;
     font-family: 'Rajdhani', sans-serif;
 }
-.input-box textarea{
+
+.input-box textarea {
     padding: 8px 12px;
     border: 1px solid #ced4da;
     border-radius: .25rem;
     font-size: 16px;
     width: 100%;
 }
-.input-box textarea::placeholder{
+
+.input-box textarea::placeholder {
     color: gray;
-    font-family: 'Rajdhani', sans-serif;    
+    font-family: 'Rajdhani', sans-serif;
 }
-.input-box select{
+
+.input-box select {
     display: inline-block;
     padding: 8px 12px;
     border: 1px solid #ced4da;
     border-radius: .25rem;
     font-size: 16px;
-    margin: 5px;  
+    margin: 5px;
     background: white url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -165,33 +203,40 @@
     width: 100px;
     padding-right: 25px;
 }
-.input-box button{
+
+.input-box button {
     color: white;
     font-weight: bold;
     padding: 7px 12px;
     border: 0;
     margin: 2px;
-    border-bottom: 3px solid #333 ;
+    border-bottom: 3px solid #333;
     font-size: 18px;
     border-radius: .25rem;
-    cursor: pointer;    
+    cursor: pointer;
 }
-.input-box button:hover{
+
+.input-box button:hover {
     opacity: .8;
 }
-.bottom-arrow::after{
+
+.bottom-arrow::after {
     content: "";
-  position: absolute;
-  top: 100%;
-  left: 90%;
-  margin-left: -20px;
-  border-width: 20px;
-  border-style: solid;
-  border-color:white transparent transparent white;
+    position: absolute;
+    top: 100%;
+    left: 90%;
+    margin-left: -20px;
+    border-width: 20px;
+    border-style: solid;
+    border-color: white transparent transparent white;
 }
-.profile-input input, .profile-input select, .profile-input span{
+
+.profile-input input,
+.profile-input select,
+.profile-input span {
     font-size: 16px;
 }
-.profile-box .profile-input{
+
+.profile-box .profile-input {
     margin: 8px 0;
 }

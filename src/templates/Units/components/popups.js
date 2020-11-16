@@ -23,6 +23,9 @@ export const Aftersignup = () => (
             <input type="text" name="nickname" id="nickname" placeholder="Nick name" />
         </div>
         <div className="input-box" style={{ width: '90%', margin: '8px' }}>
+            <input type="text" name="email" id="email" placeholder="Email address" />
+        </div>
+        <div className="input-box" style={{ width: '90%', margin: '8px' }}>
             <select id="PCountry" name="country" class="form-control" style={{
                 padding: '8px 12px', width: '100%', margin: '0'
             }}>
@@ -282,8 +285,8 @@ export const Aftersignup = () => (
                 var info = Auth.getValue('#aftersignupPanel input[type="text"], #aftersignupPanel select');
                 Auth.firebaseUpdate('Users/profile/' + Auth.currentUserId(), {
                     nickname: info[0],
-                    email: Auth.currentUserId() + "@codetribe.org",
-                    country: info[1]
+                    email: info[1] || Auth.currentUserId() + "@codetribe.org",
+                    country: info[2]
                 });
                 ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
                 ReactDOM.render(<Signupsuccessfull />, document.querySelector('.hide-body-shadow'));
@@ -368,6 +371,55 @@ export const Signupsuccessfull = () => (
     </div>
 )
 
+export const Signupfailed = (props) => (
+    <div id="loginsuccessPanel" className="bottom-arrow" style={{
+        height: '200px',
+        width: '400px',
+        backgroundColor: '#fff',
+        borderRadius: '10px',
+        marginTop: '10px',
+        padding: '15px',
+        textAlign: 'center',
+        position: 'relative',
+    }}>
+        <h2 style={{ color: 'black', fontSize: '20px', margin: '15px' }}>SIGNUP FAILED</h2>
+        <span style={{ color: 'black', margin: '8px' }}>{props.message}</span><br /><br />
+        <div className="input-box">
+            <button style={{ backgroundColor: '#ff6a00' }} onClick={() => {
+                ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
+                $('.login-signup-container').css({ 'z-index': 2000 });
+            }}>OK</button>
+        </div><br /><br />
+        <div style={{
+            position: 'absolute',
+            top: '5px',
+            right: '10px',
+            cursor: 'pointer',
+            color: 'gray',
+            padding: '5px',
+            fontSize: '25px',
+            fontWeight: 'bold'
+        }} className="clear-login-panel"
+            onClick={() => {
+                ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
+                $('.login-signup-container').css({ 'z-index': 2000 });
+            }}>X</div>
+        <div style={{
+            height: '150px',
+            width: '150px',
+            position: 'absolute',
+            top: '105%',
+            left: '50%',
+        }}>
+            <img src={happyrobot} alt="" style={{
+                height: '100%',
+                width: '100%',
+                position: 'relative',
+                left: '-50%',
+            }} />
+        </div>
+    </div>
+)
 export const Loginsuccessfull = () => (
     <div id="loginsuccessPanel" className="bottom-arrow" style={{
         height: '200px',
@@ -384,6 +436,57 @@ export const Loginsuccessfull = () => (
         <div className="input-box">
             <button style={{ backgroundColor: '#ff6a00' }} onClick={() => {
                 location.reload();
+            }}>OK</button>
+        </div><br /><br />
+        <div style={{
+            position: 'absolute',
+            top: '5px',
+            right: '10px',
+            cursor: 'pointer',
+            color: 'gray',
+            padding: '5px',
+            fontSize: '25px',
+            fontWeight: 'bold'
+        }} className="clear-login-panel"
+            onClick={() => {
+                ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
+                $('.login-signup-container').css({ 'z-index': 2000 });
+            }}>X</div>
+        <div style={{
+            height: '150px',
+            width: '150px',
+            position: 'absolute',
+            top: '105%',
+            left: '50%',
+        }}>
+            <img src={happyrobot} alt="" style={{
+                height: '100%',
+                width: '100%',
+                position: 'relative',
+                left: '-50%',
+            }} />
+        </div>
+    </div>
+)
+
+
+export const Loginfailed = (props) => (
+    <div id="loginsuccessPanel" className="bottom-arrow" style={{
+        height: '200px',
+        width: '400px',
+        backgroundColor: '#fff',
+        borderRadius: '10px',
+        marginTop: '10px',
+        padding: '15px',
+        textAlign: 'center',
+        position: 'relative',
+    }}>
+        <h2 style={{ color: 'black', fontSize: '20px', margin: '15px' }}>LOGIN FAILED</h2>
+        <span style={{ color: 'black', margin: '8px' }}>{props.message}</span><br /><br />
+        <div className="input-box">
+            <button style={{ backgroundColor: '#ff6a00' }} onClick={() => {
+                ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
+                $('.login-signup-container').css({ 'z-index': 2000 });
             }}>OK</button>
         </div><br /><br />
         <div style={{

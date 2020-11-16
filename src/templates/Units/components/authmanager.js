@@ -25,7 +25,6 @@ if (typeof window != 'undefined') {
 
 // global functions
 export function islogged() {
-    console.log("current user", Auth.currentUser)
     if (Auth.currentUser != null) {
         return true;
     } else {
@@ -301,6 +300,7 @@ export function savCode(code_text) {
     }
 }
 export function getCode(callback) {
+    console.log(islogged())
     if (islogged()) {
         firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentcodeconsole', (codes) => {
             if (codes != null) {
@@ -313,12 +313,10 @@ export function getCode(callback) {
 }
 
 export function createUser(userid, userpass) {
-    const promise = Auth.createUserWithEmailAndPassword(userid, userpass);
-    promise.catch(e => alert(e.message));
+    return Auth.createUserWithEmailAndPassword(userid, userpass);
 }
 export function signIn(userid, userpass) {
-    const promise = Auth.signInWithEmailAndPassword(userid, userpass);
-    promise.catch(e => alert(e.message));
+    return Auth.signInWithEmailAndPassword(userid, userpass);
 }
 export function signOut() {
     if (islogged()) {
@@ -326,13 +324,13 @@ export function signOut() {
     }
 }
 
-change((user) => {
-    if (user) {
-        var url = window.location.href + '?' + btoa(currentUserId());
-        window.history.pushState({ path: url }, '', url);
-        alert(window.location.href)
-    }
-})
+// change((user) => {
+//     if (user) {
+//         var url = window.location.href + '?' + btoa(currentUserId());
+//         window.history.pushState({ path: url }, '', url);
+//         alert(window.location.href)
+//     }
+// })
 
 
 //operational functions

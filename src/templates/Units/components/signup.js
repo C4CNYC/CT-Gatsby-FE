@@ -196,7 +196,11 @@ const login = () => (
             <button style={{ backgroundColor: '#ff6a00' }} onClick={() => {
                 if (Auth.validateForm('#signupPanel input[type="text"], #signupPanel select')) {
                     var info = Auth.getValue('#signupPanel input[type="text"], #signupPanel select');
-                    Auth.createUser(info.join('').toLowerCase().replace(' ', '') + '@codetribe.org', info.join('').toLowerCase().replace(' ', ''));
+                    Auth.createUser(info.join('').toLowerCase().replace(' ', '') + '@codetribe.org', info.join('').toLowerCase().replace(' ', ''))
+                        .then((res) => { })
+                        .catch(err => {
+                            ReactDOM.render(<popup.Signupfailed message={err.message} />, document.querySelector('.hide-body-shadow'));
+                        });
                     Auth.change((user) => {
                         if (Auth.islogged()) {
                             Auth.firebaseInsert('Users/profile/' + info.join('').toLowerCase().replace(' ', ''), {
