@@ -17,7 +17,7 @@ import { lesson_data } from '../utils/lesson_data';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Sliders from './slider.js'
-
+import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 const mapStateToProps = createSelector(
@@ -105,12 +105,13 @@ export class SidePanel extends Component {
             <div class='white'>
               <p class="h5 pt-3 ">Tip: Swipe left <img class='swiper-lazy w-1em' src={require('../img/emoji/72/leftwards-black-arrow.png')} alt='' /> or click the button below.</p>
               <div class="">
-                <div class="button-locked">
-                  <div class="btn btn-primary swiper-editor bg-aqXua skip check c1-back" >SEE CODE EDITOR</div>
-                </div>
-                <div class="button-unlocked">
-                  <a class="btn btn-primary success check swiper-next c1-back">I did it <i class="icon-sentiment_satisfied"></i></a>
-                </div>
+                {this.isCheckedOf(0) ? <div class="button-locked">
+                  <a class="btn btn-primary success check swiper-next c1-back">I did it <SentimentSatisfiedIcon /></a>
+                </div> : <div class="button-locked">
+                    <div class="btn btn-primary swiper-editor bg-aqXua skip check c1-back" >SEE CODE EDITOR</div>
+                  </div>}
+
+
               </div>
               <p class=" pt-3 mb-1">Not sure what to do?</p>
               <p class="pt-0 underline take-tour pointer">Take the Tour</p>
@@ -262,14 +263,15 @@ export class SidePanel extends Component {
             </div>
           </div>
           <div class='container'>
-            <div class='button-locked'>
-              <a class='btn btn-primary action check swiper-editor' style={{}}>Let's get Coding <ArrowForwardIcon /> </a> <br />
-              <a class='swiper-next skip' style={{}}>Skip this step</a>
-            </div>
-            <div class='button-unlocked'>
-              <a class='btn btn-primary success check swiper-next' style={{}}>I did it <i class='icon-sentiment_satisfied'></i>
+            {this.isCheckedOf(1) ? <div class='button-locked'>
+              <a class='btn btn-primary success check swiper-next' style={{}}>I did it <SentimentSatisfiedIcon />
               </a> <br />
-            </div>
+            </div> :
+              <div class='button-locked'>
+                <a class='btn btn-primary action check swiper-editor' style={{}}>Let's get Coding <ArrowForwardIcon /> </a> <br />
+                <a class='swiper-next skip' style={{}}>Skip this step</a>
+              </div>}
+
           </div>
           <div class='container'>
             <p class='lesson-tip'>
@@ -277,39 +279,84 @@ export class SidePanel extends Component {
           </div>
 
         </ReflexElement>
+      </div >
+
+      case 11: return <div id="lesson-page" style={{ height: "100%" }}>
+        <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
+          <div class='container'>
+            <h2 class='lesson-title encouraging  mb-5'>GOOD JOB!</h2>
+            <h3 class='lesson-title font-weight-normal mb-5'>Now we’ll add <br /> some styling with <br />
+              <span class='pink' style={{ fontWeight: 'bold' }}>CSS</span>.
+      </h3>
+            <h3 class='lesson-title font-weight-normal mt-5'>Are you ready?</h3>
+          </div>
+        </ReflexElement>
       </div>
 
-      //     case 11: return <div id="lesson-page" style={{ height: "100%" }}>
-      //       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
-      //         <div class='container'>
-      //           <h2 class='lesson-title encouraging  mb-5'>GOOD JOB!</h2>
-      //           <h3 class='lesson-title font-weight-normal mb-5'>Now we’ll add <br /> some styling with <br />
-      //             <span class='pink' style={{ fontWeight: 'bold' }}>CSS</span>.
-      // </h3>
-      //           <h3 class='lesson-title font-weight-normal mt-5'>Are you ready?</h3>
-      //         </div>
-      //       </ReflexElement>
-      //     </div>
 
+      case 12: return <div id="lesson-page" style={{ height: "100%" }}>
+        <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
+          <div class='container'>
+            <h2 class='lesson-title pink '>CSS</h2>
+            <p class='lesson-instructions fs-16 mb-4'>Cascading Style Sheets</p>
+            <div style={{ position: 'relative' }}>
+              <p class='lesson-instructions pink' style={{ position: 'absolute', top: '53%', left: '10%' }}>style='...'</p>
+              <img src={require('../img/lessons/css-girl.png')} class='swiper-lazy mb-2' style={{ maxHeight: '50vh' }} />
+            </div>
+            <div class='swiper-lazy-preloader'></div>
+            <h3 class='lesson-title font-weight-normal mt-2'>
+              <span class=' pink' style={{ marginLeft: '-25%' }}>CSS</span> is the <br />
+              <span class='yellow' style={{ marginLeft: '25%' }}>STYLE </span>
+              <small> (BLING)</small>
+            </h3>
+          </div>
+        </ReflexElement>
+      </div>
+      case 13: return <div id="lesson-page" style={{ height: "100%" }}>
+        <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
+          <div class='container'>
+            <h3 class='lesson-title font-weight-normal mb-5'>This will add a beautiful background color to your website.</h3>
+            <h3 class='lesson-title font-weight-normal mt-5 mb-5'>It’s worth it.<br />I promise.</h3>
+            <p class='lesson-instructions mb-4'>
+              <img class='swiper-lazy w-20' src={require('../img/emoji/ok-hand-sign_1f44c.png')} />
+              <img class='swiper-lazy w-20' src={require('../img/emoji/grinning-face-with-smiling-eyes_1f601.png')} />
+              <img class='swiper-lazy w-20' src={require('../img/emoji/ok-hand-sign_1f44c.png')} />
+            </p>
+          </div>
+        </ReflexElement>
+      </div>
+      case 14: return <div id="lesson-page" style={{ height: "100%" }}>
+        <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
+          <div class='container'>
+            {this.renderChecker(2)}
+            <h2>Challenge</h2>
+            <div style={{ marginTop: '2rem' }}>
+              <ol >
+                <li class='task-1'> Add a line <span style={{ textDecoration: 'underline' }}>above</span> your <span class='consolas'>&lt;h1&gt;</span> tags. </li>
+                <li class='task-1'> Type <span class='consolas'>&lt;body&gt;</span> </li>
+              </ol>
+            </div>
+            <div style={{ textAlign: 'left' }}>
+              <p class='like-this'>Like this:</p>
+            </div>
+            <div class='h1-content-area-3'>
+              <p align='left' id='attr-type-value' class='m-4 text-left' style={{ color: '#f1f1f1', fontSize: '18px' }}>
+                <span class='cm-tag consolas'>&lt;body&gt;</span><br /> <span class='cm-tag consolas'>&lt;h1&gt;</span>your name<span class='cm-tag'>&lt;/h1&gt;</span>
+              </p> </div>
+            {this.isCheckedOf(2) ? <div class='button-locked mt-4'>
+              <a class='btn btn-primary success check swiper-next' >I did it <SentimentSatisfiedIcon /> </a> <br /> </div> :
+              <div class='button-locked mt-2'>
+                <a class='btn btn-primary action check swiper-editor' >Let's get Coding <ArrowForwardIcon /> </a> <br />
+                <a class='swiper-next skip' >Skip this step</a>
+              </div>}
 
-      // case 12: return <div id="lesson-page" style={{ height: "100%" }}>
-      //   <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
-      //     <div class='container'>
-      //       <h2 class='lesson-title pink '>CSS</h2>
-      //       <p class='lesson-instructions fs-16 mb-4'>Cascading Style Sheets</p>
-      //       <div style={{ position: 'relative' }}>
-      //         <p class='lesson-instructions pink' style={{ position: 'absolute', top: '53%', left: '10%' }}>style='...'</p>
-      //         <img src={require('../img/lessons/css-girl.png')} class='swiper-lazy mb-2' style={{ maxHeight: '50vh' }} />
-      //       </div>
-      //       <div class='swiper-lazy-preloader'></div>
-      //       <h3 class='lesson-title font-weight-normal mt-2'>
-      //         <span class=' pink' style={{ marginLeft: '-25%' }}>CSS</span> is the <br />
-      //         <span class='yellow' style={{ marginLeft: '25%' }}>STYLE </span>
-      //         <small> (BLING)</small>
-      //       </h3>
-      //     </div>
-      //   </ReflexElement>
-      // </div>
+          </div>
+          <div class='container'> </div>
+          <div class='container'> <p class='lesson-tip tip-blog-new'><span>Tip:</span> &lt;body&gt; on first line.
+                               </p>
+          </div>
+        </ReflexElement>
+      </div>
       default:
         return null;
       // return <div id="lesson-page" style={{ height: "100%" }}>
@@ -347,9 +394,18 @@ export class SidePanel extends Component {
       )
     } else {
       return (
-        <div>
-          <Sliders />
-        </div>
+        // <div>
+        //   <Sliders />
+        // </div>
+        <ReflexContainer orientation='horizontal' className='instructions-panel is-mobile' role='complementary' tabIndex='-1' >
+          <ReactPageScroller
+            ref={c => this.reactPageScroller = c}
+            animationTimer={200}
+            containerWidth="100%"
+          >
+            {lesson_data.slides.map(this.renderSlide)}
+          </ReactPageScroller>
+        </ReflexContainer>
       )
     }
 

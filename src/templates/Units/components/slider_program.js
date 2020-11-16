@@ -190,11 +190,18 @@ const validateItems = [
     sliderID: 10,
     text: 'Type your name between tags'
   },
+  {
+    group: 1,
+    index: 2,
+    sliderID: 14,
+    text: 'Type <body> above <h1> tags'
+  },
 ]
 
 export function validate_test(code) {
-  $("#validate-html").html(code)
+  if (!code) return;
 
+  $("#validate-html").html(code)
   if (($("#validate-html h1").length > 0)) {
     validateItems[0].checked = true;
     Auth.saveSlider(validateItems[0].sliderID)
@@ -207,6 +214,13 @@ export function validate_test(code) {
     Auth.saveSlider(validateItems[1].sliderID)
   } else {
     validateItems[1].checked = false;
+  }
+
+  if (code.match(/<body>/)) {
+    validateItems[2].checked = true;
+    Auth.saveSlider(validateItems[2].sliderID)
+  } else {
+    validateItems[2].checked = false;
   }
   // if ($("#validate-html img").length) {
   //   validateItems[0].checked = true;

@@ -256,6 +256,16 @@ class Editor extends Component {
         this.setState({ currentCode: codes })
       }
     });
+    Auth.change((user) => {
+
+      if (user) Auth.getCode((codes) => {
+        console.log("codes", codes)
+        if (typeof codes != 'null' && typeof codes != 'undefined') {
+          this.validatesFunc(codes);
+          this.setState({ currentCode: codes })
+        }
+      });
+    });
 
   }
   editorWillMount = monaco => {
@@ -709,6 +719,7 @@ class Editor extends Component {
   };
 
   checkReturnedCode = async (validatedItems) => {
+    if (!validatedItems) return true;
     let list = await Auth.getSlider();
     return validatedItems.filter((e) => e.checked).length < list.length
   }

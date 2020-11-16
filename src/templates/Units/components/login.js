@@ -197,6 +197,7 @@ const login = () => (
                     var info = Auth.getValue('#loginPanel input[type="text"], #loginPanel select');
                     Auth.signIn(info.join('').toLowerCase().replace(' ', '') + '@codetribe.org', info.join('').toLowerCase().replace(' ', ''))
                         .then(res => {
+                            Auth.fromLocalToFirestoreCode();
                         }).catch(err => {
                             ReactDOM.render(<popup.Loginfailed message={err.message} />, document.querySelector('.hide-body-shadow'));
                         });

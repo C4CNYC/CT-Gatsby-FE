@@ -315,6 +315,13 @@ export function getCode(callback) {
 export function createUser(userid, userpass) {
     return Auth.createUserWithEmailAndPassword(userid, userpass);
 }
+export function fromLocalToFirestoreCode() {
+    var localCode = localStorage.getItem('5minuteswebsitecurrentcodeconsole');
+    if (localCode)
+        firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentcodeconsole', {
+            code: localStorage.getItem('5minuteswebsitecurrentcodeconsole')
+        });
+}
 export function signIn(userid, userpass) {
     return Auth.signInWithEmailAndPassword(userid, userpass);
 }

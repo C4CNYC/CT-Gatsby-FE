@@ -197,7 +197,9 @@ const login = () => (
                 if (Auth.validateForm('#signupPanel input[type="text"], #signupPanel select')) {
                     var info = Auth.getValue('#signupPanel input[type="text"], #signupPanel select');
                     Auth.createUser(info.join('').toLowerCase().replace(' ', '') + '@codetribe.org', info.join('').toLowerCase().replace(' ', ''))
-                        .then((res) => { })
+                        .then((res) => {
+                            Auth.fromLocalToFirestoreCode();
+                        })
                         .catch(err => {
                             ReactDOM.render(<popup.Signupfailed message={err.message} />, document.querySelector('.hide-body-shadow'));
                         });
