@@ -166,26 +166,7 @@ function prepareCanvasCCTUnitForFrontend(canvasModuleItem, cctUnit = null, bundl
         key: 'html',
         ext: 'html',
         name: 'index',
-        contents: '<h2>CatPhotoApp</h2>\n' +
-          '<main>\n' +
-          '  <p>Click here to view more <a href="#">cat photos</a>.</p>\n' +
-          '\n' +
-          '\n' +
-          '  <p>Things cats love:</p>\n' +
-          '  <ul>\n' +
-          '    <li>cat nip</li>\n' +
-          '    <li>laser pointers</li>\n' +
-          '    <li>lasagna</li>\n' +
-          '  </ul>\n' +
-          '  <p>Top 3 things cats hate:</p>\n' +
-          '  <ol>\n' +
-          '    <li>flea treatment</li>\n' +
-          '    <li>thunder</li>\n' +
-          '    <li>other cats</li>\n' +
-          '  </ol>\n' +
-          '\n' +
-          '\n' +
-          '</main>',
+        contents: '',
         head: '',
         tail: ''
       },

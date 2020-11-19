@@ -14,7 +14,8 @@ import {
   setMonacoEditor,
   setValidate,
   validateSelector,
-  validateCheckedSelector
+  validateCheckedSelector,
+  currentSlideNumberSelector
 } from '../redux';
 import { userSelector, isDonationModalOpenSelector } from '../../../state';
 import { Loader } from '../../../components/helpers';
@@ -49,6 +50,7 @@ const propTypes = {
   settingValidate: PropTypes.func.isRequired,
   validateChecked: PropTypes.bool.isRequired,
   validate: PropTypes.array.isRequired,
+  currentSlideNumber: PropTypes.number
 };
 
 const mapStateToProps = createSelector(
@@ -58,12 +60,14 @@ const mapStateToProps = createSelector(
   userSelector,
   validateCheckedSelector,
   validateSelector,
-  (canFocus, accessibilityMode, open, { theme = 'night' }, validateChecked, validate) => ({
+  currentSlideNumberSelector,
+  (canFocus, accessibilityMode, open, { theme = 'night' }, validateChecked, validate, currentSlideNumber) => ({
     canFocus: open ? false : canFocus,
     inAccessibilityMode: accessibilityMode,
     theme,
     validateChecked,
-    validate
+    validate,
+    currentSlideNumber
   })
 );
 
@@ -251,22 +255,32 @@ class Editor extends Component {
 
   componentDidMount() {
     Auth.getCode((codes) => {
-      if (typeof codes != 'null' && typeof codes != 'undefined') {
+      if (codes !== null && typeof codes !== undefined) {
         this.validatesFunc(codes);
         this.setState({ currentCode: codes })
       }
     });
     Auth.change((user) => {
-
       if (user) Auth.getCode((codes) => {
-        console.log("codes", codes)
-        if (typeof codes != 'null' && typeof codes != 'undefined') {
+        if (codes !== null && typeof codes !== undefined) {
+
           this.validatesFunc(codes);
           this.setState({ currentCode: codes })
         }
       });
     });
+  }
+  async componentWillReceiveProps(next) {
+    if (this.props.currentSlideNumber !== next.currentSlideNumber) {
+      const { settingValidate, currentSlideNumber } = next;
+      var validatedItems = slider.validate_test(this.state.currentCode, currentSlideNumber);
+      var returnedCode = await this.checkReturnedCode(validatedItems);
 
+      if (!returnedCode) {
+        this.setState({ validate: validatedItems })
+        settingValidate(validatedItems)
+      }
+    }
   }
   editorWillMount = monaco => {
     defineMonacoThemes(monaco);
@@ -719,14 +733,17 @@ class Editor extends Component {
   };
 
   checkReturnedCode = async (validatedItems) => {
-    if (!validatedItems) return true;
+    // if (!validatedItems) return true;
     let list = await Auth.getSlider();
+    if (!list) return false;
     return validatedItems.filter((e) => e.checked).length < list.length
   }
+
   validatesFunc = async (context) => {
-    const { settingValidate } = this.props;
-    var validatedItems = slider.validate_test(context);
+    const { settingValidate, currentSlideNumber } = this.props;
+    var validatedItems = slider.validate_test(context, currentSlideNumber);
     var returnedCode = await this.checkReturnedCode(validatedItems);
+
     if (!returnedCode) {
       this.setState({ validate: validatedItems })
       settingValidate(validatedItems)

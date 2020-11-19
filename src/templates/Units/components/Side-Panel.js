@@ -7,7 +7,7 @@ import UnitDescription from './Unit-Description';
 import ToolPanel from './Tool-Panel';
 import TestSuite from './Test-Suite';
 
-import { unitTestsSelector, isUnitCompletedSelector, validateSelector } from '../redux';
+import { unitTestsSelector, isUnitCompletedSelector, validateSelector, setCurrentSlideNumber } from '../redux';
 import { createSelector } from 'reselect';
 import './side-panel.css';
 import { mathJaxScriptLoader } from '../../../utils/scriptLoaders';
@@ -20,6 +20,7 @@ import Sliders from './slider.js'
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { bindActionCreators } from 'redux';
 const mapStateToProps = createSelector(
   isUnitCompletedSelector,
   unitTestsSelector,
@@ -30,6 +31,13 @@ const mapStateToProps = createSelector(
     validate
   })
 );
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      setCurrentSlideNumber
+    },
+    dispatch
+  );
 
 const propTypes = {
   description: PropTypes.string,
@@ -41,7 +49,8 @@ const propTypes = {
   tests: PropTypes.arrayOf(PropTypes.object),
   validate: PropTypes.array,
   title: PropTypes.string,
-  videoUrl: PropTypes.string
+  videoUrl: PropTypes.string,
+  setCurrentSlideNumber: PropTypes.func
 };
 
 export class SidePanel extends Component {
@@ -74,6 +83,7 @@ export class SidePanel extends Component {
 
   goToPage = (pageNumber) => {
     this.reactPageScroller.goToPage(pageNumber);
+
   }
   isCheckedOf = (index) => {
     const { validate } = this.props;
@@ -378,7 +388,8 @@ export class SidePanel extends Component {
       tests,
       section,
       showToolPanel,
-      videoUrl
+      videoUrl,
+      setCurrentSlideNumber
     } = this.props;
     if (window.innerWidth < 768) {
       return (
@@ -402,6 +413,7 @@ export class SidePanel extends Component {
             ref={c => this.reactPageScroller = c}
             animationTimer={200}
             containerWidth="100%"
+            pageOnChange={e => setCurrentSlideNumber(e)}
           >
             {lesson_data.slides.map(this.renderSlide)}
           </ReactPageScroller>
@@ -415,4 +427,4 @@ export class SidePanel extends Component {
 SidePanel.displayName = 'SidePanel';
 SidePanel.propTypes = propTypes;
 
-export default connect(mapStateToProps)(SidePanel);
+export default connect(mapStateToProps, mapDispatchToProps)(SidePanel);

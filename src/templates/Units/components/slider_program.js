@@ -198,30 +198,42 @@ const validateItems = [
   },
 ]
 
-export function validate_test(code) {
-  if (!code) return;
-
+export function validate_test(code, slide) {
+  // if (!code) return;
   $("#validate-html").html(code)
-  if (($("#validate-html h1").length > 0)) {
-    validateItems[0].checked = true;
-    Auth.saveSlider(validateItems[0].sliderID)
-  } else {
-    validateItems[0].checked = false;
-  }
+  let currentSliderValItems = validateItems.find(e => e.sliderID === slide)
 
-  if (code.match(/<\/h1>/g) && code.match(/<\/h1>/g).length === code.match(/<h1>/g).length && (/(\s)+/gi).test($("#validate-html h1").text())) {
-    validateItems[1].checked = true;
-    Auth.saveSlider(validateItems[1].sliderID)
-  } else {
-    validateItems[1].checked = false;
-  }
+  if (currentSliderValItems) {
+    switch (currentSliderValItems.index) {
+      case 0:
 
-  if (code.match(/<body>/)) {
-    validateItems[2].checked = true;
-    Auth.saveSlider(validateItems[2].sliderID)
-  } else {
-    validateItems[2].checked = false;
+        if (($("#validate-html h1").length > 0)) {
+          validateItems[0].checked = true;
+          Auth.saveSlider(validateItems[0].sliderID)
+        } else {
+          validateItems[0].checked = false;
+        }
+        break;
+      case 1:
+        if (code.match(/<\/h1>/g) && code.match(/<\/h1>/g).length === code.match(/<h1>/g).length && (/(\s)+/gi).test($("#validate-html h1").text())) {
+          validateItems[1].checked = true;
+          Auth.saveSlider(validateItems[1].sliderID)
+        } else {
+          validateItems[1].checked = false;
+        }
+        break;
+      case 2:
+        if (code.match(/<body>/)) {
+          validateItems[2].checked = true;
+          Auth.saveSlider(validateItems[2].sliderID)
+        } else {
+          validateItems[2].checked = false;
+        }
+        break;
+    }
   }
+  return validateItems;
+
   // if ($("#validate-html img").length) {
   //   validateItems[0].checked = true;
   // } else {
@@ -246,7 +258,7 @@ export function validate_test(code) {
   //   validateItems[3].checked = false;
   // }
 
-  return validateItems;
+
 }
 export function validate_function(content) {
   var console_text = content;

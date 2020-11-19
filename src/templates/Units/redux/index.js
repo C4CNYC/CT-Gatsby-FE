@@ -45,7 +45,8 @@ const initialState = {
     reset: false
   },
   projectFormValues: {},
-  successMessage: 'Happy Coding!'
+  successMessage: 'Happy Coding!',
+  currentSlidenumber: 0
 };
 
 export const types = createTypes(
@@ -62,6 +63,7 @@ export const types = createTypes(
     'setMonacoEditor',
     'setValidate',
     'setValidateChecked',
+    'setCurrentSlideNumber',
     'updateJSEnabled',
     'updateProjectFormValues',
     'updateSuccessMessage',
@@ -141,6 +143,7 @@ export const updateFile = createAction(types.updateFile);
 export const setMonacoEditor = createAction(types.setMonacoEditor);
 export const setValidate = createAction(types.setValidate)
 export const setValidateChecked = createAction(types.setValidateChecked)
+export const setCurrentSlideNumber = createAction(types.setCurrentSlideNumber)
 export const updateConsole = createAction(types.updateConsole);
 export const updateLogs = createAction(types.updateLogs);
 export const updateJSEnabled = createAction(types.updateJSEnabled);
@@ -181,6 +184,7 @@ export const unitFilesSelector = state => state[ns].unitFiles;
 export const monacoeditorSelector = state => state[ns].monacoEditor;
 export const validateSelector = state => state[ns].validate;
 export const validateCheckedSelector = state => state[ns].validateChecked;
+export const currentSlideNumberSelector = state => state[ns].currentSlidenumber;
 export const unitMetaSelector = state => state[ns].unitMeta;
 export const unitTestsSelector = state => state[ns].unitTests;
 export const consoleOutputSelector = state => state[ns].consoleOut;
@@ -283,6 +287,10 @@ export const reducer = handleActions(
     [types.setValidateChecked]: (state, { payload }) => ({
       ...state,
       validateChecked: payload
+    }),
+    [types.setCurrentSlideNumber]: (state, { payload }) => ({
+      ...state,
+      currentSlidenumber: payload
     }),
     [types.storedCodeFound]: (state, { payload }) => ({
       ...state,
