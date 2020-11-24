@@ -1,6 +1,6 @@
 .unit-preview,
 .unit-preview-frame {
-  height: 100%;
+  height: 100vh;
   width: 100%;
   padding: 0;
   margin: 0;
@@ -14,4 +14,19 @@
 
 .disable-iframe {
   pointer-events: none;
+}
+
+.lock-icon {
+  color: grey;
+  position: absolute;
+  right: 0;
+  bottom: 154px;
+  z-index: 1;
+  right: 43px;
+}
+
+@media (min-width: 768px) {
+  .lock-icon {
+    visibility: hidden;
+  }
 }

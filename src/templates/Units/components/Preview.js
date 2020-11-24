@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { previewMounted } from '../redux';
-
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 import './preview.css';
 
 const mainId = 'fcc-main-frame';
@@ -39,20 +40,27 @@ class Preview extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.disableIframe !== prevProps.disableIframe) {
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ iframeStatus: !this.state.iframeStatus });
+      this.handleIframeStatus()
     }
   }
 
+  handleIframeStatus = () => {
+    this.setState((state) => ({ iframeStatus: !state.iframeStatus }));
+  }
   render() {
-    const iframeToggle = this.state.iframeStatus ? 'disable' : 'enable';
-
+    const { iframeStatus } = this.state
+    const iframeToggle = iframeStatus ? 'disable' : 'enable';
     return (
-      <div className={`unit-preview ${iframeToggle}-iframe`}>
-        <iframe
-          className={'unit-preview-frame'}
-          id={mainId}
-          title='Unit Preview'
-        />
+      <div style={{ position: 'relative' }}>
+        {iframeStatus ? <LockIcon className={'lock-icon'} fontSize="large" onClick={this.handleIframeStatus} /> :
+          <LockOpenIcon className={'lock-icon'} fontSize="large" onClick={this.handleIframeStatus} />}
+        <div className={`unit-preview ${iframeToggle}-iframe`}>
+          <iframe
+            className={'unit-preview-frame'}
+            id={mainId}
+            title='Unit Preview'
+          />
+        </div>
       </div>
     );
   }

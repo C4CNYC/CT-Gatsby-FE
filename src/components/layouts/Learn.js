@@ -46,7 +46,7 @@ const styles = theme => ({
       // width: `100vw`,
     },
     [`@media (max-width: ${theme.mediaQueryTresholds.L}px)`]: {
-      top: '61px' // todo
+      top: '5px' // todo
     },
     '& > div': {
       height: '100%'
