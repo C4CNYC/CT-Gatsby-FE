@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
 
 #login-signup {
-    background-color: #00bcd4;
+    background-color: #FBDD3F;
     width: 100%;
     height: 100%;
     text-align: center;
-    padding: 20px 0px;
+    padding: 25px 0px;
 }
 
 .login-signup-container {
@@ -37,10 +37,15 @@
     padding: 0px;
 }
 
+.cross-line {
+    color: black;
+    text-align: left;
+    padding-left: 67px;
+}
+
 .login-signup-menu li {
     list-style: none;
-    background-color: rgba(239, 239, 239, 0.9);
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     text-align: left;
     width: 330px;
     height: 60px;
@@ -48,9 +53,25 @@
     align-items: center;
 }
 
+
+.login-signup-menu li svg {
+    color: black;
+}
+
+.login-signup-menu li p {
+    padding-top: 0;
+    margin-top: 0;
+    color: black;
+    font-size: 10px;
+}
+
+.login-signup-menu li div {
+    margin-bottom: auto;
+}
+
 .login-signup-menu li a {
     text-decoration: none;
-    color: black;
+    color: #D40073;
     font-size: 14px;
     width: 100%;
     height: 100%;
@@ -109,13 +130,13 @@
 #close-button {
     position: absolute;
     top: 0;
-    left: 0px;
-    background-color: #00bcd4;
+    right: 0px;
+    background-color: #FBDD3F;
     padding: 4px 10px;
     z-index: 2000;
     height: 40px;
     width: 40px;
-    color: white;
+    color: black;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -139,10 +160,10 @@
 }
 
 .input-box {
-    display: inline-block;
-    justify-content: center;
-    margin: 0 15px;
+    display: flex;
+    justify-content: space-between;
     min-width: 50px;
+    width: 100%;
 }
 
 #loginPanel .input-box,
@@ -151,6 +172,7 @@
 }
 
 .input-box label {
+    margin-top: 30px;
     width: 100%;
     text-align: center;
     color: black;
@@ -164,15 +186,15 @@
 .input-box input[type="text"],
 .input-box input[type="email"] {
     padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
+    border: 1px solid #EAEAEB;
     font-size: 16px;
     width: 100%;
+    background-color: #EAEAEB;
 }
 
 .input-box input[type="text"]::placeholder,
 .input-box input[type="email"]::placeholder {
-    color: gray;
+    color: #364954;
     font-family: 'Rajdhani', sans-serif;
 }
 
@@ -192,16 +214,15 @@
 .input-box select {
     display: inline-block;
     padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
+    border: 1px solid #EAEAEB;
     font-size: 16px;
     margin: 5px;
-    background: white url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     width: 100px;
     padding-right: 25px;
+    background-color: #EAEAEB;
 }
 
 .input-box button {
@@ -210,9 +231,8 @@
     padding: 7px 12px;
     border: 0;
     margin: 2px;
-    border-bottom: 3px solid #333;
     font-size: 18px;
-    border-radius: .25rem;
+    height: 60px;
     cursor: pointer;
 }
 
