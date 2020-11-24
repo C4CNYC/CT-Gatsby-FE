@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import PropTypes from 'prop-types';
 import SpringScrollbars from '../../../components/SpringScrollbars';
-import '../components/loginSignupPanel.css';
+// import '../components/loginSignupPanel.css';
 import FaceIcon from '@material-ui/icons/Face';
 
 import ReactDOM from 'react-dom'

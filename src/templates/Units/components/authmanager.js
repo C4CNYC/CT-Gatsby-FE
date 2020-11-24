@@ -146,25 +146,10 @@ export function setUser(userid, userfirstname) {
 }
 
 export function getProfile() {
-    var elem = $('#profilePanel input[type="text"], #profilePanel select, #profilePanel textarea');
-    var items = ['firstname', 'lastname', 'day', 'month', 'year', 'nickname', 'country', 'grade', 'dreamjob', 'schoolname', 'email', 'mobilernumber'];
-    firebaseGet('Users/profile/' + currentUserId(), (data) => {
-        for (i = 0; i < elem.length; i++) {
-            elem.eq(i).val(data[items[i]]);
-        }
-    });
+    return firebaseGet('Users/profile/' + currentUserId())
 }
 export function currentUserId() {
     return Auth.currentUser.email.toString().replace('@codetribe.org', '');
-}
-export function Logged() {
-    if (islogged()) {
-        $('#button-login, #button-register').css({ display: 'none' });
-        $('#button-edit, #button-logout').css({ display: 'flex' });
-    } else {
-        $('#button-login, #button-register').css({ display: 'flex' });
-        $('#button-edit, #button-logout').css({ display: 'none' });
-    }
 }
 
 export function logout() {

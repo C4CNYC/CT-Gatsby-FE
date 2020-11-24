@@ -325,6 +325,7 @@ class ShowClassic extends Component {
           {/*<HelpModal />*/}
           {/*<VideoModal videoUrl={this.getVideoUrl()} />*/}
           {/*<ResetModal />*/}
+
         </>
       </Hotkeys>
     );
