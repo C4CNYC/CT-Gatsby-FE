@@ -6,6 +6,9 @@ import { graphql } from 'gatsby';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { dasherize } from '../../utils/slugs';
+import Profile_Top from '../components/menu_profile/profile-top';
+import Profile_Middle from '../components/menu_profile/profile-middle';
+import Profile_Bottom from '../components/menu_profile/profile-bottom';
 import {
     hardGoTo as navigate,
     isSignedInSelector,
@@ -18,7 +21,18 @@ import {
 } from '../state';
 import { AllBlock, AllUnitNode, UnitNode } from '../state/propTypes';
 import Grid from '@material-ui/core/Grid';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
+// import HomeIcons from '../assets/images/svg-icons/home-icon.svg?name=HomeIcons';
+import EditIcon from '!svg-react-loader!../assets/images/svg-icons/editicon.svg?name=EditIcon';
+import HomeIcons from '@material-ui/icons/HomeOutlined';
+import LockIcon from '@material-ui/icons/Lock';
+// import LockIcon from '!svg-react-loader!../assets/images/svg-icons/lock-icon.svg?name=LockIcon';
+import Modal from 'react-modal';
+
+import './profile.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+Modal.setAppElement(`#___gatsby`);
 
 const mapStateToProps = createSelector(
     userFetchStateSelector,
@@ -61,7 +75,26 @@ const propTypes = {
     })
 };
 
+const modalStyles = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.58)'
+    },
+    content: {
+        position: 'relative',
+        top: 'auto',
+        left: 'auto',
+        right: 'auto',
+        bottom: 'auto',
+        width: '75%',
+        margin: '32px auto',
+        padding: 0,
+        border: 0,
+        zIndex: 9999
+    }
+};
+
 // choose between the state from landing page and hash from url.
+
 const hashValueSelector = (state, hash) => {
     if (state && state.superBlock) {
         return dasherize(state.superBlock);
@@ -83,7 +116,7 @@ const mapDispatchToProps = {
 //         dispatch
 //     );
 
-export const LearnPage = ({
+export const ProfilePage = ({
     location: { hash = '', state = '' },
     isSignedIn,
     navigate,
@@ -115,41 +148,30 @@ export const LearnPage = ({
     return (
         // <LearnLayout>
         <>
-            <Helmet title='Learn | codetribe.com' />
-            <Box p={1}>
-                <Grid>
-                    {/*<Intro*/}
-                    {/*  complete={complete}*/}
-                    {/*  isSignedIn={isSignedIn}*/}
-                    {/*  name={name}*/}
-                    {/*  navigate={navigate}*/}
-                    {/*  pending={pending}*/}
-                    {/*  slug={slug}*/}
-                    {/*  username={username}*/}
-                    {/*/>*/}
-                    {/*<Map*/}
-                    {/*  hash={hashValue}*/}
-                    {/*  blockNodes={blockEdges.map(({ node }) => node)}*/}
-                    {/*  isSignedIn={isSignedIn}*/}
-                    {/*  nodes={edges*/}
-                    {/*    .map(({ node }) => node)*/}
-                    {/*    .filter(({ isPrivate }) => !isPrivate)}*/}
-                    {/*/>*/}
-                </Grid>
+            <Helmet title='Profile | codetribe.com' />
+            <Box style={{ backgroundColor: '#f3f3f3' }}>
+                <Profile_Top></Profile_Top>
+                <div className='row' style={{ marginTop: '30px' }}>
+                    <div className='pt-2 col-md-6 col-sm-12 col-xs-12' id='content'>
+                        <Profile_Middle></Profile_Middle>
+                    </div>
+                    <div className='pt-2 col-md-6 col-sm-12 col-xs-12' id='content1' style={{ marginTop: '30px' }}>
+                        <Profile_Bottom></Profile_Bottom>
+                    </div>
+                </div>
             </Box>
         </>
         // </LearnLayout>
     );
 };
 
-LearnPage.displayName = 'LearnPage';
-LearnPage.propTypes = propTypes;
+ProfilePage.displayName = 'ProfilePage';
+ProfilePage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(LearnPage);
-
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
 export const query = graphql`
     #  isRequired
-    query FirstUnit {
+    query SecondUnit {
         unitNode(order: { eq: 0 }, unitOrder: { eq: 0 }) {
             fields {
                 slug

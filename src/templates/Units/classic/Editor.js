@@ -96,7 +96,7 @@ const defineMonacoThemes = monaco => {
 };
 
 var lineNumberPos = [], lineNumberID = [], lineNumberIDDrag = [], lineNumbers, perminantData = [];
-var lineNumberElementFromID = 0, lineNumberFromID = 0, lineNumberFromIDEnd = 0, lineNumberElementToID = 0, lineNumberToID = 0, lineNumberToIDEnd = 0;
+var lineNumberElementFromID = 0, lineNumberFromID = 0, lineNumberFromIDNext = 0, lineNumberElementToID = 0, lineNumberToID = 0, lineNumberToIDNext = 0;
 var clock = 1, is_mobile, clicked = false;
 
 class Editor extends Component {
@@ -208,13 +208,11 @@ class Editor extends Component {
               if (posX >= x && posX <= x + width && posY >= y && posY <= y + height) {
                 lineNumberFromID = lineNumberID[i] - 1;
                 if (i != lineNumberPos.length - 1)
-                  lineNumberFromIDEnd = lineNumberID[i + 1] - 1;
+                  lineNumberID[i + 1] - 1 == lineNumberFromID + 1 ? lineNumberFromIDNext = lineNumberID[i + 1] - 1 : lineNumberFromIDNext = lineNumberID[i + 1];
                 else
-                  lineNumberFromIDEnd = lineNumberFromID;
+                  lineNumberFromIDNext = lineNumberFromID;
               }
             }
-
-            console.log(lineNumberFromID, lineNumberFromIDEnd)
 
             // get clicked element line number element ID
             for (i = 0; i < lineNumbers.children.length; i++) {
@@ -239,8 +237,10 @@ class Editor extends Component {
                   console.log(lineNumberIDDrag[j])
                   line.children.length == 1 ? line.children[0].innerHTML = lineNumberIDDrag[j] : line.children[1].innerHTML = lineNumberIDDrag[j];
                   var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
-                  if (posX >= position.x && posX <= position.x + position.width && posY >= position.y && posY <= position.y + position.height)
+                  if (posX >= position.x && posX <= position.x + position.width && posY >= position.y && posY <= position.y + position.height) {
                     line.children.length == 1 ? line.children[0].innerHTML = lineNumberFromID + 1 : line.children[1].innerHTML = lineNumberFromID + 1;
+                    j = j - 1;
+                  }
                   j = j + 1;
                 }
               }
@@ -268,13 +268,11 @@ class Editor extends Component {
               if (posX >= x && posX <= x + width && posY >= y && posY <= y + height) {
                 lineNumberToID = lineNumberID[i] - 1;
                 if (i != lineNumberPos.length - 1)
-                  lineNumberToIDEnd = lineNumberID[i + 1] - 1;
+                  lineNumberID[i + 1] - 1 == lineNumberToID + 1 ? lineNumberToIDNext = lineNumberID[i + 1] - 1 : lineNumberToIDNext = lineNumberID[i + 1];
                 else
-                  lineNumberToIDEnd = lineNumberToID;
+                  lineNumberToIDNext = lineNumberToID;
               }
             }
-
-            console.log(lineNumberToID, lineNumberToIDEnd)
 
             // get dropped element line number element ID
             for (i = 0; i < lineNumbers.children.length; i++) {
@@ -285,6 +283,8 @@ class Editor extends Component {
                   lineNumberElementToID = i;
               }
             }
+
+            console.log(lineNumberFromID, lineNumberFromIDNext, lineNumberToID, lineNumberToIDNext)
 
             // get current code's command array data
             var codeData = this.state.currentCode;
@@ -305,15 +305,15 @@ class Editor extends Component {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromIDEnd + 1; i <= lineNumberToIDEnd; i++) {
+                for (i = lineNumberFromIDNext; i < lineNumberToIDNext; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromID; i <= lineNumberFromIDEnd; i++) {
+                for (i = lineNumberFromID; i < lineNumberFromIDNext; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberToIDEnd + 1; i < codeLines.length; i++) {
+                for (i = lineNumberToIDNext; i < codeLines.length; i++) {
                   if (i != codeLines.length - 1)
                     newCodeData = newCodeData + codeLines[i] + '\n';
                   else
@@ -323,19 +323,19 @@ class Editor extends Component {
               }
 
               else {
-                for (i = 0; i <= lineNumberToIDEnd; i++) {
+                for (i = 0; i < lineNumberToIDNext; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromID; i <= lineNumberFromIDEnd; i++) {
+                for (i = lineNumberFromID; i < lineNumberFromIDNext; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberToIDEnd + 1; i < lineNumberFromID; i++) {
+                for (i = lineNumberToIDNext; i < lineNumberFromID; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromIDEnd + 1; i < codeLines.length; i++) {
+                for (i = lineNumberFromIDNext; i < codeLines.length; i++) {
                   if (i != codeLines.length - 1)
                     newCodeData = newCodeData + codeLines[i] + '\n';
                   else
@@ -383,13 +383,13 @@ class Editor extends Component {
               if (posX >= x && posX <= x + width && posY >= y && posY <= y + height) {
                 lineNumberFromID = lineNumberID[i] - 1;
                 if (i != lineNumberPos.length - 1)
-                  lineNumberFromIDEnd = lineNumberID[i + 1] - 1;
+                  lineNumberID[i + 1] - 1 == lineNumberFromID + 1 ? lineNumberFromIDNext = lineNumberID[i + 1] - 1 : lineNumberFromIDNext = lineNumberID[i + 1];
                 else
-                  lineNumberFromIDEnd = lineNumberFromID;
+                  lineNumberFromIDNext = lineNumberFromID;
               }
             }
 
-            console.log(lineNumberFromID, lineNumberFromIDEnd)
+            console.log(lineNumberFromID, lineNumberFromIDNext)
 
             // get clicked element line number element ID
             for (i = 0; i < lineNumbers.children.length; i++) {
@@ -398,6 +398,27 @@ class Editor extends Component {
                 var index = line.children.length == 1 ? line.children[0].innerHTML : line.children[1].innerHTML;
                 if (index == lineNumberFromID)
                   lineNumberElementFromID = i;
+              }
+            }
+          })
+
+          // touch dragging event handler
+          document.getElementsByClassName('margin')[0].addEventListener("touchmove", (element) => {
+            console.log("111111")
+            // make dragging effect with line number index
+            var posX = element.changedTouches[0].clientX, posY = element.changedTouches[0].clientY;
+            j = 0;
+            for (i = 0; i < lineNumbers.children.length; i++) {
+              var line = lineNumbers.children[i];
+              if (lineNumbers.children[i].children.length > 0) {
+                line.children.length == 1 ? line.children[0].innerHTML = lineNumberIDDrag[j] : line.children[1].innerHTML = lineNumberIDDrag[j];
+                var position = line.children.length == 1 ? line.children[0].getBoundingClientRect() : line.children[1].getBoundingClientRect();
+                if (posX >= position.x && posX <= position.x + position.width && posY >= position.y && posY <= position.y + position.height) {
+                  console.log(lineNumberFromID + 1)
+                  line.children.length == 1 ? line.children[0].innerHTML = lineNumberFromID + 1 : line.children[1].innerHTML = lineNumberFromID + 1;
+                  j = j - 1;
+                }
+                j = j + 1;
               }
             }
           })
@@ -412,13 +433,13 @@ class Editor extends Component {
               if (posX >= x && posX <= x + width && posY >= y && posY <= y + height) {
                 lineNumberToID = lineNumberID[i] - 1;
                 if (i != lineNumberPos.length - 1)
-                  lineNumberToIDEnd = lineNumberID[i + 1] - 1;
+                  lineNumberID[i + 1] - 1 == lineNumberToID + 1 ? lineNumberToIDNext = lineNumberID[i + 1] - 1 : lineNumberToIDNext = lineNumberID[i + 1];
                 else
-                  lineNumberToIDEnd = lineNumberToID;
+                  lineNumberToIDNext = lineNumberToID;
               }
             }
 
-            console.log(lineNumberToID, lineNumberToIDEnd)
+            console.log(lineNumberToID, lineNumberToIDNext)
 
             // get dropped element line number element ID
             for (i = 0; i < lineNumbers.children.length; i++) {
@@ -443,18 +464,22 @@ class Editor extends Component {
               // make new from->to drag-droped code content and perminantData            
               if (lineNumberFromID < lineNumberToID) {
                 for (i = 0; i < lineNumberFromID; i++) {
+                  console.log(i)
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromIDEnd + 1; i <= lineNumberToIDEnd; i++) {
+                for (i = lineNumberFromIDNext; i < lineNumberToIDNext; i++) {
+                  console.log(i)
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromID; i <= lineNumberFromIDEnd; i++) {
+                for (i = lineNumberFromID; i < lineNumberFromIDNext; i++) {
+                  console.log(i)
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberToIDEnd + 1; i < codeLines.length; i++) {
+                for (i = lineNumberToIDNext; i < codeLines.length; i++) {
+                  console.log(i)
                   if (i != codeLines.length - 1)
                     newCodeData = newCodeData + codeLines[i] + '\n';
                   else
@@ -464,19 +489,19 @@ class Editor extends Component {
               }
 
               else {
-                for (i = 0; i <= lineNumberToIDEnd; i++) {
+                for (i = 0; i < lineNumberToIDNext; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromID; i <= lineNumberFromIDEnd; i++) {
+                for (i = lineNumberFromID; i < lineNumberFromIDNext; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberToIDEnd + 1; i < lineNumberFromID; i++) {
+                for (i = lineNumberToIDNext; i < lineNumberFromID; i++) {
                   newCodeData = newCodeData + codeLines[i] + '\n';
                   newPerminantData.push(perminantData[i]);
                 }
-                for (i = lineNumberFromIDEnd + 1; i < codeLines.length; i++) {
+                for (i = lineNumberFromIDNext; i < codeLines.length; i++) {
                   if (i != codeLines.length - 1)
                     newCodeData = newCodeData + codeLines[i] + '\n';
                   else

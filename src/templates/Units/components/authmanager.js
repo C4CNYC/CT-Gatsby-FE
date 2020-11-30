@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import * as slider from './slider_program.js';
+// import firebase from '../../../utils/firebase.js';
 const $ = require("jquery");
 var i, j, k;
 var app;
-var firebase;
 var Auth;
+var firebase;
 if (typeof window != 'undefined') {
     firebase = require('firebase');
     const firebaseConfig = {

@@ -1,0 +1,216 @@
+#content{
+    height:100%;
+    /* margin-left:25%; */
+}
+#content1{
+    height:100%;
+    /* margin-left:25%; */
+}
+@media only screen and (max-width: 600px){
+    #content{
+        height:fit-content;
+    }
+    #content1{
+        height:fit-content;
+    }
+    #profile_middle{
+        height:fit-content !important;
+    }
+    #profile_bottom{
+        height:fit-content !important;
+    }
+    #bottom_bar{
+        height:fit-content !important;
+    }
+}
+#profile_top {
+    height: 140px;
+    width: 100%;
+}
+#topbar_left {
+    width: 50%;
+    height: 140px;
+    background-color: #2fa1f4;
+}
+#topbar_right {
+    width: 50%;
+    height: 140px;
+    padding: 23px;
+    background-color: #76dc37;
+    align-items: flex-end;
+}
+#profile_middle {
+    width: 100%;
+    background-color: #f0eeee;
+}
+#happy_title {
+    position: relative;
+    width: 100%;
+    margin-top: -100px;
+}
+#happy_text {
+    font-size: 45px;
+    font-weight: 700;
+    text-align: center;
+}
+#edit_icon {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    bottom: 40px;
+    right: 23px;
+}
+.home-icons {
+    color: black;
+    width: 74px !important;
+    height: 74px !important;
+}
+.home-icons:after{
+    content: '\f101';
+}
+.lock_icon {
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+#circle_home {
+    width: 100%;
+    position: relative;
+    top: -65px;
+    justify-content: left;
+    padding-left: 30px;
+    display: flex;
+    z-index: 99;
+}
+#circle_home_icon {
+    background: #ffffff;
+    border: 5px solid #fbdd3f;
+    box-sizing: border-box;
+    border-radius: 50px;
+    align-items: center;
+    width: 101px;
+    height: 98px;
+    justify-content: center;
+    display: flex;
+}
+.lockicon {
+    color: black;
+}
+.btn-modal {
+    background-color: #75cf6d !important;
+    margin-top: 15px !important;
+    margin-right: 5% !important;
+    margin-left: 5% !important;
+    width: 40%;
+    height: 30px;
+}
+#circle_lock {
+    width: 100%;
+    position: relative;
+    justify-content: center;
+    display: flex;
+    top: -50px;
+    right: auto;
+    left: auto;
+}
+#circle_lock_icon {
+    z-index: 99;
+    background: #ffffff;
+    border: 5px solid #a6a6a6;
+    box-sizing: border-box;
+    border-radius: 44px;
+    align-items: center;
+    width: 45px;
+    height: 44px;
+    margin-top: -30px;
+    justify-content: center;
+    display: flex;
+}
+#profile_middle {
+    padding: 20px;
+    padding-bottom: 35px;
+    height: 81vh;
+}
+.title {
+    color: #0198ed;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: Roboto;
+    font-style: normal;
+    padding-right: 10px;
+}
+.title-data {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 15px;
+    color: #000000;
+}
+.title-body {
+    align-items: center;
+}
+.txtarea {
+    border: 1px solid #eaeaeb;
+    background-color: white;
+    color: #302929;
+}
+#bottom_top {
+    height: 47px;
+    background-color: #c4c4c4;
+    /* position: absolute; */
+    top: 611px;
+    width: 100%;
+}
+#bottom_edit_icon {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    top: 20px;
+}
+#public_title {
+    /* This part is private. It is NOT public. */
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 12px;
+    text-align: center;
+    padding-top: 23px;
+    color: #364954;
+}
+#bottom_bar {
+    padding: 21px;
+    padding-bottom: 56px;
+    background: #f0eeee;
+    height:73vh;
+}
+.bottom-title-body {
+    padding-bottom: 20px;
+}
+.input-class {
+    width: 100%;
+}
+.ReactModal__Overlay {
+    overflow: auto;
+    opacity: 0;
+    transform: translateY(-10%);
+    transition: opacity 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95),
+        transform 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 9999;
+}
+
+.ReactModal__Overlay--before-close {
+    opacity: 0;
+    transform: translateY(-10%);
+}
+#modal_private {
+    padding: 30px;
+}
