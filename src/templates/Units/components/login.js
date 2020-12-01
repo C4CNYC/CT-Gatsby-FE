@@ -27,15 +27,16 @@ const signup = () => {
 }
 const login = () => (
 
-    <div id="loginPanel" style={{
-        height: '400px',
-        minWidth: '400px',
-        backgroundColor: 'white',
-        marginTop: '10px',
-        padding: '15px',
-        textAlign: 'center',
-        justifyContent: 'center'
-    }}>
+    <div id="loginPanel"
+        style={{
+            height: '400px',
+            minWidth: '400px',
+            backgroundColor: 'white',
+            marginTop: '10px',
+            padding: '15px',
+            textAlign: 'center',
+            justifyContent: 'center'
+        }}>
         <div style={{
             display: "flex",
             justifyContent: "center",

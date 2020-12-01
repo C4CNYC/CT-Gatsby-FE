@@ -728,11 +728,12 @@ class Editor extends Component {
     this.props.executeUnit();
     // slider.validate_function(editorValue);
     this.validatesFunc(editorValue);
-    this.setState({ currentCode: editorValue })
+    this.setState({ currentCode: editorValue });
 
   };
 
   checkReturnedCode = async (validatedItems) => {
+    return false
     // if (!validatedItems) return true;
     let list = await Auth.getSlider();
     if (!list) return false;
@@ -743,8 +744,9 @@ class Editor extends Component {
     const { settingValidate, currentSlideNumber } = this.props;
     var validatedItems = slider.validate_test(context, currentSlideNumber);
     var returnedCode = await this.checkReturnedCode(validatedItems);
-
+    console.log("current slider val", validatedItems)
     if (!returnedCode) {
+      console.log("current slider valsss", validatedItems)
       this.setState({ validate: validatedItems })
       settingValidate(validatedItems)
       Auth.savCode(context);

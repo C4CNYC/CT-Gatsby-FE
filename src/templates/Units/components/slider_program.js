@@ -201,38 +201,38 @@ const validateItems = [
 export function validate_test(code, slide) {
   // if (!code) return;
   $("#validate-html").html(code)
-  let currentSliderValItems = validateItems.find(e => e.sliderID === slide)
+  let currentSliderValItems = validateItems.filter(e => e.sliderID === slide);
 
-  if (currentSliderValItems) {
-    switch (currentSliderValItems.index) {
+  let returnValidateItems = Object.assign([], currentSliderValItems)
+  currentSliderValItems.forEach((v, i) => {
+    switch (v.index) {
       case 0:
-
         if (($("#validate-html h1").length > 0)) {
-          validateItems[0].checked = true;
-          Auth.saveSlider(validateItems[0].sliderID)
+          returnValidateItems[i].checked = true;
+          Auth.saveSlider(returnValidateItems[i].sliderID)
         } else {
-          validateItems[0].checked = false;
+          returnValidateItems[i].checked = false;
         }
         break;
       case 1:
         if (code.match(/<\/h1>/g) && code.match(/<\/h1>/g).length === code.match(/<h1>/g).length && (/(\s)+/gi).test($("#validate-html h1").text())) {
-          validateItems[1].checked = true;
-          Auth.saveSlider(validateItems[1].sliderID)
+          returnValidateItems[i].checked = true;
+          Auth.saveSlider(returnValidateItems[i].sliderID)
         } else {
-          validateItems[1].checked = false;
+          returnValidateItems[i].checked = false;
         }
         break;
       case 2:
         if (code.match(/<body>/)) {
-          validateItems[2].checked = true;
-          Auth.saveSlider(validateItems[2].sliderID)
+          returnValidateItems[i].checked = true;
+          Auth.saveSlider(returnValidateItems[i].sliderID)
         } else {
-          validateItems[2].checked = false;
+          returnValidateItems[i].checked = false;
         }
         break;
     }
-  }
-  return validateItems;
+  })
+  return returnValidateItems;
 
   // if ($("#validate-html img").length) {
   //   validateItems[0].checked = true;
