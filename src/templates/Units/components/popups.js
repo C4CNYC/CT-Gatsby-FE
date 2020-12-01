@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './loginSignupPanel.css';
 import $ from 'jquery';
 import happyrobot from './img/robot_avatar_happy.png'
-import * as Auth from './authmanager.js';
+import * as Auth from '../utils/authmanager.js';
 export const Aftersignup = () => (
 
     <div id="aftersignupPanel" style={{

@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './loginSignupPanel.css';
 import $ from 'jquery';
-import * as Auth from './authmanager.js';
+import * as Auth from '../utils/authmanager.js';
 import * as popup from './popups.js';
 import Login from './login.js'
 import LocketIcon from './img/rocket_icon.svg'

@@ -8,7 +8,7 @@ import Login from '../components/login.js';
 import Profile from '../components/profile.js';
 import SessionReset from '../components/sessionReset.js';
 import Logout from '../components/logout.js';
-import * as Auth from '../components/authmanager.js';
+import * as Auth from '../utils/authmanager.js';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import GroupAddOutlinedIcon from '@material-ui/icons/GroupAddOutlined';

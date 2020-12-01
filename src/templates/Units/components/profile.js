@@ -5,7 +5,7 @@ import $ from 'jquery';
 import robot from './img/robot_avatar_happy.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import * as Auth from './authmanager.js';
+import * as Auth from '../utils/authmanager.js';
 
 const profile = ({ profile }) => (
     <div id="profilePanel" style={{

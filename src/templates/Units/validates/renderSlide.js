@@ -66,7 +66,6 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
           </div>
         </ReflexElement>
       </div>
-
     case 4: return <div id="lesson-page" style={{ height: "100%" }}>
       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
         <div class='container'>
@@ -111,7 +110,6 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
         </div>
       </ReflexElement>
     </div>
-
     case 6: return <div id="lesson-page" style={{ height: "100%" }}>
       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
         <div class='container'>
@@ -123,7 +121,6 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
         </div>
       </ReflexElement>
     </div>
-
     case 7: return <div id="lesson-page" style={{ height: "100%" }}>
       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
         <div class='container'>
@@ -137,7 +134,6 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
         </div>
       </ReflexElement>
     </div>
-
     case 8: return <div id="lesson-page" style={{ height: "100%" }}>
       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
         <div class='container'>
@@ -147,7 +143,6 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
         </div>
       </ReflexElement>
     </div>
-
     case 9: return <div id="lesson-page" style={{ height: "100%" }}>
       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
         <div class='container'>
@@ -157,7 +152,6 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
         </div>
       </ReflexElement>
     </div>
-
     case 10: return <div id="lesson-page" style={{ height: "100%" }}>
       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide checkpoint cp_yellow`}>
 
@@ -196,7 +190,6 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
 
       </ReflexElement>
     </div >
-
     case 11: return <div id="lesson-page" style={{ height: "100%" }}>
       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
         <div class='container'>
@@ -208,8 +201,6 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
         </div>
       </ReflexElement>
     </div>
-
-
     case 12: return <div id="lesson-page" style={{ height: "100%" }}>
       <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
         <div class='container'>
@@ -242,14 +233,13 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
       </ReflexElement>
     </div>
     case 14: return <div id="lesson-page" style={{ height: "100%" }}>
-      <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide`}>
+      <ReflexElement flex={1} style={{ height: "100%" }} className={`swiper-slide checkpoint cp_yellow`}>
         <div class='container'>
-          {renderChecker(14, 0)}
           <h2>Challenge</h2>
           <div style={{ marginTop: '2rem' }}>
             <ol >
-              <li class='task-1'> Add a line <span style={{ textDecoration: 'underline' }}>above</span> your <span class='consolas'>&lt;h1&gt;</span> tags. </li>
-              <li class='task-1'> Type <span class='consolas'>&lt;body&gt;</span> </li>
+              <li class='task-1'> {renderChecker(14, 0)}Add a line <span style={{ textDecoration: 'underline' }}>above</span> your <span class='consolas'>&lt;h1&gt;</span> tags. </li>
+              <li class='task-1'> {renderChecker(14, 1)}Add <strong>style=" "</strong> inside the  <span class='consolas'>&lt;body&gt;</span> tag. Before the <span class='consolas'>&gt;</span> symbol </li>
             </ol>
           </div>
           <div style={{ textAlign: 'left' }}>
@@ -259,7 +249,7 @@ export const renderSlide = (slide, slideNumber, renderChecker, isCheckedOf) => {
             <p align='left' id='attr-type-value' class='m-4 text-left' style={{ color: '#f1f1f1', fontSize: '18px' }}>
               <span class='cm-tag consolas'>&lt;body&gt;</span><br /> <span class='cm-tag consolas'>&lt;h1&gt;</span>your name<span class='cm-tag'>&lt;/h1&gt;</span>
             </p> </div>
-          {isCheckedOf(14, 0) ? <div class='button-locked mt-4'>
+          {isCheckedOf(14, 0) && isCheckedOf(14, 1) ? <div class='button-locked mt-4'>
             <a class='btn btn-primary success check swiper-next' >I did it <SentimentSatisfiedIcon /> </a> <br /> </div> :
             <div class='button-locked mt-2'>
               <a class='btn btn-primary action check swiper-editor' >Let's get Coding <ArrowForwardIcon /> </a> <br />

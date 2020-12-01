@@ -22,14 +22,12 @@ import { Loader } from '../../../components/helpers';
 import { CircularProgress, Grid, IconButton, Typography } from '@material-ui/core';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import * as slider from '../components/slider_program.js';
-import * as Auth from '../components/authmanager.js';
-import $ from 'jquery';
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import * as slider from '../utils/slider_program.js';
+import * as Auth from '../utils/authmanager.js';
+
 import { withStyles } from '@material-ui/styles';
 import { calculatePercentOfChecked } from '../utils/helpers';
-import { async } from 'rxjs';
-var codeconsole;
+
 
 const MonacoEditor = React.lazy(() => import('react-monaco-editor'));
 

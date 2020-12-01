@@ -1,6 +1,5 @@
 const $ = require("jquery");
-import * as Auth from './authmanager.js';
-import * as __helpers from './curriculum-helpers.js'
+import * as Auth from '../utils/authmanager.js';
 
 
 const { validateItems } = require('../validates/validates');

@@ -25,7 +25,7 @@ import { getGuideUrl } from '../utils';
 import { unitTypes } from '../../../../utils/unitTypes';
 import { UnitNode } from '../../../state/propTypes';
 import { dasherize } from '../../../..//utils/slugs';
-import * as Auth from '../components/authmanager.js';
+import * as Auth from '../utils/authmanager.js';
 import {
   createFiles,
   unitFilesSelector,

@@ -1,4 +1,6 @@
 const $ = require("jquery");
+import * as __helpers from '../utils/curriculum-helpers.js'
+
 export const validateItems = [
   {
     group: 1,
@@ -19,6 +21,13 @@ export const validateItems = [
     index: 2,
     sliderID: 14,
     text: 'Type <body> above <h1> tags',
-    isValid: (code) => code.match(/<body>/)
+    isValid: (code) => code.match(/<body(.*)>/)
+  },
+  {
+    group: 1,
+    index: 3,
+    sliderID: 14,
+    text: 'Add style=" " inside the <body> tag. Before the > symbol',
+    isValid: (code) => code.match(/<body [\\s\\r\\n]*style[\\s\\r\\n]*=[\\s\\r\\n]*\"[\s\0-9\a-z\:\;\#]*\"[\\s\\r\\n]*>[\\s\\r\\n]*(.*)/)
   },
 ]
