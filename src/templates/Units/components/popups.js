@@ -4,11 +4,11 @@ import './loginSignupPanel.css';
 import $ from 'jquery';
 import happyrobot from './img/robot_avatar_happy.png'
 import * as Auth from '../utils/authmanager.js';
-export const Aftersignup = () => (
+export const Aftersignup = ({ isMobile }) => (
 
     <div id="aftersignupPanel" style={{
-        height: '400px',
-        minWidth: '400px',
+        height: isMobile ? '100vh' : '400px',
+        minWidth: isMobile ? null : '400px',
         backgroundColor: 'white',
         marginTop: '10px',
         padding: '15px',

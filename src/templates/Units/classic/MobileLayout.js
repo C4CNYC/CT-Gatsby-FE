@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -24,7 +25,9 @@ import SwipeableViews from 'react-swipeable-views';
 import IconButton from "@material-ui/core/IconButton";
 import { Grid, Menu, MenuItem } from '@material-ui/core';
 import { CheckerSwitch } from '../components/CheckerSwitch';
-
+import MainMenu from './Menu'
+import Signup from '../components/signup.js';
+import Login from '../components/login.js';
 function TabPanel(props) {
   const { children, index, ...other } = props;
 
@@ -154,8 +157,27 @@ class MobileLayout extends Component {
   handleCheckerSwitch = (event) => {
     this.props.setValidateChecked(event.target.checked)
   }
+
+  handleMainMenu = () => {
+    this.setState((state) => ({ isShowMainMenu: !state.isShowMainMenu }))
+  }
+  handleSignUp = () => {
+    this.handleMainMenu()
+    this.setState((state) => ({ isShowSignUp: !state.isShowSignUp }))
+  }
+  handleSignIn = () => {
+    this.handleMainMenu()
+    this.setState((state) => ({ isShowSignIn: !state.isShowSignIn }))
+  }
   render() {
-    const { index, anchorEl, openTutor } = this.state;
+    const {
+      index,
+      anchorEl,
+      openTutor,
+      isShowMainMenu,
+      isShowSignUp,
+      isShowSignIn
+    } = this.state;
     const {
       instructions,
       editor,
@@ -168,8 +190,11 @@ class MobileLayout extends Component {
     } = this.props;
 
     return (
-      <Fragment>
-
+      <Fragment >
+        <div className="hide-body-shadow" style={{ height: 0 }}></div>
+        {isShowMainMenu && <MainMenu className="login-signup-container" isMobile close={this.handleMainMenu} handleSignIn={this.handleSignIn} handleSignUp={this.handleSignUp} />}
+        {isShowSignUp && <Signup isMobile handleSignIn={this.handleSignIn} handleSignUp={this.handleSignUp} />}
+        {isShowSignIn && <Login isMobile handleSignIn={this.handleSignIn} handleSignUp={this.handleSignUp} />}
         <div style={{ flexGrow: 1, width: '100%', }}>
           <AppBar position="static" color={'transparent'}>
             <div className={classes.tabRow}>
@@ -207,7 +232,7 @@ class MobileLayout extends Component {
               </Tabs>
               {(index === 2 || index === 0) && <IconButton
                 aria-label="Menu"
-                onClick={() => { }}
+                onClick={this.handleMainMenu}
                 title="Menu"
                 className={classes.button}
               >
@@ -269,7 +294,7 @@ class MobileLayout extends Component {
 
         </div>
         <ToolPanel guideUrl={guideUrl} isMobile={true} videoUrl={videoUrl} />
-      </Fragment>
+      </Fragment >
     );
   }
 }
