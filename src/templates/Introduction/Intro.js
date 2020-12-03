@@ -43,45 +43,45 @@ function IntroductionPage({ data: { blockNode, allUnitNode } }) {
       <Helmet>
         <title>{title} | codetribe.com</title>
       </Helmet>
-        <Box p={3}>
-      <Grid className='intro-layout-container'>
-        <Grid item={true} sm={4} xs={6}>
-          <img alt='' src={image} style={{width: '100%'}} />
-        </Grid>
-        <Grid item={true} sm={4} xs={6}>
-          <h1
-            className='intro-layout'
-            dangerouslySetInnerHTML={{ __html: title }}
-          />
-        </Grid>
-        <FullWidthRow>
-          <div
-            className='intro-layout'
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        </FullWidthRow>
-        <FullWidthRow>
-          <Link
-            className='btn btn-lg btn-primary btn-block'
-            to={firstLessonPath}
-          >
-            Let's go!
+      <Box p={3}>
+        <Grid className='intro-layout-container'>
+          <Grid item={true} sm={4} xs={6}>
+            <img alt='' src={image} style={{ width: '100%' }} />
+          </Grid>
+          <Grid item={true} sm={4} xs={6}>
+            <h1
+              className='intro-layout'
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
+          </Grid>
+          <FullWidthRow>
+            <div
+              className='intro-layout'
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          </FullWidthRow>
+          <FullWidthRow>
+            <Link
+              className='btn btn-lg btn-primary btn-block'
+              to={firstLessonPath}
+            >
+              Let's go!
           </Link>
-          <ButtonSpacer />
-          <Link className='btn btn-lg btn-primary btn-block' to='/learn'>
-            View the entire curriculum first
+            <ButtonSpacer />
+            <Link className='btn btn-lg btn-primary btn-block' to='/learn'>
+              View the entire curriculum first
           </Link>
-          <ButtonSpacer />
-          <hr />
-        </FullWidthRow>
-        <FullWidthRow>
-          <h2 className='intro-toc-title'>Upcoming Lessons</h2>
-          <div className='intro-toc'>
-            {allUnitNode ? renderMenuItems(allUnitNode) : null}
-          </div>
-        </FullWidthRow>
-      </Grid>
-        </Box>
+            <ButtonSpacer />
+            <hr />
+          </FullWidthRow>
+          <FullWidthRow>
+            <h2 className='intro-toc-title'>Upcoming Lessons</h2>
+            <div className='intro-toc'>
+              {allUnitNode ? renderMenuItems(allUnitNode) : null}
+            </div>
+          </FullWidthRow>
+        </Grid>
+      </Box>
     </>
   );
 }

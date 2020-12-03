@@ -115,7 +115,7 @@ export class Map extends Component {
     const superBlocks = uniq(nodes.map(({ superBlock }) => superBlock));
     return (
       <Grid item={true}>
-        <Grid item={true} sm={10}  xs={12}>
+        <Grid item={true} sm={10} xs={12}>
           <div className='map-ui'>
             <ul>
               {this.renderSuperBlocks(superBlocks)}
