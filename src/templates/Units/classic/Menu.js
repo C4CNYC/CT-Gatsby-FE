@@ -67,43 +67,49 @@ export const Menu = ({ isMobile, close, handleSignIn, handleSignUp }) => {
 
   if (Auth.islogged()) {
     return (
-      <div id="login-signup">
-        <h4>HELLO {profile.firstname}</h4>
-        <ul className="login-signup-menu">
-          <li><a href="" onClick={() => { }}><ExploreOutlinedIcon className="login-signup-icon" /><div>What’s poppin’ ?<p>PROJECTS PAGE</p></div></a></li>
-        </ul>
-        <div className="cross-line">_________________</div>
-        <ul className="login-signup-menu">
-          <li><a href="" onClick={editProfile}><EmojiPeopleIcon className="login-signup-icon" /><div>Me, me, me<p>PROFILE</p></div></a></li>
-          <li><a href="" onClick={() => { }}><CardMembershipIcon className="login-signup-icon" /><div>To get framed<p>CERTIFICATES</p></div></a></li>
-          <li><a href="" onClick={() => { }}><PhotoLibraryOutlinedIcon className="login-signup-icon" /><div>Fun Stuff<p>GALLERY</p></div></a></li>
-          <li><a href="" onClick={() => { }}><SettingsOutlinedIcon className="login-signup-icon" /><div>Stuff, stuff<p>SETTINGS</p></div></a></li>
-          <li><a href="" onClick={() => { }}><MonetizationOnOutlinedIcon className="login-signup-icon" /><div>Money, money<p>BILLING</p></div></a></li>
-          <li><a href="" onClick={logout}><ExitToAppIcon className="login-signup-icon" /><div>Get me out of here<p>LOG OUT</p></div></a></li>
-          <li><a href="" onClick={() => { }}><FavoriteBorderOutlinedIcon className="login-signup-icon" />Need a hug?</a></li>
-          <li><a href="" onClick={() => { }}><GroupAddOutlinedIcon className="login-signup-icon" />Invite Friends</a></li>
-        </ul>
-        <div id="close-button" onClick={closeMenu}><CloseIcon fontSize="large" /></div>
-      </div>
+      <>
+        <div className="outside-sign" onClick={closeMenu}></div>
+        <div id="login-signup">
+          <h4>HELLO {profile.firstname}</h4>
+          <ul className="login-signup-menu">
+            <li><a href="" onClick={() => { }}><ExploreOutlinedIcon className="login-signup-icon" /><div>What’s poppin’ ?<p>PROJECTS PAGE</p></div></a></li>
+          </ul>
+          <div className="cross-line">_________________</div>
+          <ul className="login-signup-menu">
+            <li><a href="" onClick={editProfile}><EmojiPeopleIcon className="login-signup-icon" /><div>Me, me, me<p>PROFILE</p></div></a></li>
+            <li><a href="" onClick={() => { }}><CardMembershipIcon className="login-signup-icon" /><div>To get framed<p>CERTIFICATES</p></div></a></li>
+            <li><a href="" onClick={() => { }}><PhotoLibraryOutlinedIcon className="login-signup-icon" /><div>Fun Stuff<p>GALLERY</p></div></a></li>
+            <li><a href="" onClick={() => { }}><SettingsOutlinedIcon className="login-signup-icon" /><div>Stuff, stuff<p>SETTINGS</p></div></a></li>
+            <li><a href="" onClick={() => { }}><MonetizationOnOutlinedIcon className="login-signup-icon" /><div>Money, money<p>BILLING</p></div></a></li>
+            <li><a href="" onClick={logout}><ExitToAppIcon className="login-signup-icon" /><div>Get me out of here<p>LOG OUT</p></div></a></li>
+            <li><a href="" onClick={() => { }}><FavoriteBorderOutlinedIcon className="login-signup-icon" />Need a hug?</a></li>
+            <li><a href="" onClick={() => { }}><GroupAddOutlinedIcon className="login-signup-icon" />Invite Friends</a></li>
+          </ul>
+          <div id="close-button" onClick={closeMenu}><CloseIcon fontSize="large" /></div>
+        </div>
+      </>
     )
   } else {
     return (
-      <div id="login-signup">
-        <h4>HELLO</h4>
-        <ul className="login-signup-menu">
-          <li><a href="" onClick={showSignUp}><ChildCareIcon className="login-signup-icon" /><div>I’m brand new<p>REGISTER</p></div></a></li>
-          <li><a href="" onClick={showLogin}><EmojiPeopleIcon className="login-signup-icon" /><div>I’ve been here before<p>LOGIN</p></div></a></li>
-        </ul>
-        <div className="cross-line">_________________</div>
-        <ul className="login-signup-menu">
-          <li><a href="" onClick={() => { }}><GroupAddOutlinedIcon className="login-signup-icon" />Invite Friends</a></li>
-        </ul>
-        <div className="cross-line">_________________</div>
-        <ul className="login-signup-menu">
-          <li><a href="" onClick={() => { }}><MenuIcon className="login-signup-icon" />See the Menu</a></li>
-        </ul>
-        <div id="close-button" onClick={closeMenu}><CloseIcon fontSize="large" /></div>
-      </div>
+      <>
+        <div className="outside-sign" onClick={closeMenu}></div>
+        <div id="login-signup">
+          <h4>HELLO</h4>
+          <ul className="login-signup-menu">
+            <li><a href="" onClick={showSignUp}><ChildCareIcon className="login-signup-icon" /><div>I’m brand new<p>REGISTER</p></div></a></li>
+            <li><a href="" onClick={showLogin}><EmojiPeopleIcon className="login-signup-icon" /><div>I’ve been here before<p>LOGIN</p></div></a></li>
+          </ul>
+          <div className="cross-line">_________________</div>
+          <ul className="login-signup-menu">
+            <li><a href="" onClick={() => { }}><GroupAddOutlinedIcon className="login-signup-icon" />Invite Friends</a></li>
+          </ul>
+          <div className="cross-line">_________________</div>
+          <ul className="login-signup-menu">
+            <li><a href="" onClick={() => { }}><MenuIcon className="login-signup-icon" />See the Menu</a></li>
+          </ul>
+          <div id="close-button" onClick={closeMenu}><CloseIcon fontSize="large" /></div>
+        </div>
+      </>
     )
   }
 }

@@ -41,9 +41,6 @@ import {
 
 import './classic.css';
 import '../components/test-frame.css';
-import Menu from './Menu.js';
-import Signup from '../components/signup.js';
-import Login from '../components/login.js';
 
 const mapStateToProps = createStructuredSelector({
   files: unitFilesSelector,
@@ -274,18 +271,6 @@ class ShowClassic extends Component {
     );
   }
 
-  handleMainMenu = () => {
-    this.setState((state) => ({ isShowMainMenu: !state.isShowMainMenu }))
-  }
-  handleSignUp = () => {
-    this.handleMainMenu()
-    this.setState((state) => ({ isShowSignUp: !state.isShowSignUp }))
-  }
-  handleSignIn = () => {
-    this.handleMainMenu()
-    this.setState((state) => ({ isShowSignIn: !state.isShowSignIn }))
-  }
-
   render() {
     const {
       fields: { blockName },
@@ -298,11 +283,6 @@ class ShowClassic extends Component {
         unitMeta: { introPath, nextUnitPath, prevUnitPath }
       }
     } = this.props;
-    const {
-      isShowMainMenu,
-      isShowSignUp,
-      isShowSignIn
-    } = this.state
     return (
       <Hotkeys
         editorRef={this.editorRef}
@@ -313,16 +293,6 @@ class ShowClassic extends Component {
         prevUnitPath={prevUnitPath}
       >
         <>
-          <div className="login-signup-container" >
-            <Menu
-              isMobile
-              close={this.handleMainMenu}
-              handleSignIn={this.handleSignIn}
-              handleSignUp={this.handleSignUp} />
-          </div>
-          {isShowSignUp && <Signup isMobile handleSignIn={this.handleSignIn} handleSignUp={this.handleSignUp} />}
-          {isShowSignIn && <Login isMobile handleSignIn={this.handleSignIn} handleSignUp={this.handleSignUp} />}
-
           <Helmet title={`Learn ${this.getBlockNameTitle()} | codetribe.com`} />
           <div id="validate-html"></div>
           <Media maxWidth={MAX_MOBILE_WIDTH}>
