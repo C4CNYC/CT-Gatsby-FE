@@ -3,13 +3,34 @@
 #login-signup {
     background-color: #FBDD3F;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     text-align: center;
     padding: 25px 0px;
 }
 
 .login-signup-container {
-    transition: flex .2s;
+    /* transition: flex .2s; */
+    display: none;
+    z-index: 2000;
+}
+
+@media (min-width: 768px) {
+    #login-signup {
+        width: 298px;
+        position: absolute;
+        right: 0;
+    }
+
+    .login-signup-container {
+        width: 100%;
+    }
+}
+
+
+.login-signup-panel-visible {
+    position: absolute;
+    right: 0;
+    display: block;
 }
 
 #login-signup * {
@@ -121,10 +142,6 @@
     /* opacity: .8; */
     display: flex;
     justify-content: center;
-}
-
-.login-signup-container {
-    z-index: 2000;
 }
 
 #close-button {

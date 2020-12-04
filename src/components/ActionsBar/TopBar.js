@@ -280,9 +280,7 @@ class TopBar extends React.Component {
           <IconButton
             aria-label="Menu"
             onClick={() => {
-              $('.login-signup-container').css({
-                flex: '0.5 0%'
-              }).addClass('login-signup-panel-visible');
+              $('.login-signup-container').addClass('login-signup-panel-visible');
               $('body').append('<div class="hide-body-shadow"></div>');
             }}
             title="Menu"

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import PropTypes from 'prop-types';
 
-import Menu from './Menu.js';
 
 const propTypes = {
   unitFile: PropTypes.shape({
@@ -71,9 +70,7 @@ class DesktopLayout extends Component {
             {preview}
           </ReflexElement>
         )}
-        <ReflexElement className="login-signup-container">
-          <Menu />
-        </ReflexElement>
+
       </ReflexContainer>
     );
   }

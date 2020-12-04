@@ -50,9 +50,7 @@ export const Menu = ({ isMobile, close, handleSignIn, handleSignUp }) => {
   const closeMenu = () => {
     if (isMobile) close()
     else {
-      $('.login-signup-container').css({
-        flex: '0.000468823 1 0%'
-      }).removeClass('login-signup-panel-visible')
+      $('.login-signup-container').removeClass('login-signup-panel-visible')
       $('.hide-body-shadow').remove();
     }
   }
