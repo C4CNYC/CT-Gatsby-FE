@@ -27,12 +27,12 @@ import EditIcon from '!svg-react-loader!../assets/images/svg-icons/editicon.svg?
 import HomeIcons from '@material-ui/icons/HomeOutlined';
 import LockIcon from '@material-ui/icons/Lock';
 // import LockIcon from '!svg-react-loader!../assets/images/svg-icons/lock-icon.svg?name=LockIcon';
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
 
 import './profile.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-Modal.setAppElement(`#___gatsby`);
+// Modal.setAppElement(`#___gatsby`);
 
 const mapStateToProps = createSelector(
     userFetchStateSelector,
@@ -75,23 +75,23 @@ const propTypes = {
     })
 };
 
-const modalStyles = {
-    overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.58)'
-    },
-    content: {
-        position: 'relative',
-        top: 'auto',
-        left: 'auto',
-        right: 'auto',
-        bottom: 'auto',
-        width: '75%',
-        margin: '32px auto',
-        padding: 0,
-        border: 0,
-        zIndex: 9999
-    }
-};
+// const modalStyles = {
+//     overlay: {
+//         backgroundColor: 'rgba(0, 0, 0, 0.58)'
+//     },
+//     content: {
+//         position: 'relative',
+//         top: 'auto',
+//         left: 'auto',
+//         right: 'auto',
+//         bottom: 'auto',
+//         width: '75%',
+//         margin: '32px auto',
+//         padding: 0,
+//         border: 0,
+//         zIndex: 9999
+//     }
+// };
 
 // choose between the state from landing page and hash from url.
 

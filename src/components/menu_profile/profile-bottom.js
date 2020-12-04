@@ -76,7 +76,7 @@ export class Profile_Bottom extends Component {
             measurementId: "G-62MYN5DBME"
         };
         if (!firebase.apps.length)
-            app = firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(firebaseConfig);
 
         const certRef = firebase.database().ref('user_profile');
         certRef.on('value', (snapshot) => {
@@ -282,8 +282,8 @@ export class Profile_Bottom extends Component {
                             onChange={this.handlecityChange}
                         />
                     </div>
+                    {this.state.edit == true && <Button onClick={this.cancel} className='btn-modal-cancel'>Cancel</Button>}
                     {this.state.edit == true && <Button onClick={this.save} className='btn-modal'>Save</Button>}
-                    {this.state.edit == true && <Button onClick={this.cancel} className='btn-modal'>Cancel</Button>}
                 </div>
             </div>
         );

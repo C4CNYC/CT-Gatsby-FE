@@ -17,6 +17,14 @@ import EditIcon from '!svg-react-loader!../../assets/images/svg-icons/editicon.s
 import HomeIcons from '@material-ui/icons/HomeOutlined';
 import Modal from 'react-modal';
 const styles = (theme) => ({
+    modalContent: {
+        [theme.breakpoints.down("sm")]: {
+            width: '100% !important',
+        }
+    },
+    modalPrivate: {
+        backgroundColor: 'white !important',
+    }
 });
 
 var firebase;
@@ -32,11 +40,11 @@ const modalStyles = {
         left: 'auto',
         right: 'auto',
         bottom: 'auto',
-        width: '100%',
+        width: '30%',
         margin: '70px auto',
         padding: 0,
         border: 0,
-        zIndex: 9999
+        zIndex: 9999,
     }
 };
 
@@ -66,7 +74,7 @@ export class Profile_Top extends Component {
             measurementId: "G-62MYN5DBME"
         };
         if (!firebase.apps.length)
-            app = firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(firebaseConfig);
 
         const certRef = firebase.database().ref('user_profile');
 
@@ -150,24 +158,16 @@ export class Profile_Top extends Component {
         });
     };
     render() {
+        const { classes } = this.props;
         return (
             <div>
-                {/* <div id='profile_top' className='row'>
-                    <div id='topbar_left'></div>
-                    <div id='topbar_right' className='col d-flex'></div>
-                    <div id='happy_title'>
-                        <p id='happy_text'>HAPPINESS</p>
-                    </div>
-                </div> */}
                 <iframe id="profile_top_iframe" style={{ width: '100%' }}></iframe>
                 <div style={{ height: 0, backgroundColor: 'white' }}>
                     <div id='circle_home'>
                         <div id='edit_icon'>
-                            <EditIcon onClick={this.openaboutModal} style={{ top: 15 }}></EditIcon>
+                            <EditIcon onClick={this.openaboutModal} style={{ top: 15, marginRight: 12 }}></EditIcon>
                         </div>
                         <div id='circle_home_icon'>
-                            {/* <div className='home-icons' /> */}
-                            {/* <HomeIcons className='home-icons'></HomeIcons> */}
                             <iframe id="profile_top_emoji_iframe" style={{ width: '100%', height: '100%', border: 'none' }}></iframe>
                         </div>
                     </div>
@@ -176,9 +176,14 @@ export class Profile_Top extends Component {
                     isOpen={this.state.modalOpens}
                     onRequestClose={this.closeaboutModal}
                     style={modalStyles}
+                    className={classes.modalContent}
+                    // overlayClassName={
+                    //     "ReactModal__Overlay modal"
+                    // }
+                    // className={'ReactModal__Content mine'}
                     contentLabel='Modal'
                 >
-                    <div id='modal_private'>
+                    <div id='modal_private' className={classes.modalPrivate}>
                         <div className='row'>
                             <p style={{ color: 'black' }}>
                                 <h5>PERSONALIZE</h5>
@@ -218,18 +223,18 @@ export class Profile_Top extends Component {
                             style={{ fontSize: '12px' }}
                         />
                         <Button
+                            onClick={this.aboutcancel}
+                            className='btn-modal-cancel'
+                            style={{ marginTop: '20px' }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
                             onClick={this.saveabout}
                             className='btn-modal'
                             style={{ marginTop: '20px' }}
                         >
                             Save
-                        </Button>
-                        <Button
-                            onClick={this.aboutcancel}
-                            className='btn-modal'
-                            style={{ marginTop: '20px' }}
-                        >
-                            Cancel
                         </Button>
                     </div>
                 </Modal>
@@ -259,4 +264,4 @@ const mapStateToProps = createSelector(
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withStyles(styles)(Profile_Top));
+)(withStyles(styles, { withTheme: true })(Profile_Top));

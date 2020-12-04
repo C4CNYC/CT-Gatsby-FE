@@ -107,6 +107,14 @@
     width: 40%;
     height: 30px;
 }
+.btn-modal-cancel {
+    background-color:gray !important;
+    margin-top: 15px !important;
+    margin-right: 5% !important;
+    margin-left: 5% !important;
+    width: 40%;
+    height: 30px;
+}
 #circle_lock {
     width: 100%;
     position: relative;
@@ -213,4 +221,7 @@
 }
 #modal_private {
     padding: 30px;
+}
+#modal > div {
+    width: 50%;
 }

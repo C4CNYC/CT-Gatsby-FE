@@ -51,7 +51,9 @@ export class Profile_Middle extends Component {
             aboutme: '',
             aboutmes: '',
             reason: '',
-            reasons: ''
+            reasons: '',
+            username: '',
+            usernames: ''
         };
     };
 
@@ -69,7 +71,7 @@ export class Profile_Middle extends Component {
             measurementId: "G-62MYN5DBME"
         };
         if (!firebase.apps.length)
-            app = firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(firebaseConfig);
 
         const certRef = firebase.database().ref('user_profile');
         certRef.on('value', (snapshot) => {
@@ -80,7 +82,9 @@ export class Profile_Middle extends Component {
                 aboutme: cert['e19cdj6143ec8']['about'],
                 aboutmes: '',
                 reason: cert['e19cdj6143ec8']['reason'],
-                reasons: ''
+                reasons: '',
+                username: cert['e19cdj6143ec8']['username'],
+                usernames: '',
             };
 
             this.setState(newState);
@@ -88,7 +92,8 @@ export class Profile_Middle extends Component {
 
         // certRef.child('e19cdj6143ec8').update({
         //     about: 'student',
-        //     reason: 'hobby'
+        //     reason: 'hobby',
+        //     username: 'John',
         // });
 
 
@@ -98,13 +103,20 @@ export class Profile_Middle extends Component {
         this.setState({
             edit: true,
             aboutmes: this.state.aboutme,
-            reasons: this.state.reason
+            reasons: this.state.reason,
+            usernames: this.state.username,
         });
     };
     handleaboutme = (event) => {
         const target = event.target;
         this.setState({
             aboutme: target.value
+        });
+    };
+    handleusername = (event) => {
+        const target = event.target;
+        this.setState({
+            username: target.value
         });
     };
     handlereasonChange = (event) => {
@@ -118,7 +130,8 @@ export class Profile_Middle extends Component {
 
         certRef.child('e19cdj6143ec8').update({
             about: this.state.aboutme,
-            reason: this.state.reason
+            reason: this.state.reason,
+            username: this.state.username,
         });
 
         this.setState({
@@ -129,29 +142,39 @@ export class Profile_Middle extends Component {
         this.setState({
             edit: false,
             aboutme: this.state.aboutmes,
-            reason: this.state.reasons
+            reason: this.state.reasons,
+            username: this.state.usernames,
         });
     };
     render() {
         return (
             <div id='profile_middle'>
-                <div className='row title-body'>
-                    <p className='title'>USERNAME:</p>
-                    <p className='title-data' style={{ color: 'red', fontSize: '20px' }}>@typetips</p>
-                </div>
-                <div className='row title-body'>
-                    <p className='title'>POINTS:</p>
-                    <p className='title-data'>145</p>
-                </div>
-                <div className='row title-body'>
-                    <p className='title'>JOINED:</p>
-                    <p className='title-data'>May 2020</p>
-                </div>
-                <div className='row d-flex justify-content-between'>
-                    <p className='title'>ABOUT ME</p>
+                <div className='row title-body d-flex justify-content-between'>
+                    <p className='title' style={{ marginLeft: 0 }}>USERNAME:</p>
                     <div className='edit_icon'>
                         {this.state.edit == false && <EditIcon onClick={this.editValue}></EditIcon>}
                     </div>
+                    <input
+                        type='text'
+                        name='username'
+                        className='input-class'
+                        disabled={!this.state.edit}
+                        value={this.state.username}
+                        onChange={this.handleusername}
+                        style={{ marginBottom: 20 }}
+                    />
+                    {/* <p className='title-data' style={{ color: 'red', fontSize: '20px' }}>@typetips</p> */}
+                </div>
+                <div className='row title-body'>
+                    <p className='title' style={{ marginLeft: 0 }}>POINTS:</p>
+                    <p className='title-data' style={{ marginLeft: 0 }}>145</p>
+                </div>
+                <div className='row title-body'>
+                    <p className='title' style={{ marginLeft: 0 }}>JOINED:</p>
+                    <p className='title-data' style={{ marginLeft: 0 }}>May 2020</p>
+                </div>
+                <div className='row d-flex justify-content-between'>
+                    <p className='title' style={{ marginLeft: 0 }}>ABOUT ME</p>
                 </div>
                 <textarea
                     name='about_me'
@@ -163,11 +186,11 @@ export class Profile_Middle extends Component {
                     onChange={this.handleaboutme}
                 />
                 <div className='row title-body'>
-                    <p className='title'>COUNTRY:</p>
-                    <p className='title-data'>France</p>
+                    <p className='title' style={{ marginLeft: 0 }}>COUNTRY:</p>
+                    <p className='title-data' style={{ marginLeft: 0 }}>France</p>
                 </div>
                 <div className='row'>
-                    <p className='title'>WHY I’M LEARNING CODING?</p>
+                    <p className='title' style={{ marginLeft: 0 }}>WHY I’M LEARNING CODING?</p>
                 </div>
                 <textarea
                     name='reason'
@@ -178,8 +201,8 @@ export class Profile_Middle extends Component {
                     value={this.state.reason}
                     onChange={this.handlereasonChange}
                 />
+                {this.state.edit == true && <Button onClick={this.aboutcancel} className='btn-modal-cancel'>Cancel</Button>}
                 {this.state.edit == true && <Button onClick={this.saveabout} className='btn-modal'>Save</Button>}
-                {this.state.edit == true && <Button onClick={this.aboutcancel} className='btn-modal'>Cancel</Button>}
             </div>
         );
     }
