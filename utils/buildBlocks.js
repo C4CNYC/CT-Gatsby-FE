@@ -9,42 +9,40 @@ const { cctApiLocation, locale } = require('../config/env.json');
 const url = require('fast-url-parser');
 
 
-exports.buildBlocks = async(options = {
+exports.buildBlocks = async (options = {
   withCanvasModuleItems: false
 }) => (await getCourses())
-    // .filter(course => {
-    //     return course.name == 'Canvas Vincente Course';
-    // })
-	.map((course, order) => {
-		return {
-			...course,
-			order
-		};
-	})
-	.reduce(async(blocks, course) => {
-	    const superBlock = await prepareForFrontend(course);
-	    const modules = await Promise.all(
-            _.flatten(course.modules)
-                .map(async(m, order) => (
-                    await prepareForFrontend({
-                        ...m,
-                        superBlock,
-                        order
-                    }, options.withCanvasModuleItems)
-                ))
-        );
+  // .filter(course => {
+  //     return course.name == 'Canvas Vincente Course';
+  // })
+  .map((course, order) => {
+    return {
+      ...course,
+      order
+    };
+  })
+  .reduce(async (blocks, course) => {
+    const superBlock = await prepareForFrontend(course);
+    const modules = await Promise.all(
+      _.flatten(course.modules)
+        .map(async (m, order) => (
+          await prepareForFrontend({
+            ...m,
+            superBlock,
+            order
+          }, options.withCanvasModuleItems)
+        ))
+    );
 
-	    blocks = await Promise.resolve(blocks);
-
-        return blocks.concat([
-          superBlock,
-          ...modules
-        ]);
+    blocks = await Promise.resolve(blocks);
+    return blocks.concat([
+      superBlock,
+      ...modules
+    ]);
   }, []);
 // .filter(block => !block.isPrivate);
 
-const prepareForFrontend = async(block, withCanvasModuleItems) => {
-
+const prepareForFrontend = async (block, withCanvasModuleItems) => {
   block.content = '';
   block.excerpt = '';
   block.title = block.name;
@@ -71,25 +69,25 @@ const prepareForFrontend = async(block, withCanvasModuleItems) => {
     }
   }
 
-	const frontendBlock = {
-		id: (block.superBlock ? 'm' : 'c') + '_' + block.id + '',
-		canvasId: block.id + '',
-		title: nameify(block.title),
-		excerpt: block.excerpt,
-		// todo convert markdown to html if content is markdown type
-		content: block.content,
-		type: block.superBlock ? 'lesson' : 'course',
-		image: block.image ? block.image : 'https://dashboard.codejika.org/assets/img/course-header-image.jpg',
-		dashedName: dasherize(block.title),
-        slug: block.superBlock ? `/learn/${block.superBlock.dashedName}/${dasherize(block.title)}` : `/learn/${dasherize(block.title)}`,
-		superBlock: block.superBlock ? block.superBlock.dashedName : null,
-		superOrder: block.superBlock ? block.superBlock.order : null,
-		order: block.order,
-		blockOrder: block.order,
-		isPrivate: block.isPrivate,
-		blockType: 0,
-		forumTopicId: 0
-	};
+  const frontendBlock = {
+    id: (block.superBlock ? 'm' : 'c') + '_' + block.id + '',
+    canvasId: block.id + '',
+    title: nameify(block.title),
+    excerpt: block.excerpt,
+    // todo convert markdown to html if content is markdown type
+    content: block.content,
+    type: block.superBlock ? 'lesson' : 'course',
+    image: block.image ? block.image : 'https://dashboard.codejika.org/assets/img/course-header-image.jpg',
+    dashedName: dasherize(block.title),
+    slug: block.superBlock ? `/learn/${block.superBlock.dashedName}/${dasherize(block.title)}` : `/learn/${dasherize(block.title)}`,
+    superBlock: block.superBlock ? block.superBlock.dashedName : null,
+    superOrder: block.superBlock ? block.superBlock.order : null,
+    order: block.order,
+    blockOrder: block.order,
+    isPrivate: block.isPrivate,
+    blockType: 0,
+    forumTopicId: 0
+  };
 
   if (withCanvasModuleItems) {
     frontendBlock.items = block.items && block.items.length ? block.items.slice(1) : [];

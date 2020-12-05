@@ -75,10 +75,17 @@ export function firebaseUpdate(state, data) {
 }
 export function firebaseGet(state, callback) {
     var data;
-    firebase.database().ref(state).once('value', function (snapshot) {
-        data = snapshot.val();
-        callback(data);
-    });
+    if (callback)
+        firebase.database().ref(state).once('value', function (snapshot) {
+            data = snapshot.val();
+            callback(data);
+        });
+    else return new Promise((res) => {
+        firebase.database().ref(state).once('value', function (snapshot) {
+            data = snapshot.val();
+            res(data);
+        });
+    })
 }
 export function firebaseRemove(state) {
     firebase.database().ref(state).remove();
@@ -140,25 +147,10 @@ export function setUser(userid, userfirstname) {
 }
 
 export function getProfile() {
-    var elem = $('#profilePanel input[type="text"], #profilePanel select, #profilePanel textarea');
-    var items = ['firstname', 'lastname', 'day', 'month', 'year', 'nickname', 'country', 'grade', 'dreamjob', 'schoolname', 'email', 'mobilernumber'];
-    firebaseGet('Users/profile/' + currentUserId(), (data) => {
-        for (i = 0; i < elem.length; i++) {
-            elem.eq(i).val(data[items[i]]);
-        }
-    });
+    return firebaseGet('Users/profile/' + currentUserId())
 }
 export function currentUserId() {
-    return Auth.currentUser.email.toString().replace('@codejika.org', '');
-}
-export function Logged() {
-    if (islogged()) {
-        $('#button-login, #button-register').css({ display: 'none' });
-        $('#button-edit, #button-logout').css({ display: 'flex' });
-    } else {
-        $('#button-login, #button-register').css({ display: 'flex' });
-        $('#button-edit, #button-logout').css({ display: 'none' });
-    }
+    return Auth.currentUser.email.toString().replace('@codetribe.org', '');
 }
 
 export function logout() {
@@ -183,15 +175,15 @@ export function retrieve_slide_number() {
         if (user) {
             firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentslidenumber/', (data) => {
                 if (data != null) {
-                    slider.fix_slider(data.slideid);
+                    // slider.fix_slider(data.slideid);
                 }
             })
         } else {
             if (localStorage.getItem('5minuteswebsitecurrentslidenumber') == null) {
                 localStorage.setItem('5minuteswebsitecurrentslidenumber', 0);
-                slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
+                // slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
             } else {
-                slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
+                // slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
             }
 
         }
@@ -234,7 +226,7 @@ export function retrieveSlider() {
             if (data != null && data != undefined) {
                 for (const key of Object.keys(data)) {
                     if (data[key].complete == true) {
-                        slider.show_result(data[key].lessonid);
+                        // slider.show_result(data[key].lessonid);
                     }
                 }
             }
@@ -244,9 +236,36 @@ export function retrieveSlider() {
         if (data != null && data != undefined) {
             for (const key of Object.keys(data)) {
                 if (data[key].complete == true) {
-                    slider.show_result(data[key].lessonid);
+                    // slider.show_result(data[key].lessonid);
                 }
             }
+        }
+    }
+}
+
+export async function getSlider() {
+    if (islogged()) {
+        let data = await firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/');
+        if (data != null && data != undefined) {
+            var list = []
+            for (const key of Object.keys(data)) {
+                if (data[key].complete == true) {
+                    list.push(data[key])
+                }
+            }
+            return list
+        }
+
+    } else {
+        var data = JSON.parse(await localStorage.getItem('5miunteswebsiteslider'));
+        if (data != null && data != undefined) {
+            var list = []
+            for (const key of Object.keys(data)) {
+                if (data[key].complete == true) {
+                    list.push(data[key])
+                }
+            }
+            return list
         }
     }
 }
@@ -267,6 +286,7 @@ export function savCode(code_text) {
     }
 }
 export function getCode(callback) {
+    console.log(islogged())
     if (islogged()) {
         firebaseGet('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentcodeconsole', (codes) => {
             if (codes != null) {
@@ -279,12 +299,17 @@ export function getCode(callback) {
 }
 
 export function createUser(userid, userpass) {
-    const promise = Auth.createUserWithEmailAndPassword(userid, userpass);
-    promise.catch(e => alert(e.message));
+    return Auth.createUserWithEmailAndPassword(userid, userpass);
+}
+export function fromLocalToFirestoreCode() {
+    var localCode = localStorage.getItem('5minuteswebsitecurrentcodeconsole');
+    if (localCode)
+        firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentcodeconsole', {
+            code: localStorage.getItem('5minuteswebsitecurrentcodeconsole')
+        });
 }
 export function signIn(userid, userpass) {
-    const promise = Auth.signInWithEmailAndPassword(userid, userpass);
-    promise.catch(e => alert(e.message));
+    return Auth.signInWithEmailAndPassword(userid, userpass);
 }
 export function signOut() {
     if (islogged()) {
@@ -292,10 +317,10 @@ export function signOut() {
     }
 }
 
-// change((user)=>{
-//     if(user){     
-//         var url = window.location.href + '?' + btoa(currentUserId());    
-//         window.history.pushState({path: url}, '', url);
+// change((user) => {
+//     if (user) {
+//         var url = window.location.href + '?' + btoa(currentUserId());
+//         window.history.pushState({ path: url }, '', url);
 //         alert(window.location.href)
 //     }
 // })
@@ -349,7 +374,7 @@ export function combine() {
                     firebaseInsert('Users/profile/' + currentUserId() + '/lessons/5minuteswebsite/currentslidenumber', {
                         slideid: localStorage.getItem('5minuteswebsitecurrentslidenumber')
                     })
-                    slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
+                    // slider.fix_slider(localStorage.getItem('5minuteswebsitecurrentslidenumber'));
                 }
             })
         }

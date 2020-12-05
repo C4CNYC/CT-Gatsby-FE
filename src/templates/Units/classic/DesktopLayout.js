@@ -1,26 +1,7 @@
 import React, { Component } from 'react';
 import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import PropTypes from 'prop-types';
-import SpringScrollbars from '../../../components/SpringScrollbars';
-import '../components/loginSignupPanel.css';
-import FaceIcon from '@material-ui/icons/Face';
 
-import ReactDOM from 'react-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome } from '@fortawesome/free-solid-svg-icons'
-import { faBookReader } from '@fortawesome/free-solid-svg-icons'
-import { faUndo } from '@fortawesome/free-solid-svg-icons'
-import { faImages } from '@fortawesome/free-solid-svg-icons'
-import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import $ from 'jquery';
-
-import Signup from '../components/signup.js';
-import Login from '../components/login.js';
-import Profile from '../components/profile.js';
-import SessionReset from '../components/sessionReset.js';
-import Logout from '../components/logout.js';
-import * as Auth from '../components/authmanager.js';
 import Menu from './Menu.js';
 
 const propTypes = {
@@ -42,6 +23,7 @@ const propTypes = {
 
 
 class DesktopLayout extends Component {
+
   render() {
     const {
       resizeProps,
@@ -55,7 +37,7 @@ class DesktopLayout extends Component {
     return (
       <ReflexContainer className='desktop-layout' orientation='vertical'>
         <ReflexElement flex={1} {...resizeProps}>
-           {instructions}
+          {instructions}
         </ReflexElement>
         <ReflexSplitter propagate={true} {...resizeProps} />
         <ReflexElement flex={1} {...resizeProps}>
@@ -68,7 +50,7 @@ class DesktopLayout extends Component {
                 renderOnResizeRate={20}
                 {...resizeProps}
               >
-                {editor}      
+                {editor}
               </ReflexElement>
               {/*<ReflexSplitter propagate={true} {...resizeProps} />*/}
               {/*<ReflexElement*/}
@@ -89,9 +71,9 @@ class DesktopLayout extends Component {
             {preview}
           </ReflexElement>
         )}
-        <ReflexElement className="login-signup-container">         
-           <Menu/>
-        </ReflexElement>
+        <div className="login-signup-container">
+          <Menu />
+        </div>
       </ReflexContainer>
     );
   }

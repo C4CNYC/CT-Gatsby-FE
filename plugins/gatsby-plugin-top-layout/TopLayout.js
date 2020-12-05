@@ -274,7 +274,7 @@ class TopLayout extends Component {
                         <Flash flashMessage={flashMessage} onClose={removeFlashMessage} />
                     ) : null}
                     <Navigator />
-                    <InfoBar pages={[]} parts={[]} />
+                    {/* <InfoBar pages={[]} parts={[]} /> */}
                     {children}
                 </ThemeProvider>
             </Fragment>

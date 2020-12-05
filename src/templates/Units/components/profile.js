@@ -5,9 +5,9 @@ import $ from 'jquery';
 import robot from './img/robot_avatar_happy.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import * as Auth from './authmanager.js';
+import * as Auth from '../utils/authmanager.js';
 
-const profile = ()=>(
+const profile = ({ profile }) => (
     <div id="profilePanel" style={{
         height: '700px',
         minWidth: '400px',
@@ -20,26 +20,26 @@ const profile = ()=>(
         position: 'relative',
         overflowY: 'auto',
         overflowX: 'hidden'
-    }}>       
-        <FontAwesomeIcon icon={faUserCircle} style={{color: 'black', height:'57px', width:'57px',}}/>
-        <h2 style={{color: 'black', fontSize: '30px', margin: '5px 0'}}>EDIT MY PROFILE</h2>
+    }}>
+        <FontAwesomeIcon icon={faUserCircle} style={{ color: 'black', height: '57px', width: '57px', }} />
+        <h2 style={{ color: 'black', fontSize: '30px', margin: '5px 0' }}>EDIT MY PROFILE</h2>
         <div style={{
-            width:'100%',          
+            width: '100%',
             backgroundColor: '#ddf0fe',
             padding: '10px'
         }} id="profile-important">
-            
+
             <div className="input-box">
                 <label htmlFor="firstname">First name</label>
-                <input type="text" name="firstname" id="firstname" placeholder="First name"/>
+                <input type="text" name="firstname" id="firstname" placeholder="First name" value={profile.firstname} />
             </div>
             <div className="input-box">
                 <label htmlFor="firstname">Last name</label>
-                <input type="text" name="lastname" id="last name" placeholder="Last name"/>
-            </div><br/><br/>
+                <input type="text" name="lastname" id="last name" placeholder="Last name" value={profile.lastname} />
+            </div><br /><br />
             <div className="input-box" >
                 <label>Date of Birth</label>
-                <select name="day" id="B-day" class="custom-select mb-0" required="">
+                <select name="day" id="B-day" class="custom-select mb-0" required="" value={profile.day}>
                     <option value="" disabled="" selected="" hidden="">Day</option>
                     <option value="01">01</option>
                     <option value="02">02</option>
@@ -73,7 +73,7 @@ const profile = ()=>(
                     <option value="30">30</option>
                     <option value="31">31</option>
                 </select>
-                <select name="month" id="B-month" class="custom-select mb-0" required="">
+                <select name="month" id="B-month" class="custom-select mb-0" required="" value={profile.month}>
                     <option value="" disabled="" selected="" hidden="">Month</option>
                     <option value="01">Jan</option>
                     <option value="02">Feb</option>
@@ -88,7 +88,7 @@ const profile = ()=>(
                     <option value="11">Nov</option>
                     <option value="12">Dec</option>
                 </select>
-                <select name="year" id="B-year" class="custom-select mb-0" required="">
+                <select name="year" id="B-year" class="custom-select mb-0" required="" value={profile.year}>
                     <option value="" disabled="" selected="" hidden="">Year</option>
                     <option value="2020">2020</option>
                     <option value="2019">2019</option>
@@ -192,20 +192,20 @@ const profile = ()=>(
                     <option value="1921">1921</option>
                     <option value="1920">1920</option>
                 </select>
-            </div><br/><br/>                
-            <label style={{color: 'black'}}><strong>Important: </strong>Don't forget that the above is also your login details</label>
-        </div><br/>
+            </div><br /><br />
+            <label style={{ color: 'black' }}><strong>Important: </strong>Don't forget that the above is also your login details</label>
+        </div><br />
 
-{/* text area boxes */}
-            <div className="profile-box">
-                <div className="input-box profile-input" style={{width: '100%'}}>
-                    <span style={{padding: '9px', backgroundColor: '#e9ecef', borderRadius: '.25rem 0 0 .25rem', color: 'black'}}>@</span>
-                    <input type="text" name="nickname" id="nickname" placeholder="Nickname" style={{width: '150px', borderRadius:'0'}}/>
-                </div>
-                <div className="input-box profile-input">
-                    <select id="PCountry" name="country" class="form-control" style={{
-                        padding: '8px 12px', width: '300px'
-                    }}>
+        {/* text area boxes */}
+        <div className="profile-box">
+            <div className="input-box profile-input" style={{ width: '100%' }}>
+                <span style={{ padding: '9px', backgroundColor: '#e9ecef', borderRadius: '.25rem 0 0 .25rem', color: 'black' }}>@</span>
+                <input type="text" name="nickname" id="nickname" placeholder="Nickname" style={{ width: '150px', borderRadius: '0' }} value={profile.nickname} />
+            </div>
+            <div className="input-box profile-input">
+                <select id="PCountry" name="country" class="form-control" style={{
+                    padding: '8px 12px', width: '300px'
+                }} value={profile.country}>
                     <option value="" selected="selected">Country</option>
                     <option value="Afghanistan">Afghanistan</option>
                     <option value="Åland Islands">Åland Islands</option>
@@ -452,33 +452,33 @@ const profile = ()=>(
                     <option value="Zambia">Zambia</option>
                     <option value="Zimbabwe">Zimbabwe</option>
                 </select>
-                </div>
-                <div className="input-box profile-input" style={{width: '100px'}}>
-                    <input type="text" name="grade" id="grade" placeholder="Grade"/>
-                </div>
-                <div className="input-box" style={{width: '90%'}}>
-                    <textarea name="dreamjob" id="dreamjob" cols="4" placeholder="Dream Job"></textarea>
-                </div>
-                <div className="input-box" style={{width: '90%'}}>
-                    <textarea name="schoolname" id="schoolname" cols="4" placeholder="School name"></textarea>
-                </div>
-                <div className="input-box" style={{width: '90%'}}>
-                    <textarea name="email" id="email" cols="4" placeholder="Email"></textarea>
-                </div>
-                <div className="input-box" style={{width: '90%'}}>
-                    <textarea name="mobilenumber" id="mobilenumber" cols="4" placeholder="Mobile number"></textarea>
-                </div>
             </div>
-{/* end text area boxes */}
-        <br/>
+            <div className="input-box profile-input" style={{ width: '100px' }}>
+                <input type="text" name="grade" id="grade" placeholder="Grade" value={profile.grade} />
+            </div>
+            <div className="input-box" style={{ width: '90%' }}>
+                <textarea name="dreamjob" id="dreamjob" cols="4" placeholder="Dream Job" value={profile.dreamjob}></textarea>
+            </div>
+            <div className="input-box" style={{ width: '90%' }}>
+                <textarea name="schoolname" id="schoolname" cols="4" placeholder="School name" value={profile.schoolname}></textarea>
+            </div>
+            <div className="input-box" style={{ width: '90%' }}>
+                <textarea name="email" id="email" cols="4" placeholder="Email" value={profile.email}></textarea>
+            </div>
+            <div className="input-box" style={{ width: '90%' }}>
+                <textarea name="mobilenumber" id="mobilenumber" cols="4" placeholder="Mobile number" value={profile.mobilenumber}></textarea>
+            </div>
+        </div>
+        {/* end text area boxes */}
+        <br />
         <div className="input-box">
-            <button style={{backgroundColor: '#777'}} onClick={()=>{
+            <button style={{ backgroundColor: '#777' }} onClick={() => {
                 Auth.clearShadow();
             }}>CANCEL</button>
-            <button style={{backgroundColor: '#ff6a00'}} onClick={()=>{
-                 if(Auth.validateForm('#profilePanel #profile-important input[type="text"], #profilePanel #profile-important select, #profilePanel #profile-important textarea')){
+            <button style={{ backgroundColor: '#ff6a00' }} onClick={() => {
+                if (Auth.validateForm('#profilePanel #profile-important input[type="text"], #profilePanel #profile-important select, #profilePanel #profile-important textarea')) {
                     var info = Auth.getValue('#profilePanel input[type="text"], #profilePanel select, #profilePanel textarea');
-                    Auth.firebaseUpdate('Users/profile/' + info.slice(0, 5).join('').toLowerCase().replace(' ', ''),{
+                    Auth.firebaseUpdate('Users/profile/' + info.slice(0, 5).join('').toLowerCase().replace(' ', ''), {
                         firstname: info[0],
                         lastname: info[1],
                         day: info[2],
@@ -491,25 +491,25 @@ const profile = ()=>(
                         schoolname: info[9],
                         email: info[10],
                         mobilenumber: info[11]
-                    });                    
+                    });
                     Auth.clearShadow();
                 }
             }}>SAVE</button>
-        </div><br/><br/>        
+        </div><br /><br />
         <div style={{
             position: 'absolute',
             top: '5px',
             right: '10px',
-            cursor: 'pointer',           
+            cursor: 'pointer',
             color: 'gray',
             padding: '5px',
             fontSize: '25px',
             fontWeight: 'bold'
         }} className="clear-login-panel"
-        onClick={()=>{
-            ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
-            $('.login-signup-container').css({'z-index':2000});
-        }}>X</div>        
+            onClick={() => {
+                ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
+                $('.login-signup-container').css({ 'z-index': 2000 });
+            }}>X</div>
     </div>
 )
 export default profile

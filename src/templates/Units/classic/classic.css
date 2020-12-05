@@ -16,18 +16,18 @@
   display: flex;
 }
 
-#unit-page-tabs .nav-tabs > li {
+#unit-page-tabs .nav-tabs>li {
   flex: 1;
   text-align: center;
 }
 
-#unit-page-tabs .nav-tabs > li > a {
+#unit-page-tabs .nav-tabs>li>a {
   padding: 5px 10px;
   text-decoration: none;
   font-size: 0.8em;
 }
 
-#unit-page-tabs .nav-tabs > li > a:hover {
+#unit-page-tabs .nav-tabs>li>a:hover {
   color: var(--gray-85);
 }
 
@@ -41,7 +41,7 @@
   overflow-y: auto;
 }
 
-#simple-tabpanel-1 > div {
+#simple-tabpanel-1>div {
   height: 100%;
   overflow: hidden;
 }
@@ -51,21 +51,11 @@
   overflow: hidden;
 }
 
-#unit-page-tabs .nav-tabs > li.active > a {
+#unit-page-tabs .nav-tabs>li.active>a {
   color: var(--quaternary-color);
   background-color: var(--quaternary-background);
 }
 
-.margin-view-overlays div ::before{
-  font-family: "Font Awesome 5 Free";
-   content: "\f142";
-   display: inline-block;
-   padding-right: 8px;
-   font-size: 0.8rem;
-   vertical-align: middle;
-   align-content: left;
-   font-weight: 900;
-   float: left;
-   margin-left: 13px;
+#validate-html {
+  display: none;
 }
-

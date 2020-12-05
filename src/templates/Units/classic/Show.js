@@ -25,6 +25,7 @@ import { getGuideUrl } from '../utils';
 import { unitTypes } from '../../../../utils/unitTypes';
 import { UnitNode } from '../../../state/propTypes';
 import { dasherize } from '../../../..//utils/slugs';
+import * as Auth from '../utils/authmanager.js';
 import {
   createFiles,
   unitFilesSelector,
@@ -104,7 +105,8 @@ class ShowClassic extends Component {
     };
 
     this.state = {
-      resizing: false
+      resizing: false,
+      user: null
     };
 
     this.containerRef = React.createRef();
@@ -125,6 +127,13 @@ class ShowClassic extends Component {
       }
     } = this.props;
     this.initializeComponent(title);
+
+    Auth.change((user) => {
+      if (user) {
+        this.setState({ user })
+      }
+    })
+
   }
 
   componentDidUpdate(prevProps) {
@@ -285,6 +294,7 @@ class ShowClassic extends Component {
       >
         <>
           <Helmet title={`Learn ${this.getBlockNameTitle()} | codetribe.com`} />
+          <div id="validate-html"></div>
           <Media maxWidth={MAX_MOBILE_WIDTH}>
             <MobileLayout
               editor={this.renderEditor()}
@@ -315,6 +325,7 @@ class ShowClassic extends Component {
           {/*<HelpModal />*/}
           {/*<VideoModal videoUrl={this.getVideoUrl()} />*/}
           {/*<ResetModal />*/}
+
         </>
       </Hotkeys>
     );

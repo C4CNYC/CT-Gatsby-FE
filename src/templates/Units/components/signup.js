@@ -2,39 +2,82 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './loginSignupPanel.css';
 import $ from 'jquery';
-import robot from './img/robot_avatar_happy.png'
-import * as Auth from './authmanager.js';
+import * as Auth from '../utils/authmanager.js';
 import * as popup from './popups.js';
+import Login from './login.js'
+import LocketIcon from './img/rocket_icon.svg'
+import Close from './closeIcon'
+export default ({ handleSignIn, handleSignUp, isMobile }) => {
+    const goLogin = () => {
 
-const login = ()=>(
-    <div id="signupPanel" className="bottom-arrow" style={{
-        height: '430px',
-        minWidth: '400px',
-        backgroundColor: '#fff',
-        borderRadius: '10px',
-        marginTop: '10px',
-        padding: '15px',
-        textAlign: 'center',
-        position: 'relative'        
-    }}>       
-        <h2 style={{color: 'black', fontSize: '20px'}}>REGISTRATION IS SOOOO EASY. WE JUST NEED A FEW<br/>DETAILS TO GET STARTED</h2>
-        <div style={{
-            width:'100%',          
-            backgroundColor: '#ddf0fe',
-            padding: '10px'
-        }}>
-            
-            <div className="input-box">
-                <label htmlFor="firstname">First name</label>
-                <input type="text" name="firstname" id="firstname" placeholder="First name"/>
+        if (isMobile) {
+            handleSignIn()
+            handleSignUp()
+        }
+
+        else {
+            ReactDOM.render(<Login />, document.querySelector('.hide-body-shadow'));
+            $('.login-signup-container').css({ 'z-index': 0 });
+        }
+    }
+    const signupFunc = () => {
+        if (Auth.validateForm('#signupPanel input[type="text"], #signupPanel select')) {
+            var info = Auth.getValue('#signupPanel input[type="text"], #signupPanel select');
+            Auth.createUser(info.join('').toLowerCase().replace(' ', '') + '@codetribe.org', info.join('').toLowerCase().replace(' ', ''))
+                .then((res) => {
+                    Auth.fromLocalToFirestoreCode();
+
+                    if (Auth.islogged()) {
+                        Auth.firebaseInsert('Users/profile/' + info.join('').toLowerCase().replace(' ', ''), {
+                            firstname: info[0],
+                            lastname: info[1],
+                            day: info[2],
+                            month: info[3],
+                            year: info[4],
+                        });
+                        Auth.setUser(info.join('').toLowerCase().replace(' ', ''), info[0]);
+                        Auth.clearShadow();
+                        $('.login-signup-container').css({ 'z-index': 0 });
+                        ReactDOM.render(<popup.Aftersignup isMobile={isMobile} />, document.querySelector('.hide-body-shadow'));
+                    }
+
+                })
+                .catch(err => {
+                    ReactDOM.render(<popup.Signupfailed message={err.message} />, document.querySelector('.hide-body-shadow'));
+                });
+
+        }
+    }
+    return (
+
+        <div id="signupPanel"
+            style={{
+                height: isMobile ? '100vh' : '450px',
+                minWidth: isMobile ? 'null' : '400px',
+                backgroundColor: 'white',
+                marginTop: '10px',
+                padding: '15px',
+                textAlign: 'center',
+                justifyContent: 'center'
+            }}>
+            <div style={{
+                display: "flex",
+                justifyContent: "center",
+                position: 'relative'
+            }}>
+                <h2 style={{ color: 'black', fontSize: '20px', flex: 0.8 }}>REGISTRATION IS SOOOOO EASY</h2>
+                <Close handleClose={() => isMobile ? handleSignUp() : Auth.clearShadow()} />
             </div>
             <div className="input-box">
-                <label htmlFor="firstname">Last name</label>
-                <input type="text" name="lastname" id="last name" placeholder="Last name"/>
-            </div><br/><br/>
+                <input style={{ flex: 0.45 }} type="text" name="firstname" id="firstname" placeholder="First name" />
+                <input style={{ flex: 0.45 }} type="text" name="lastname" id="last name" placeholder="Last name" />
+            </div>
+
             <div className="input-box" >
                 <label>Date of Birth</label>
-                <select name="bday" id="bday" class="custom-select mb-0" required="">
+            </div>
+            <div className="input-box" >
+                <select style={{ flex: 0.3 }} name="day" id="B-day" class="custom-select mb-0" required="">
                     <option value="" disabled="" selected="" hidden="">Day</option>
                     <option value="01">01</option>
                     <option value="02">02</option>
@@ -68,7 +111,7 @@ const login = ()=>(
                     <option value="30">30</option>
                     <option value="31">31</option>
                 </select>
-                <select name="bmonth" id="bmonth" class="custom-select mb-0" required="">
+                <select style={{ flex: 0.3 }} name="month" id="B-month" class="custom-select mb-0" required="">
                     <option value="" disabled="" selected="" hidden="">Month</option>
                     <option value="01">Jan</option>
                     <option value="02">Feb</option>
@@ -83,7 +126,7 @@ const login = ()=>(
                     <option value="11">Nov</option>
                     <option value="12">Dec</option>
                 </select>
-                <select name="byear" id="byear" class="custom-select mb-0" required="">
+                <select style={{ flex: 0.3 }} name="year" id="B-year" class="custom-select mb-0" required="">
                     <option value="" disabled="" selected="" hidden="">Year</option>
                     <option value="2020">2020</option>
                     <option value="2019">2019</option>
@@ -187,67 +230,23 @@ const login = ()=>(
                     <option value="1921">1921</option>
                     <option value="1920">1920</option>
                 </select>
-            </div><br/><span style={{color: '#28a745', fontSize: '80%'}}>Please enter your full date of birth.</span><br/>            
-        </div><br/>
-        <div className="input-box">
-            <button style={{backgroundColor: '#777'}} onClick={()=>{
-                   location.reload();
-            }}>MAYBE LATER</button>
-            <button style={{backgroundColor: '#ff6a00'}} onClick={()=>{
-                if(Auth.validateForm('#signupPanel input[type="text"], #signupPanel select')){
-                    var info = Auth.getValue('#signupPanel input[type="text"], #signupPanel select');
-                    Auth.createUser(info.join('').toLowerCase().replace(' ', '') + '@codejika.org', info.join('').toLowerCase().replace(' ', ''));
-                    Auth.change((user)=>{                        
-                        if(Auth.islogged()){
-                            Auth.firebaseInsert('Users/profile/' + info.join('').toLowerCase().replace(' ', ''),{
-                                firstname: info[0],
-                                lastname: info[1],
-                                day: info[2],
-                                month: info[3],
-                                year: info[4],
-                            });                
-                            Auth.setUser(info.join('').toLowerCase().replace(' ', ''), info[0]);
-                            Auth.clearShadow();
-                            $('.login-signup-container').css({'z-index':0});
-                            ReactDOM.render(<popup.Aftersignup/>, document.querySelector('.hide-body-shadow'));                                      
-                        }
-                    })
-                    
-                }
-            }}>SIGN UP</button>
-        </div><br/><br/>
-        <label style={{color: 'black', cursor: 'pointer', margin: '5px'}} onClick={()=>{
-             ReactDOM.render(<Signup />, document.querySelector('.hide-body-shadow'));                      
-             $('.login-signup-container').css({'z-index': 0});
-        }}>Already have an account? <span style={{color: 'blue'}}>Sign in</span></label>
-        <div style={{
-             position: 'absolute',
-             top: '5px',
-             right: '10px',
-             cursor: 'pointer',           
-             color: 'gray',
-             padding: '5px',
-             fontSize: '25px',
-             fontWeight: 'bold'
-        }} className="clear-login-panel"
-        onClick={()=>{
-            ReactDOM.unmountComponentAtNode(document.querySelector('.hide-body-shadow'));
-            $('.login-signup-container').css({'z-index':2000});
-        }}>X</div>
-        <div style={{
-             height: '150px',
-             width: '150px',
-             position: 'absolute',
-             top: '105%',          
-             left: '50%',
-        }}>
-            <img src={robot} alt="" style={{
-                height: '100%',
-                width: '100%',
-                position: 'relative',                         
-                left: '-50%',                
-            }} />
+            </div><br />
+            <div className="input-box">
+                <button style={{
+                    backgroundColor: '#43D4DD',
+                    marginTop: '20px',
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }} onClick={signupFunc}><LocketIcon /><div>WOOOO HOOOO!<div style={{ fontSize: "11px" }}>REGiSTER</div></div></button>
+            </div>
+            <div style={{ color: '#364954', cursor: 'pointer', margin: '5px', marginTop: '20px' }} onClick={goLogin}>I’ve been here before.  <span style={{ color: '#d40073', textDecoration: "underline" }}>Let me login.</span></div>
+
         </div>
-    </div>
-)
-export default login
+
+
+    )
+
+}
+

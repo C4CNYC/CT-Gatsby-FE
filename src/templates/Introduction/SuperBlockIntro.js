@@ -9,7 +9,7 @@ import { Box, Card, CardContent, Grid } from '@material-ui/core';
 import LearnLayout from '../../components/layouts/Learn';
 import Map from '../../components/Map';
 import { Spacer } from '../../components/helpers';
-
+import lessons from '../../../utils/lessons'
 const propTypes = {
   data: PropTypes.shape({
     block: Block
@@ -17,11 +17,11 @@ const propTypes = {
 };
 
 function SuperBlockIntroductionPage({
-                                      data: {
-                                        allBlockNode,
-                                        blockNode
-                                      }
-                                    }) {
+  data: {
+    allBlockNode,
+    blockNode
+  }
+}) {
   const {
     content,
     title,
@@ -32,48 +32,48 @@ function SuperBlockIntroductionPage({
       <Helmet>
         <title>{title} | codetribe.com</title>
       </Helmet>
-        <Box p={3}>
-      <Grid className='intro-layout-container' container={true} spacing={3}>
-        <Grid container={true}>
-          <Grid item={true}>
-            <img alt='' src={image} style={{width: '100%'}} />
-          </Grid>
-          <Grid item={true}>
-            <h1
-              className='intro-layout'
-              dangerouslySetInnerHTML={{ __html: title }}
-            />
-          </Grid>
-        </Grid>
-        <FullWidthRow>
-          <div
-            className='intro-layout'
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-          <p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor </p>
-        </FullWidthRow>
-      </Grid>
-        </Box>
       <Box p={3}>
-          <FullWidthRow>
-              <h2>Lessons:</h2>
-          </FullWidthRow>
-        <Grid container={true} spacing={3}>
-        {allBlockNode.edges.map((block, i) => (
-          <Grid className={'superblock'} item={true} key={i} xs={4}>
-            <Card>
-              <CardContent>
-                <Link to={block.node.fields.slug}>
-                  <img alt='' src={block.node.image} style={{width: '100%'}} />
-                  <h2 className='medium-heading'>{block.node.title}</h2>
-                </Link>
-              </CardContent>
-            </Card>
+        <Grid className='intro-layout-container' container={true} spacing={3}>
+          <Grid container={true}>
+            <Grid item={true}>
+              <img alt='' src={image} style={{ width: '100%' }} />
+            </Grid>
+            <Grid item={true}>
+              <h1
+                className='intro-layout'
+                dangerouslySetInnerHTML={{ __html: title }}
+              />
+            </Grid>
           </Grid>
-        ))}
-        <Spacer />
-      </Grid>
-        </Box>
+          <FullWidthRow>
+            <div
+              className='intro-layout'
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+            <p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor </p>
+          </FullWidthRow>
+        </Grid>
+      </Box>
+      <Box p={3}>
+        <FullWidthRow>
+          <h2>Lessons:</h2>
+        </FullWidthRow>
+        <Grid container={true} spacing={3}>
+          {lessons.edges.map((block, i) => (
+            <Grid className={'superblock'} item={true} key={i} xs={4}>
+              <Card>
+                <CardContent>
+                  <Link to={block.node.fields.slug}>
+                    <img alt='' src={block.node.image} style={{ width: '100%' }} />
+                    <h2 className='medium-heading'>{block.node.title}</h2>
+                  </Link>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+          <Spacer />
+        </Grid>
+      </Box>
     </>
   );
 }

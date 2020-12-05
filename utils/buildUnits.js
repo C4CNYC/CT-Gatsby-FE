@@ -13,30 +13,30 @@ const { cctApiLocation } = require('../config/env.json');
 exports.buildUnits = async function buildUnits() {
 
   // return (await Promise.all((await getCourses())
-	// 	.map((course, order) => {
-	// 		return {
-	// 			...course,
-	// 			order
-	// 		};
-	// 	})
-	// 	.reduce((modules, course) => {
-	// 		const currentModules = _.flatten(course.modules).map((module, order) => {
-	// 			return {
-	// 				...module,
-	// 				course,
-	// 				order
-	// 			};
-	// 		});
-	// 		return modules.concat(currentModules);
-	// 	}, [])
-	// 	// .filter(module => !module.isPrivate)
+  // 	.map((course, order) => {
+  // 		return {
+  // 			...course,
+  // 			order
+  // 		};
+  // 	})
+  // 	.reduce((modules, course) => {
+  // 		const currentModules = _.flatten(course.modules).map((module, order) => {
+  // 			return {
+  // 				...module,
+  // 				course,
+  // 				order
+  // 			};
+  // 		});
+  // 		return modules.concat(currentModules);
+  // 	}, [])
+  // 	// .filter(module => !module.isPrivate)
 
   return (await Promise.all(
     (await buildBlocks({
       withCanvasModuleItems: true
     }))
       .filter(block => block.superBlock) // only use sub-blocks aka canvas modules
-      .map(block => (block.items || []).map(async(item, order) => await prepareCanvasModuleItemForFrontend({
+      .map(block => (block.items || []).map(async (item, order) => await prepareCanvasModuleItemForFrontend({
         ...item,
         block,
         order
@@ -154,6 +154,10 @@ function prepareCanvasCCTUnitForFrontend(canvasModuleItem, cctUnit = null, bundl
       {
         text: 'Your app should have an <code>input</code> element of type <code>text</code>',
         testString: 'assert($("input[type=text]").length > 0);'
+      },
+      {
+        text: "Your page should have an image element.",
+        testString: 'assert($("img").length);'
       }
     ],
     instructions: 'instructions go here',
@@ -162,27 +166,7 @@ function prepareCanvasCCTUnitForFrontend(canvasModuleItem, cctUnit = null, bundl
         key: 'html',
         ext: 'html',
         name: 'index',
-        contents: '<h2>CatPhotoApp</h2>\n' +
-            '<main>\n' +
-            '  <p>Click here to view more <a href="#">cat photos</a>.</p>\n' +
-            '\n' +
-            '  <a href="#"><img src="https://bit.ly/fcc-relaxing-cat" alt="A cute orange cat lying on its back."></a>\n' +
-            '\n' +
-            '  <p>Things cats love:</p>\n' +
-            '  <ul>\n' +
-            '    <li>cat nip</li>\n' +
-            '    <li>laser pointers</li>\n' +
-            '    <li>lasagna</li>\n' +
-            '  </ul>\n' +
-            '  <p>Top 3 things cats hate:</p>\n' +
-            '  <ol>\n' +
-            '    <li>flea treatment</li>\n' +
-            '    <li>thunder</li>\n' +
-            '    <li>other cats</li>\n' +
-            '  </ol>\n' +
-            '\n' +
-            '\n' +
-            '</main>',
+        contents: '',
         head: '',
         tail: ''
       },

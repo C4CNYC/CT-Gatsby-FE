@@ -32,7 +32,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import TopBar from '../ActionsBar/TopBar';
 import Footer from '../ActionsBar/Footer';
 
-const styles = (theme) => ({
+const styles = theme => ({
     main: {
         position: 'absolute',
         top: 0,
@@ -46,31 +46,22 @@ const styles = (theme) => ({
             // width: `100vw`,
         },
         [`@media (max-width: ${theme.mediaQueryTresholds.L}px)`]: {
-            top: '61px' // todo
+            top: '5px' // todo
         },
         '& > div': {
             height: '100%'
         }
-        // '@media print': {
-        //     position: 'relative',
-        //     '& > div': {
-        //         overflow: 'visible!important'
+        // '@keyframes main-entry': {
+        //     '0%': {
+        //         opacity: 0,
+        //         transform: 'translateY(20px)'
         //     },
-        //     '& > div > div': {
-        //         position: 'relative!important'
+        //     '100%': {
+        //         opacity: 1,
+        //         transform: 'translateY(0)'
         //     }
         // }
     }
-    // '@keyframes main-entry': {
-    //     '0%': {
-    //         opacity: 0,
-    //         transform: 'translateY(20px)'
-    //     },
-    //     '100%': {
-    //         opacity: 1,
-    //         transform: 'translateY(0)'
-    //     }
-    // }
 });
 
 const mapStateToProps = createSelector(
