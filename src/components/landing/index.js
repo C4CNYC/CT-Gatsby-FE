@@ -23,8 +23,8 @@ const propTypes = {
 
 export const Landing = ({ edges }) => {
   // const superBlocks = uniq(edges.map(element => element.node.superBlock));
-  // const superBlocks = edges.map(element => element.node).filter(block => !block.superBlock);
-  const superBlocks = projects.map(element => element.node).filter(block => !block.superBlock);
+  const superBlocks = edges.map(element => element.node).filter(block => !block.superBlock);
+  // const superBlocks = projects.map(element => element.node).filter(block => !block.superBlock);
   return (
     <Fragment>
       <Helmet>
