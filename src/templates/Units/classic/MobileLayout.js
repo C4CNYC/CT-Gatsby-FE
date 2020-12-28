@@ -135,7 +135,7 @@ class MobileLayout extends Component {
   };
 
   componentDidMount() {
-    if (this.props.currentTab !== 1) this.props.moveToTab(1);
+    if (this.props.currentTab !== 0) this.props.moveToTab(0);
   }
   handleTutorMenu = (event) => {
     this.setState({
