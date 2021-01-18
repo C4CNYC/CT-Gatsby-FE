@@ -22,6 +22,7 @@ const initialState = {
   unitFiles: {},
   monacoEditor: null,
   validate: [],
+  textFromEditor: '',
   validateChecked: false,
   unitMeta: {
     superBlock: '',
@@ -62,6 +63,7 @@ export const types = createTypes(
     'updateFile',
     'setMonacoEditor',
     'setValidate',
+    'setTextFromEditor',
     'setValidateChecked',
     'setCurrentSlideNumber',
     'updateJSEnabled',
@@ -142,6 +144,7 @@ export const updateUnitMeta = createAction(types.updateUnitMeta);
 export const updateFile = createAction(types.updateFile);
 export const setMonacoEditor = createAction(types.setMonacoEditor);
 export const setValidate = createAction(types.setValidate)
+export const setTextFromEditor = createAction(types.setTextFromEditor)
 export const setValidateChecked = createAction(types.setValidateChecked)
 export const setCurrentSlideNumber = createAction(types.setCurrentSlideNumber)
 export const updateConsole = createAction(types.updateConsole);
@@ -183,6 +186,7 @@ export const currentTabSelector = state => state[ns].currentTab;
 export const unitFilesSelector = state => state[ns].unitFiles;
 export const monacoeditorSelector = state => state[ns].monacoEditor;
 export const validateSelector = state => state[ns].validate;
+export const textFromEditorSelector = state => state[ns].textFromEditor;
 export const validateCheckedSelector = state => state[ns].validateChecked;
 export const currentSlideNumberSelector = state => state[ns].currentSlidenumber;
 export const unitMetaSelector = state => state[ns].unitMeta;
@@ -283,6 +287,10 @@ export const reducer = handleActions(
     [types.setValidate]: (state, { payload }) => ({
       ...state,
       validate: payload
+    }),
+    [types.setTextFromEditor]: (state, { payload }) => ({
+      ...state,
+        textFromEditor: payload
     }),
     [types.setValidateChecked]: (state, { payload }) => ({
       ...state,

@@ -2,7 +2,6 @@ import React, { Component, Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import KeyboardHideIcon from '@material-ui/icons/KeyboardHide';
 import CloseIcon from '@material-ui/icons/Close';
 import {
   canFocusEditorSelector,
@@ -13,13 +12,15 @@ import {
   updateFile,
   setMonacoEditor,
   setValidate,
+  setTextFromEditor,
   validateSelector,
+  textFromEditorSelector,
   validateCheckedSelector,
   currentSlideNumberSelector
 } from '../redux';
 import { userSelector, isDonationModalOpenSelector } from '../../../state';
 import { Loader } from '../../../components/helpers';
-import { CircularProgress, Grid, IconButton, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, Typography } from '@material-ui/core';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import * as slider from '../utils/slider_program.js';
@@ -46,8 +47,10 @@ const propTypes = {
   updateFile: PropTypes.func.isRequired,
   setMonacoEditor: PropTypes.func.isRequired,
   settingValidate: PropTypes.func.isRequired,
+  setTextFromEditor: PropTypes.func.isRequired,
   validateChecked: PropTypes.bool.isRequired,
   validate: PropTypes.array.isRequired,
+  textFromEditor: PropTypes.string.isRequired,
   currentSlideNumber: PropTypes.number
 };
 
@@ -58,13 +61,15 @@ const mapStateToProps = createSelector(
   userSelector,
   validateCheckedSelector,
   validateSelector,
+  textFromEditorSelector,
   currentSlideNumberSelector,
-  (canFocus, accessibilityMode, open, { theme = 'night' }, validateChecked, validate, currentSlideNumber) => ({
+  (canFocus, accessibilityMode, open, { theme = 'night' }, validateChecked, validate, textFromEditor, currentSlideNumber) => ({
     canFocus: open ? false : canFocus,
     inAccessibilityMode: accessibilityMode,
     theme,
     validateChecked,
     validate,
+    textFromEditor,
     currentSlideNumber
   })
 );
@@ -75,7 +80,8 @@ const mapDispatchToProps = {
   executeUnit,
   updateFile,
   setMonacoEditor,
-  settingValidate: setValidate
+  settingValidate: setValidate,
+  setTextFromEditor
 };
 
 const modeMap = {
@@ -174,7 +180,7 @@ const styles = theme => ({
     justifyContent: "center",
   },
   rightGridItem: {
-    padding: "10px!important",
+    // padding: "10px!important",
     color: "black",
     display: "flex",
     flexDirection: "column",
@@ -358,8 +364,9 @@ class Editor extends Component {
   }
 
   onChange = editorValue => {
-    const { updateFile, fileKey } = this.props;
+    const { updateFile, fileKey, setTextFromEditor } = this.props;
     updateFile({ key: fileKey, editorValue });
+    setTextFromEditor(editorValue);
     this.props.executeUnit();
     // slider.validate_function(editorValue);
     this.validatesFunc(editorValue);
