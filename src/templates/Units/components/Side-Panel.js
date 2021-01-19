@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,92 +6,50 @@ import { connect } from 'react-redux';
 import { unitTestsSelector, isUnitCompletedSelector, validateSelector, textFromEditorSelector, setCurrentSlideNumber } from '../redux';
 import { createSelector } from 'reselect';
 import './side-panel.css';
-import { mathJaxScriptLoader } from '../../../utils/scriptLoaders';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
 import ReactPageScroller from "react-page-scroller";
+import $ from 'jquery';
 import { lesson_data } from '../../../learn/lessons/INTRO-5MIN-M-V007/lesson_data';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import '../../../learn/lessons/INTRO-5MIN-M-V007/custom.css';
+import '../../../learn/lessons/common/css/custom.css';
 
 import { bindActionCreators } from 'redux';
-import { renderSlide } from '../validates/renderSlide';
+
+// manual update react after DOM manipulation
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update the state to force render
+}
 
 const SidePanel = (props) => {
-    const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const forceUpdate = useForceUpdate();
 
   useEffect(() => {
-    const MathJax = global.MathJax;
-    const mathJaxMountPoint = document.querySelector('#mathjax');
-    const mathJaxUnit =
-      props.section === 'rosetta-code' ||
-      props.section === 'project-euler';
-    validateTextFromEditor(props.textFromEditor);
-    if (MathJax) {
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          processEscapes: true,
-          processClass: 'rosetta-code|project-euler'
-        }
-      });
-      MathJax.Hub.Queue([
-        'Typeset',
-        MathJax.Hub,
-        document.querySelector('.rosetta-code'),
-        document.querySelector('.project-euler')
-      ]);
-    } else if (!mathJaxMountPoint && mathJaxUnit) {
-      mathJaxScriptLoader();
+    console.log(" props.textFromEditor>>>>>", props.textFromEditor, currentSlide)
+    const isValid = validateTextFromEditor(props.textFromEditor);
+    if (isValid) {
+      console.log('isValid', isValid, '#slide' + (currentSlide))
+      // vork only first time, need to check why
+      $('#slide' + (currentSlide)).addClass('validated')
+      forceUpdate()
     }
   }, [props.textFromEditor])
 
-    const getValidateExpression = () => {
-      switch (currentSlide) {
-          case 0:
-              return lesson_data.slides[0].reg;
-          case 8:
-              return lesson_data.slides[8].reg;
-          case 12:
-              return lesson_data.slides[12].reg;
-          case 14:
-              return lesson_data.slides[14].reg;
-          case 16:
-              return lesson_data.slides[16].reg;
-          case 21:
-              return lesson_data.slides[21].reg;
-          default:
-              return null;
-      }
-    }
-
-    const validateTextFromEditor = (text) => {
-        const textValidateExpression = getValidateExpression();
-        const isValidate = !!text.match(textValidateExpression);
-        console.log('isValidate 333333333333333333@@@: ', isValidate, textValidateExpression);
-    }
-
-  /*const validateTextFromEditor = (text) => {
-    const textValidate = lesson_data.slides[0].reg;
-    const isValidate = !!text.match(textValidate);
-    console.log('isValidate 333333333333333333@@@: ', isValidate);
-  }*/
-
-  const goToPage = (pageNumber) => {
-    ReactPageScroller.goToPage(pageNumber);
+  const validateTextFromEditor = (text) => {
+    console.log("lesson_data.slides[currentSlide].action", lesson_data.slides[currentSlide].action)
+    console.log("lesson_data.slides[currentSlide].reg", lesson_data.slides[currentSlide].reg)
+    return lesson_data.slides[currentSlide].action ? !!text.match(lesson_data.slides[currentSlide].reg) : false
   }
+
   const isCheckedOf = (sliderID, index) => {
     const { validate } = props;
     const validateItem = validate.filter(e => e.sliderID === sliderID)[index]
     return validateItem && validateItem.checked
   }
 
-  const renderChecker = (sliderID, index) => {
-    return isCheckedOf(sliderID, index)
-      ? <CheckCircleIcon style={{ color: "green", fontSize: "40px" }} />
-      : <RadioButtonUncheckedIcon style={{ color: "black", fontSize: "40px" }} />
-  }
-
-  const {setCurrentSlideNumber, textFromEditor} = props;
+  const { setCurrentSlideNumber, textFromEditor } = props;
   console.log('isCheckedOf @@@555555555555@@@: ', isCheckedOf(0, 0))
   console.log('textFromEditor @@@222222222222@@@: ', textFromEditor, props)
   return (
@@ -102,15 +60,16 @@ const SidePanel = (props) => {
         containerWidth="100%"
         // pageOnChange={e => setCurrentSlideNumber(e)}
         pageOnChange={e => {
-            console.log('setCurrentSlideNumber(e) @@@@9999999999999999999@@@@ ', e)
-            setCurrentSlideNumber(e);
-            setCurrentSlide(e);
+          setCurrentSlideNumber(e);
+          setCurrentSlide(e);
         }}
       >
         {lesson_data.slides.map((slide, slideNumber) => {
           return <div id="lesson-page" style={{ height: "100%" }}>
             <ReflexElement flex={1} style={{ height: "100%" }} className={`snapshot snap1 white hide-help swiper-slide`}>
-              {ReactHtmlParser(slide.html_content)}
+              <div id={`slide${currentSlide}`}>
+                {ReactHtmlParser(slide.html_content)}
+              </div>
             </ReflexElement>
           </div>
         })}
@@ -120,31 +79,31 @@ const SidePanel = (props) => {
 }
 
 const mapStateToProps = createSelector(
-    isUnitCompletedSelector,
-    unitTestsSelector,
-    validateSelector,
-    textFromEditorSelector,
-    (isUnitCompleted, tests, validate, textFromEditor) => ({
-        isUnitCompleted,
-        tests,
-        validate,
-        textFromEditor
-    })
+  isUnitCompletedSelector,
+  unitTestsSelector,
+  validateSelector,
+  textFromEditorSelector,
+  (isUnitCompleted, tests, validate, textFromEditor) => ({
+    isUnitCompleted,
+    tests,
+    validate,
+    textFromEditor
+  })
 );
 const mapDispatchToProps = dispatch =>
-    bindActionCreators(
-        {
-            setCurrentSlideNumber
-        },
-        dispatch
-    );
+  bindActionCreators(
+    {
+      setCurrentSlideNumber
+    },
+    dispatch
+  );
 
 const propTypes = {
-    isUnitCompleted: PropTypes.bool,
-    tests: PropTypes.arrayOf(PropTypes.object),
-    validate: PropTypes.array,
-    textFromEditor: PropTypes.string,
-    setCurrentSlideNumber: PropTypes.func
+  isUnitCompleted: PropTypes.bool,
+  tests: PropTypes.arrayOf(PropTypes.object),
+  validate: PropTypes.array,
+  textFromEditor: PropTypes.string,
+  setCurrentSlideNumber: PropTypes.func
 };
 
 SidePanel.displayName = 'SidePanel';
