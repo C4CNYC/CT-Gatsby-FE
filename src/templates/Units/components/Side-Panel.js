@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,6 +17,7 @@ import { bindActionCreators } from 'redux';
 import { renderSlide } from '../validates/renderSlide';
 
 const SidePanel = (props) => {
+    const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const MathJax = global.MathJax;
@@ -44,11 +45,36 @@ const SidePanel = (props) => {
     }
   }, [props.textFromEditor])
 
-  const validateTextFromEditor = (text) => {
+    const getValidateExpression = () => {
+      switch (currentSlide) {
+          case 0:
+              return lesson_data.slides[0].reg;
+          case 8:
+              return lesson_data.slides[8].reg;
+          case 12:
+              return lesson_data.slides[12].reg;
+          case 14:
+              return lesson_data.slides[14].reg;
+          case 16:
+              return lesson_data.slides[16].reg;
+          case 21:
+              return lesson_data.slides[21].reg;
+          default:
+              return null;
+      }
+    }
+
+    const validateTextFromEditor = (text) => {
+        const textValidateExpression = getValidateExpression();
+        const isValidate = !!text.match(textValidateExpression);
+        console.log('isValidate 333333333333333333@@@: ', isValidate, textValidateExpression);
+    }
+
+  /*const validateTextFromEditor = (text) => {
     const textValidate = lesson_data.slides[0].reg;
     const isValidate = !!text.match(textValidate);
     console.log('isValidate 333333333333333333@@@: ', isValidate);
-  }
+  }*/
 
   const goToPage = (pageNumber) => {
     ReactPageScroller.goToPage(pageNumber);
@@ -74,7 +100,12 @@ const SidePanel = (props) => {
         ref={c => this.reactPageScroller = c}
         animationTimer={200}
         containerWidth="100%"
-        pageOnChange={e => setCurrentSlideNumber(e)}
+        // pageOnChange={e => setCurrentSlideNumber(e)}
+        pageOnChange={e => {
+            console.log('setCurrentSlideNumber(e) @@@@9999999999999999999@@@@ ', e)
+            setCurrentSlideNumber(e);
+            setCurrentSlide(e);
+        }}
       >
         {lesson_data.slides.map((slide, slideNumber) => {
           return <div id="lesson-page" style={{ height: "100%" }}>
