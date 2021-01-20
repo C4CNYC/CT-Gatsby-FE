@@ -32,8 +32,10 @@ const SidePanel = (props) => {
     if (isValid) {
       console.log('isValid', isValid, '#slide' + (currentSlide))
       // vork only first time, need to check why
-      $('#slide' + (currentSlide)).addClass('validated')
-      forceUpdate()
+      // $('#slide' + (currentSlide)).addClass('validated')
+      const slide = document.getElementById(`slide${currentSlide}`)
+      slide && slide.classList.add('validated')
+      // forceUpdate()
     }
   }, [props.textFromEditor])
 
@@ -67,7 +69,7 @@ const SidePanel = (props) => {
         {lesson_data.slides.map((slide, slideNumber) => {
           return <div id="lesson-page" style={{ height: "100%" }}>
             <ReflexElement flex={1} style={{ height: "100%" }} className={`snapshot snap1 white hide-help swiper-slide`}>
-              <div id={`slide${currentSlide}`}>
+              <div id={`slide${slideNumber}`}>
                 {ReactHtmlParser(slide.html_content)}
               </div>
             </ReflexElement>
