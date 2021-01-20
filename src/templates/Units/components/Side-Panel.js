@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -26,9 +26,17 @@ const SidePanel = (props) => {
 
   const forceUpdate = useForceUpdate();
 
+  const { setCurrentSlideNumber, textFromEditor } = props;
+
+  const isValid = useMemo(() => {
+    console.log("lesson_data.slides[currentSlide].action", lesson_data.slides[currentSlide].action)
+    console.log("lesson_data.slides[currentSlide].reg", lesson_data.slides[currentSlide].reg)
+    return lesson_data.slides[currentSlide].action ? !!textFromEditor.match(lesson_data.slides[currentSlide].reg) : false
+  }, [currentSlide, textFromEditor])
+
   useEffect(() => {
     console.log(" props.textFromEditor>>>>>", props.textFromEditor, currentSlide)
-    const isValid = validateTextFromEditor(props.textFromEditor);
+    // const isValid = validateTextFromEditor(props.textFromEditor);
     if (isValid) {
       console.log('isValid', isValid, '#slide' + (currentSlide))
       // vork only first time, need to check why
@@ -39,11 +47,11 @@ const SidePanel = (props) => {
     }
   }, [props.textFromEditor])
 
-  const validateTextFromEditor = (text) => {
-    console.log("lesson_data.slides[currentSlide].action", lesson_data.slides[currentSlide].action)
-    console.log("lesson_data.slides[currentSlide].reg", lesson_data.slides[currentSlide].reg)
-    return lesson_data.slides[currentSlide].action ? !!text.match(lesson_data.slides[currentSlide].reg) : false
-  }
+  // const validateTextFromEditor = (text) => {
+  //   console.log("lesson_data.slides[currentSlide].action", lesson_data.slides[currentSlide].action)
+  //   console.log("lesson_data.slides[currentSlide].reg", lesson_data.slides[currentSlide].reg)
+  //   return lesson_data.slides[currentSlide].action ? !!text.match(lesson_data.slides[currentSlide].reg) : false
+  // }
 
   const isCheckedOf = (sliderID, index) => {
     const { validate } = props;
@@ -51,7 +59,6 @@ const SidePanel = (props) => {
     return validateItem && validateItem.checked
   }
 
-  const { setCurrentSlideNumber, textFromEditor } = props;
   console.log('isCheckedOf @@@555555555555@@@: ', isCheckedOf(0, 0))
   console.log('textFromEditor @@@222222222222@@@: ', textFromEditor, props)
   return (
@@ -67,7 +74,7 @@ const SidePanel = (props) => {
         }}
       >
         {lesson_data.slides.map((slide, slideNumber) => {
-          return <div id="lesson-page" style={{ height: "100%" }}>
+          return <div id="lesson-page" style={{ height: "100%" }} key={`${lesson_data.slug}_${slideNumber}`}>
             <ReflexElement flex={1} style={{ height: "100%" }} className={`snapshot snap1 white hide-help swiper-slide`}>
               <div id={`slide${slideNumber}`}>
                 {ReactHtmlParser(slide.html_content)}
