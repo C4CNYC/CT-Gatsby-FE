@@ -11,6 +11,7 @@ import codeStorageEpic from './code-storage-epic';
 
 import { createExecuteUnitSaga } from './execute-unit-saga';
 import { createCurrentUnitSaga } from './current-unit-saga';
+import { createLessonSaga } from './lesson-saga';
 import { unitTypes } from '../../../../utils/unitTypes';
 import { completedUnitsSelector } from '../../../state';
 
@@ -47,7 +48,10 @@ const initialState = {
   },
   projectFormValues: {},
   successMessage: 'Happy Coding!',
-  currentSlidenumber: 0
+  currentSlidenumber: 0,
+
+  lesson: null,
+  lessonData: {}
 };
 
 export const types = createTypes(
@@ -96,7 +100,10 @@ export const types = createTypes(
     'setEditorFocusability',
     'setAccessibilityMode',
 
-    'lastBlockChalSubmitted'
+    'lastBlockChalSubmitted',
+
+    'setLesson',
+    'setLessonData'
   ],
   ns
 );
@@ -111,13 +118,14 @@ export const epics = [
 
 export const sagas = [
   ...createExecuteUnitSaga(types),
-  ...createCurrentUnitSaga(types)
+  ...createCurrentUnitSaga(types),
+  ...createLessonSaga(types)
 ];
 
-export const createFiles = createAction(types.createFiles, unitFiles =>
+export const createFiles = createAction(types.createFiles, (unitFiles) =>
   Object.keys(unitFiles)
-    .filter(key => unitFiles[key])
-    .map(key => unitFiles[key])
+    .filter((key) => unitFiles[key])
+    .map((key) => unitFiles[key])
     .reduce(
       (unitFiles, file) => ({
         ...unitFiles,
@@ -143,10 +151,10 @@ export const updateBackendFormValues = createAction(
 export const updateUnitMeta = createAction(types.updateUnitMeta);
 export const updateFile = createAction(types.updateFile);
 export const setMonacoEditor = createAction(types.setMonacoEditor);
-export const setValidate = createAction(types.setValidate)
-export const setTextFromEditor = createAction(types.setTextFromEditor)
-export const setValidateChecked = createAction(types.setValidateChecked)
-export const setCurrentSlideNumber = createAction(types.setCurrentSlideNumber)
+export const setValidate = createAction(types.setValidate);
+export const setTextFromEditor = createAction(types.setTextFromEditor);
+export const setValidateChecked = createAction(types.setValidateChecked);
+export const setCurrentSlideNumber = createAction(types.setCurrentSlideNumber);
 export const updateConsole = createAction(types.updateConsole);
 export const updateLogs = createAction(types.updateLogs);
 export const updateJSEnabled = createAction(types.updateJSEnabled);
@@ -182,44 +190,45 @@ export const lastBlockChalSubmitted = createAction(
   types.lastBlockChalSubmitted
 );
 
-export const currentTabSelector = state => state[ns].currentTab;
-export const unitFilesSelector = state => state[ns].unitFiles;
-export const monacoeditorSelector = state => state[ns].monacoEditor;
-export const validateSelector = state => state[ns].validate;
-export const textFromEditorSelector = state => state[ns].textFromEditor;
-export const validateCheckedSelector = state => state[ns].validateChecked;
-export const currentSlideNumberSelector = state => state[ns].currentSlidenumber;
-export const unitMetaSelector = state => state[ns].unitMeta;
-export const unitTestsSelector = state => state[ns].unitTests;
-export const consoleOutputSelector = state => state[ns].consoleOut;
-export const completedUnitsIds = state =>
-  completedUnitsSelector(state).map(node => node.id);
-export const isUnitCompletedSelector = state => {
+export const setLesson = createAction(types.setLesson);
+export const setLessonData = createAction(types.setLessonData);
+
+export const currentTabSelector = (state) => state[ns].currentTab;
+export const unitFilesSelector = (state) => state[ns].unitFiles;
+export const monacoeditorSelector = (state) => state[ns].monacoEditor;
+export const validateSelector = (state) => state[ns].validate;
+export const textFromEditorSelector = (state) => state[ns].textFromEditor;
+export const validateCheckedSelector = (state) => state[ns].validateChecked;
+export const currentSlideNumberSelector = (state) =>
+  state[ns].currentSlidenumber;
+export const unitMetaSelector = (state) => state[ns].unitMeta;
+export const unitTestsSelector = (state) => state[ns].unitTests;
+export const consoleOutputSelector = (state) => state[ns].consoleOut;
+export const completedUnitsIds = (state) =>
+  completedUnitsSelector(state).map((node) => node.id);
+export const isUnitCompletedSelector = (state) => {
   const completedUnits = completedUnitsSelector(state);
   const { id: currentUnitId } = unitMetaSelector(state);
   return completedUnits.some(({ id }) => id === currentUnitId);
 };
-export const isCodeLockedSelector = state => state[ns].isCodeLocked;
-export const isCompletionModalOpenSelector = state =>
+export const isCodeLockedSelector = (state) => state[ns].isCodeLocked;
+export const isCompletionModalOpenSelector = (state) =>
   state[ns].modal.completion;
-export const isHelpModalOpenSelector = state => state[ns].modal.help;
-export const isVideoModalOpenSelector = state => state[ns].modal.video;
-export const isResetModalOpenSelector = state => state[ns].modal.reset;
-export const isBuildEnabledSelector = state => state[ns].isBuildEnabled;
-export const successMessageSelector = state => state[ns].successMessage;
+export const isHelpModalOpenSelector = (state) => state[ns].modal.help;
+export const isVideoModalOpenSelector = (state) => state[ns].modal.video;
+export const isResetModalOpenSelector = (state) => state[ns].modal.reset;
+export const isBuildEnabledSelector = (state) => state[ns].isBuildEnabled;
+export const successMessageSelector = (state) => state[ns].successMessage;
 
-export const backendFormValuesSelector = state =>
+export const backendFormValuesSelector = (state) =>
   state[ns].backendFormValues || {};
-export const projectFormValuesSelector = state =>
+export const projectFormValuesSelector = (state) =>
   state[ns].projectFormValues || {};
 
-export const unitDataSelector = state => {
+export const unitDataSelector = (state) => {
   const { unitType } = unitMetaSelector(state);
   let unitData = { unitType };
-  if (
-    unitType === unitTypes.js ||
-    unitType === unitTypes.bonfire
-  ) {
+  if (unitType === unitTypes.js || unitType === unitTypes.bonfire) {
     unitData = {
       ...unitData,
       files: unitFilesSelector(state)
@@ -243,10 +252,7 @@ export const unitDataSelector = state => {
       ...unitData,
       ...projectFormValuesSelector(state)
     };
-  } else if (
-    unitType === unitTypes.html ||
-    unitType === unitTypes.modern
-  ) {
+  } else if (unitType === unitTypes.html || unitType === unitTypes.modern) {
     const { required = [], template = '' } = unitMetaSelector(state);
     unitData = {
       ...unitData,
@@ -258,9 +264,12 @@ export const unitDataSelector = state => {
   return unitData;
 };
 
-export const canFocusEditorSelector = state => state[ns].canFocusEditor;
-export const inAccessibilityModeSelector = state =>
+export const canFocusEditorSelector = (state) => state[ns].canFocusEditor;
+export const inAccessibilityModeSelector = (state) =>
   state[ns].inAccessibilityMode;
+
+export const lessonSelector = (state) => state[ns].lesson;
+export const lessonDataSelector = (state) => state[ns].lessonData;
 
 const MAX_LOGS_SIZE = 64 * 1024;
 
@@ -290,7 +299,7 @@ export const reducer = handleActions(
     }),
     [types.setTextFromEditor]: (state, { payload }) => ({
       ...state,
-        textFromEditor: payload
+      textFromEditor: payload
     }),
     [types.setValidateChecked]: (state, { payload }) => ({
       ...state,
@@ -322,7 +331,7 @@ export const reducer = handleActions(
       ...state,
       consoleOut: state.consoleOut + '\n' + payload
     }),
-    [types.initLogs]: state => ({
+    [types.initLogs]: (state) => ({
       ...state,
       logsOut: ''
     }),
@@ -341,12 +350,12 @@ export const reducer = handleActions(
       unitMeta: { ...payload }
     }),
 
-    [types.resetUnit]: state => ({
+    [types.resetUnit]: (state) => ({
       ...state,
       currentTab: 2,
       unitFiles: {
         ...Object.keys(state.unitFiles)
-          .map(key => state.unitFiles[key])
+          .map((key) => state.unitFiles[key])
           .reduce(
             (files, file) => ({
               ...files,
@@ -373,16 +382,16 @@ export const reducer = handleActions(
       projectFormValues: payload
     }),
 
-    [types.lockCode]: state => ({
+    [types.lockCode]: (state) => ({
       ...state,
       isCodeLocked: true
     }),
-    [types.unlockCode]: state => ({
+    [types.unlockCode]: (state) => ({
       ...state,
       isBuildEnabled: true,
       isCodeLocked: false
     }),
-    [types.disableBuildOnError]: state => ({
+    [types.disableBuildOnError]: (state) => ({
       ...state,
       isBuildEnabled: false
     }),
@@ -409,7 +418,7 @@ export const reducer = handleActions(
       ...state,
       currentTab: payload
     }),
-    [types.executeUnit]: state => ({
+    [types.executeUnit]: (state) => ({
       ...state,
       currentTab: 1
     }),
@@ -420,6 +429,15 @@ export const reducer = handleActions(
     [types.setAccessibilityMode]: (state, { payload }) => ({
       ...state,
       inAccessibilityMode: payload
+    }),
+
+    [types.setLesson]: (state, { payload }) => ({
+      ...state,
+      lesson: payload
+    }),
+    [types.setLessonData]: (state, { payload }) => ({
+      ...state,
+      lessonData: payload
     })
   },
   initialState

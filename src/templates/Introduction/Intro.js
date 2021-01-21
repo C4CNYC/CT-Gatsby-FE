@@ -29,15 +29,13 @@ function renderMenuItems({ edges = [] }) {
 }
 
 function IntroductionPage({ data: { blockNode, allUnitNode } }) {
-  const {
-    content,
-    title,
-    image
-  } = blockNode;
-  const firstLesson = allUnitNode && allUnitNode.edges[0] && allUnitNode.edges[0].node;
-  const firstLessonPath = firstLesson
-    ? firstLesson.fields.slug
-    : '/strange-place';
+  const { content, title, image } = blockNode;
+  const firstLesson =
+    allUnitNode && allUnitNode.edges[0] && allUnitNode.edges[0].node;
+  const firstLessonPath =
+    blockNode.lessonSlug || firstLesson
+      ? firstLesson.fields.slug
+      : '/strange-place';
   return (
     <>
       <Helmet>
@@ -66,11 +64,11 @@ function IntroductionPage({ data: { blockNode, allUnitNode } }) {
               to={firstLessonPath}
             >
               Let's go!
-          </Link>
+            </Link>
             <ButtonSpacer />
             <Link className='btn btn-lg btn-primary btn-block' to='/learn'>
               View the entire curriculum first
-          </Link>
+            </Link>
             <ButtonSpacer />
             <hr />
           </FullWidthRow>
@@ -99,7 +97,7 @@ export const query = graphql`
       image
     }
     allUnitNode(
-#      filter: { block: { eq: $block } }
+      #      filter: { block: { eq: $block } }
       sort: { fields: [superOrder, order, unitOrder] }
     ) {
       edges {

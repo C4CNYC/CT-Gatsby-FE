@@ -3,22 +3,30 @@ import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { unitTestsSelector, isUnitCompletedSelector, validateSelector, textFromEditorSelector, setCurrentSlideNumber } from '../redux';
+import {
+  unitTestsSelector,
+  isUnitCompletedSelector,
+  validateSelector,
+  textFromEditorSelector,
+  setCurrentSlideNumber,
+  lessonSelector,
+  lessonDataSelector
+} from '../redux';
 import { createSelector } from 'reselect';
 import './side-panel.css';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
-import ReactPageScroller from "react-page-scroller";
-import $ from 'jquery';
-import { lesson_data } from '../../../learn/lessons/INTRO-5MIN-M-V007/lesson_data';
-import '../../../learn/lessons/INTRO-5MIN-M-V007/custom.css';
+import ReactPageScroller from 'react-page-scroller';
+// import $ from 'jquery';
+// import { lesson_data } from '../../../learn/lessons/INTRO-5MIN-M-V007/lesson_data';
+// import '../../../learn/lessons/INTRO-5MIN-M-V007/custom.css';
 import '../../../learn/lessons/common/css/custom.css';
 
 import { bindActionCreators } from 'redux';
 
 // manual update react after DOM manipulation
 function useForceUpdate() {
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue(value => value + 1); // update the state to force render
+  const [, setValue] = useState(0); // integer state
+  return () => setValue((value) => value + 1); // update the state to force render
 }
 
 const SidePanel = (props) => {
@@ -26,26 +34,38 @@ const SidePanel = (props) => {
 
   const forceUpdate = useForceUpdate();
 
-  const { setCurrentSlideNumber, textFromEditor } = props;
+  const { setCurrentSlideNumber, textFromEditor, lessonData } = props;
 
   const isValid = useMemo(() => {
-    console.log("lesson_data.slides[currentSlide].action", lesson_data.slides[currentSlide].action)
-    console.log("lesson_data.slides[currentSlide].reg", lesson_data.slides[currentSlide].reg)
-    return lesson_data.slides[currentSlide].action ? !!textFromEditor.match(lesson_data.slides[currentSlide].reg) : false
-  }, [currentSlide, textFromEditor])
+    console.log(
+      'lesson_data.slides[currentSlide].action',
+      lessonData.slides[currentSlide].action
+    );
+    console.log(
+      'lesson_data.slides[currentSlide].reg',
+      lessonData.slides[currentSlide].reg
+    );
+    return lessonData.slides[currentSlide].action
+      ? !!textFromEditor.match(lessonData.slides[currentSlide].reg)
+      : false;
+  }, [currentSlide, textFromEditor]);
 
   useEffect(() => {
-    console.log(" props.textFromEditor>>>>>", props.textFromEditor, currentSlide)
+    console.log(
+      ' props.textFromEditor>>>>>',
+      props.textFromEditor,
+      currentSlide
+    );
     // const isValid = validateTextFromEditor(props.textFromEditor);
     if (isValid) {
-      console.log('isValid', isValid, '#slide' + (currentSlide))
+      console.log('isValid', isValid, '#slide' + currentSlide);
       // vork only first time, need to check why
       // $('#slide' + (currentSlide)).addClass('validated')
-      const slide = document.getElementById(`slide${currentSlide}`)
-      slide && slide.classList.add('validated')
+      const slide = document.getElementById(`slide${currentSlide}`);
+      slide && slide.classList.add('validated');
       // forceUpdate()
     }
-  }, [props.textFromEditor])
+  }, [props.textFromEditor]);
 
   // const validateTextFromEditor = (text) => {
   //   console.log("lesson_data.slides[currentSlide].action", lesson_data.slides[currentSlide].action)
@@ -55,51 +75,70 @@ const SidePanel = (props) => {
 
   const isCheckedOf = (sliderID, index) => {
     const { validate } = props;
-    const validateItem = validate.filter(e => e.sliderID === sliderID)[index]
-    return validateItem && validateItem.checked
-  }
+    const validateItem = validate.filter((e) => e.sliderID === sliderID)[index];
+    return validateItem && validateItem.checked;
+  };
 
-  console.log('isCheckedOf @@@555555555555@@@: ', isCheckedOf(0, 0))
-  console.log('textFromEditor @@@222222222222@@@: ', textFromEditor, props)
+  console.log('isCheckedOf @@@555555555555@@@: ', isCheckedOf(0, 0));
+  console.log('textFromEditor @@@222222222222@@@: ', textFromEditor, props);
   return (
-    <ReflexContainer orientation='horizontal' className='instructions-panel is-mobile' role='complementary' tabIndex='-1' >
+    <ReflexContainer
+      orientation='horizontal'
+      className='instructions-panel is-mobile'
+      role='complementary'
+      tabIndex='-1'
+    >
       <ReactPageScroller
-        ref={c => this.reactPageScroller = c}
+        ref={(c) => (this.reactPageScroller = c)}
         animationTimer={200}
-        containerWidth="100%"
+        containerWidth='100%'
         // pageOnChange={e => setCurrentSlideNumber(e)}
-        pageOnChange={e => {
+        pageOnChange={(e) => {
           setCurrentSlideNumber(e);
           setCurrentSlide(e);
         }}
       >
-        {lesson_data.slides.map((slide, slideNumber) => {
-          return <div id="lesson-page" style={{ height: "100%" }} key={`${lesson_data.slug}_${slideNumber}`}>
-            <ReflexElement flex={1} style={{ height: "100%" }} className={`snapshot snap1 white hide-help swiper-slide`}>
-              <div id={`slide${slideNumber}`}>
-                {ReactHtmlParser(slide.html_content)}
-              </div>
-            </ReflexElement>
-          </div>
+        {lessonData.slides.map((slide, slideNumber) => {
+          return (
+            <div
+              id='lesson-page'
+              style={{ height: '100%' }}
+              key={`${lessonData.slug}_${slideNumber}`}
+            >
+              <ReflexElement
+                flex={1}
+                style={{ height: '100%' }}
+                className={`snapshot snap1 white hide-help swiper-slide`}
+              >
+                <div id={`slide${slideNumber}`}>
+                  {ReactHtmlParser(slide.html_content)}
+                </div>
+              </ReflexElement>
+            </div>
+          );
         })}
       </ReactPageScroller>
     </ReflexContainer>
-  )
-}
+  );
+};
 
 const mapStateToProps = createSelector(
   isUnitCompletedSelector,
   unitTestsSelector,
   validateSelector,
   textFromEditorSelector,
-  (isUnitCompleted, tests, validate, textFromEditor) => ({
+  lessonSelector,
+  lessonDataSelector,
+  (isUnitCompleted, tests, validate, textFromEditor, lesson, lessonData) => ({
     isUnitCompleted,
     tests,
     validate,
-    textFromEditor
+    textFromEditor,
+    lesson,
+    lessonData
   })
 );
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       setCurrentSlideNumber
@@ -384,4 +423,3 @@ SidePanel.displayName = 'SidePanel';
 SidePanel.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(SidePanel);*/
-
