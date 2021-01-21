@@ -51,7 +51,9 @@ const initialState = {
   currentSlidenumber: 0,
 
   lesson: null,
-  lessonData: {}
+  lessonData: {
+    slides: [{}]
+  }
 };
 
 export const types = createTypes(
