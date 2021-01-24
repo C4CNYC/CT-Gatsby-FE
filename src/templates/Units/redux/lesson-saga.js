@@ -9,6 +9,5 @@ export function* getLessonSaga({ payload }) {
 }
 
 export function createLessonSaga(types) {
-  console.log('lesson saga created');
   return [takeEvery(types.setLesson, getLessonSaga)];
 }
