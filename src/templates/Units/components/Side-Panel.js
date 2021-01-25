@@ -16,9 +16,6 @@ import { createSelector } from 'reselect';
 import './side-panel.css';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
 import ReactPageScroller from 'react-page-scroller';
-// import $ from 'jquery';
-// import { lesson_data } from '../../../learn/lessons/INTRO-5MIN-M-V007/lesson_data';
-// import '../../../learn/lessons/INTRO-5MIN-M-V007/custom.css';
 import '../../../learn/lessons/common/css/custom.css';
 
 import { bindActionCreators } from 'redux';
@@ -63,15 +60,24 @@ const SidePanel = (props) => {
       // $('#slide' + (currentSlide)).addClass('validated')
       const slide = document.getElementById(`slide${currentSlide}`);
       slide && slide.classList.add('validated');
+
       // forceUpdate()
     }
   }, [props.textFromEditor]);
 
-  // const validateTextFromEditor = (text) => {
-  //   console.log("lesson_data.slides[currentSlide].action", lesson_data.slides[currentSlide].action)
-  //   console.log("lesson_data.slides[currentSlide].reg", lesson_data.slides[currentSlide].reg)
-  //   return lesson_data.slides[currentSlide].action ? !!text.match(lesson_data.slides[currentSlide].reg) : false
-  // }
+  const clickHandler = (e) => {
+    e.persist();
+
+    if (
+      e.target.closest('.swiper-next') ||
+      (e.target.closest(`#slide${currentSlide}`) &&
+        e.target.closest('.swiper-editor') &&
+        isValid)
+    ) {
+      setCurrentSlideNumber(currentSlide + 1);
+      setCurrentSlide(currentSlide + 1);
+    }
+  };
 
   const isCheckedOf = (sliderID, index) => {
     const { validate } = props;
@@ -92,6 +98,7 @@ const SidePanel = (props) => {
         ref={(c) => (this.reactPageScroller = c)}
         animationTimer={200}
         containerWidth='100%'
+        customPageNumber={currentSlide}
         // pageOnChange={e => setCurrentSlideNumber(e)}
         pageOnChange={(e) => {
           setCurrentSlideNumber(e);
@@ -104,6 +111,7 @@ const SidePanel = (props) => {
               id='lesson-page'
               style={{ height: '100%' }}
               key={`${lessonData.slug}_${slideNumber}`}
+              onClick={(e) => clickHandler(e)}
             >
               <ReflexElement
                 flex={1}
