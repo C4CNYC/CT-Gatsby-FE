@@ -13,7 +13,11 @@ export default function layoutSelector({ element, props }) {
     location: { pathname }
   } = props;
   if (!pathname || pathname === '/') {
-    return <DefaultLayout pathname={pathname} transparentHeader={true}>{element}</DefaultLayout>;
+    return (
+      <DefaultLayout pathname={pathname} transparentHeader={true}>
+        {element}
+      </DefaultLayout>
+    );
   }
   if (element.type === FourOhFourPage) {
     return <DefaultLayout pathname={pathname}>{element}</DefaultLayout>;
@@ -27,6 +31,13 @@ export default function layoutSelector({ element, props }) {
     console.log('Hitting guide for some reason. Need a redirect.');
   }
   if (/^\/learn\/.*\/.*\/.*/.test(pathname)) {
+    return (
+      <LearnLayout pathname={pathname} showFooter={false}>
+        {element}
+      </LearnLayout>
+    );
+  }
+  if (/^\/learn-new\/.*\/.*\/.*/.test(pathname)) {
     return (
       <LearnLayout pathname={pathname} showFooter={false}>
         {element}

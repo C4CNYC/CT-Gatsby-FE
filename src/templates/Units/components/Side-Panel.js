@@ -2,6 +2,9 @@ import React, { useEffect, useState, useMemo } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+import { ReflexContainer, ReflexElement } from 'react-reflex';
+import ReactPageScroller from 'react-page-scroller';
 
 import {
   unitTestsSelector,
@@ -12,10 +15,7 @@ import {
   lessonSelector,
   lessonDataSelector
 } from '../redux';
-import { createSelector } from 'reselect';
 import './side-panel.css';
-import { ReflexContainer, ReflexElement } from 'react-reflex';
-import ReactPageScroller from 'react-page-scroller';
 import '../../../learn/lessons/common/css/custom.css';
 
 import { bindActionCreators } from 'redux';
@@ -34,14 +34,6 @@ const SidePanel = (props) => {
   const { setCurrentSlideNumber, textFromEditor, lessonData } = props;
 
   const isValid = useMemo(() => {
-    console.log(
-      'lesson_data.slides[currentSlide].action',
-      lessonData.slides[currentSlide].action
-    );
-    console.log(
-      'lesson_data.slides[currentSlide].reg',
-      lessonData.slides[currentSlide].reg
-    );
     return lessonData.slides[currentSlide].action
       ? !!textFromEditor.match(lessonData.slides[currentSlide].reg)
       : false;
@@ -53,11 +45,8 @@ const SidePanel = (props) => {
       props.textFromEditor,
       currentSlide
     );
-    // const isValid = validateTextFromEditor(props.textFromEditor);
     if (isValid) {
       console.log('isValid', isValid, '#slide' + currentSlide);
-      // vork only first time, need to check why
-      // $('#slide' + (currentSlide)).addClass('validated')
       const slide = document.getElementById(`slide${currentSlide}`);
       slide && slide.classList.add('validated');
 
@@ -85,8 +74,8 @@ const SidePanel = (props) => {
     return validateItem && validateItem.checked;
   };
 
-  console.log('isCheckedOf @@@555555555555@@@: ', isCheckedOf(0, 0));
-  console.log('textFromEditor @@@222222222222@@@: ', textFromEditor, props);
+  // console.log('isCheckedOf @@@555555555555@@@: ', isCheckedOf(0, 0));
+  // console.log('textFromEditor @@@222222222222@@@: ', textFromEditor, props);
   return (
     <ReflexContainer
       orientation='horizontal'

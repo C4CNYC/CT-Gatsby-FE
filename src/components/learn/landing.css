@@ -1,0 +1,53 @@
+.large-p {
+  font-size: 24px;
+}
+
+/* Buttons with a lot of text can overflow and mess up formatting on small
+   screens, this stops that unless the word itself is too large. */
+
+.btn {
+  white-space: pre-line;
+}
+
+.logo-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: center;
+}
+
+.logo-row h2 {
+  height: 35px;
+  padding: 0 10px 0 10px;
+}
+
+.landing-page ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.award {
+  z-index: 1049;
+  position: fixed;
+  left: 0;
+  top: 0;
+  border: 0;
+  width: 100%;
+  height: auto;
+  font-size: 12px;
+  background: #7c43cf;
+  text-align: center;
+}
+
+.award > a {
+  display: block;
+  text-transform: none;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  line-height: 32px;
+  width: 100%;
+  height: 100%;
+  padding: 0px 4px;
+}

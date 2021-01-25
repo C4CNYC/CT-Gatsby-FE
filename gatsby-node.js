@@ -29,12 +29,20 @@ exports.onCreateNode = function onCreateNode({ node, actions, getNode }) {
 
   if (node.internal.type === 'BlockNode') {
     const { title, superBlock } = node;
-    const slug = `/learn/${superBlock ? `${dasherize(superBlock)}/` : ''}${dasherize(
-      title
-    )}`;
+    const slug = `/learn/${
+      superBlock ? `${dasherize(superBlock)}/` : ''
+    }${dasherize(title)}`;
 
     createNodeField({ node, name: 'slug', value: slug });
   }
+};
+
+exports.onCreatePage = function onCreatePage({ page, actions }) {
+  const { createPage } = actions;
+  if (page.path.match(/^\/learn/)) {
+    page.matchPath = '/learn-new/*';
+  }
+  createPage(page);
 };
 
 exports.createPages = function createPages({ graphql, actions, reporter }) {
@@ -75,9 +83,7 @@ exports.createPages = function createPages({ graphql, actions, reporter }) {
     resolve(
       graphql(`
         {
-          allUnitNode(
-            sort: { fields: [superOrder, order, unitOrder] }
-          ) {
+          allUnitNode(sort: { fields: [superOrder, order, unitOrder] }) {
             edges {
               node {
                 block
@@ -95,9 +101,7 @@ exports.createPages = function createPages({ graphql, actions, reporter }) {
               }
             }
           }
-          allBlockNode(
-            sort: { fields: [superOrder, order] }
-          ) {
+          allBlockNode(sort: { fields: [superOrder, order] }) {
             edges {
               node {
                 fields {
@@ -113,19 +117,17 @@ exports.createPages = function createPages({ graphql, actions, reporter }) {
             }
           }
         }
-      `).then(result => {
+      `).then((result) => {
         if (result.errors) {
           console.log(result.errors);
           return reject(result.errors);
         }
 
         // Create unit pages.
-        result.data.allUnitNode.edges.forEach(
-          createUnitPages(createPage)
-        );
+        result.data.allUnitNode.edges.forEach(createUnitPages(createPage));
 
         // Create block pages
-        result.data.allBlockNode.edges.forEach(edge => {
+        result.data.allBlockNode.edges.forEach((edge) => {
           const {
             node: { type }
           } = edge;
@@ -138,8 +140,8 @@ exports.createPages = function createPages({ graphql, actions, reporter }) {
           //   return null;
           // }
           // try {
-            const pageBuilder = createByIdentityMap[type](createPage);
-            return pageBuilder(edge);
+          const pageBuilder = createByIdentityMap[type](createPage);
+          return pageBuilder(edge);
           // } catch (e) {
           //   console.log(`
           //   ident: ${nodeIdentity} does not belong to a function
@@ -178,15 +180,17 @@ exports.onCreateWebpackConfig = ({ stage, plugins, actions }) => {
   // involved in SSR. Also, if the plugin is used during the 'build-html' stage
   // it overwrites the minfied files with ordinary ones.
   if (stage !== 'build-html') {
-    newPlugins.push(new MonacoWebpackPlugin({
-      features: ['!gotoSymbol'],
-    }));
+    newPlugins.push(
+      new MonacoWebpackPlugin({
+        features: ['!gotoSymbol']
+      })
+    );
   }
   actions.setWebpackConfig({
     node: {
       fs: 'empty'
     },
-    plugins: newPlugins,
+    plugins: newPlugins
     // devtool: 'eval'
     // devtool: 'eval-source-map'
     // devtool: 'source-map',

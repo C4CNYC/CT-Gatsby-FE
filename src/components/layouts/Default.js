@@ -9,7 +9,9 @@ import {
   isWideScreenSelector,
   wideScreenStatusChange,
   navigatorPositionChange,
-  navigatorShapeChange, navigatorPositionSelector, navigatorShapeSelector
+  navigatorShapeChange,
+  navigatorPositionSelector,
+  navigatorShapeSelector
 } from '../../state';
 
 import muiTheme from '../../styles/theme';
@@ -25,7 +27,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import SpringScrollbars from '../SpringScrollbars/SpringScrollbars';
 import WithInstantSearch from '../search/WithInstantSearch';
 
-const styles = theme => ({
+const styles = (theme) => ({
   main: {
     position: 'absolute',
     top: 0,
@@ -104,7 +106,7 @@ const propTypes = {
   showFooter: PropTypes.bool,
   transparentHeader: PropTypes.bool,
   isWideScreen: PropTypes.bool.isRequired,
-  wideScreenStatusChange: PropTypes.func.isRequired,
+  wideScreenStatusChange: PropTypes.func.isRequired
 };
 
 const mapStateToProps = createSelector(
@@ -118,7 +120,7 @@ const mapStateToProps = createSelector(
   })
 );
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     { wideScreenStatusChange, navigatorPositionChange, navigatorShapeChange },
     dispatch
@@ -133,17 +135,16 @@ class DefaultLayout extends Component {
     this.updateWideScreenStatus();
   }
 
-  componentDidUpdate(prevProps) {
-  }
+  componentDidUpdate(prevProps) {}
 
-  componentWillUnmount() {
-  }
-
+  componentWillUnmount() {}
 
   updateWideScreenStatus = () => {
     const isWideScreenBool = isWideScreen();
     const { wideScreenStatusChange } = this.props;
-    return typeof isWideScreenBool === 'boolean' ? wideScreenStatusChange(isWideScreenBool) : null;
+    return typeof isWideScreenBool === 'boolean'
+      ? wideScreenStatusChange(isWideScreenBool)
+      : null;
   };
 
   render() {
@@ -163,41 +164,47 @@ class DefaultLayout extends Component {
               content:
                 'Learn to code with free online courses, programming ' +
                 'projects, and interview preparation for developer jobs.'
-            },
+            }
           ]}
         />
-         <WithInstantSearch>
-          <LayoutWrapper>
+        {/* <WithInstantSearch> */}
+        <LayoutWrapper>
+          <main className={classes.main}>
+            <SpringScrollbars>{children}</SpringScrollbars>
+          </main>
 
-            <main className={classes.main}>
-              <SpringScrollbars>
-                {children}
-              </SpringScrollbars>
-            </main>
-
-            {/* {showFooter && <Footer />}*/}
-            {/*<Navigator children={children} />*/}
-            {isWideScreen && <Suspense fallback={<Loading
-              afterRight={true}
-              overrides={{ width: `${muiTheme.info.sizes.width}px`, height: '100vh', right: 'auto' }}
-            />}
-                                       >
+          {/* {showFooter && <Footer />}*/}
+          {/*<Navigator children={children} />*/}
+          {isWideScreen && (
+            <Suspense
+              fallback={
+                <Loading
+                  afterRight={true}
+                  overrides={{
+                    width: `${muiTheme.info.sizes.width}px`,
+                    height: '100vh',
+                    right: 'auto'
+                  }}
+                />
+              }
+            >
               {/* <InfoBox pages={data.pages.edges} parts={data.parts.edges} />*/}
               <InfoBox pages={[]} parts={[]} />
-            </Suspense>}
-          </LayoutWrapper>
-          {/* <Header*/}
-          {/*  brand="Material Kit React"*/}
-          {/*  rightLinks={<HeaderLinks />}*/}
-          {/*  fixed*/}
-          {/*  color={transparentHeader ? 'transparent' : 'black'}*/}
-          {/*  changeColorOnScroll={{*/}
-          {/*    height: 400,*/}
-          {/*    color: "black"*/}
-          {/*  }}*/}
-          {/*  {...rest}*/}
-          {/* />*/}
-         </WithInstantSearch>
+            </Suspense>
+          )}
+        </LayoutWrapper>
+        {/* <Header*/}
+        {/*  brand="Material Kit React"*/}
+        {/*  rightLinks={<HeaderLinks />}*/}
+        {/*  fixed*/}
+        {/*  color={transparentHeader ? 'transparent' : 'black'}*/}
+        {/*  changeColorOnScroll={{*/}
+        {/*    height: 400,*/}
+        {/*    color: "black"*/}
+        {/*  }}*/}
+        {/*  {...rest}*/}
+        {/* />*/}
+        {/* </WithInstantSearch> */}
       </Fragment>
     );
   }
@@ -206,7 +213,6 @@ class DefaultLayout extends Component {
 DefaultLayout.displayName = 'DefaultLayout';
 DefaultLayout.propTypes = propTypes;
 
-export default withStyles(styles)(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DefaultLayout));
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(DefaultLayout)
+);
