@@ -1,32 +1,37 @@
-export const lesson_data =
-{
-    "defaultCode": // default code, if user has not already started coding
-`
+export const lesson_data = {
+  // default code, if user has not already started coding
+  defaultCode: `
 
 
 
 `,
-    "kbLayout": "", // not currently in use
-    "loadJS": "", // not currently in use
-    "prevLessonID": "", // Lesson ID of previous lesson where to load user's code
-    "nextLessonSlug": "", // not currently in use
-    "pageDesc": "Learn how to make your first website in only 5 minutes with this easy intro lesson to coding.",
-    "pageKeywords": "coding, code, 5-minute-website, learn to code, code website, my first website",
-    "pageTitle": "CodeJIKA - 5-Minute Website",
-    "save_lesson_id": "5-minute-website", // This is id that will be used to store save code in Firebase
-    "cert_awarded_at": 5, // the checkpoint when to mark lesson as complete
-    "slug": "", // not currently in use
-    "show_intro": true,
-    "show_greetcode": false,
-  "slides" : [ {
-      "slide_number" : 1,
-      "action" : true,
-      "checkpoint" : true,
-      "js_function" : "",
-      "checkpoint_id" : 1,
-      "reg" : [ "<h1(.*)>" ],
-    "css_class" : "challenge cp-peach snap1 hide-help",
-    "html_content" : `
+  kbLayout: '', // not currently in use
+  loadJS: '', // not currently in use
+  prevLessonID: '', // Lesson ID of previous lesson where to load user's code
+  nextLessonSlug: '', // not currently in use
+  pageDesc:
+    'Learn how to make your first website in only 5 minutes with this easy intro lesson to coding.',
+  pageKeywords:
+    'coding, code, 5-minute-website, learn to code, code website, my first website',
+  pageTitle: 'CodeJIKA - 5-Minute Website',
+  save_lesson_id: '5-minute-website', // This is id that will be used to store save code in Firebase
+  cert_awarded_at: 5, // the checkpoint when to mark lesson as complete
+  slug: '', // not currently in use
+  show_intro: true,
+  show_greetcode: false,
+  style: `#lesson-page .btn-main, #lesson-page .btn-primary, #lesson-page .btn-primary-alt, #lesson-page .btn-action, #lesson-page .btn-success {
+    width: auto;
+    }`,
+  slides: [
+    {
+      slide_number: 1,
+      action: true,
+      checkpoint: true,
+      js_function: '',
+      checkpoint_id: 1,
+      reg: ['<h1(.*)>'],
+      css_class: 'challenge cp-peach snap1 hide-help',
+      html_content: `
     <div>
         <p class="slide-header h2">CHALLENGE</p>
     </div>
@@ -50,13 +55,14 @@ export const lesson_data =
     </div>
 
     `,
-    "js_function" : "console.log('I am a DB loaded function')",
-      "sort_order" : 1,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  },{
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      js_function: "console.log('I am a DB loaded function')",
+      sort_order: 1,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
     <div>
     </div>
       <div>
@@ -73,65 +79,72 @@ export const lesson_data =
         <span>Tip:</span> Swipe up to view the next slide
       </div>
       `,
-      "sort_order" : 11,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "action" : true,
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 11,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      action: true,
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'>  <h3 class='lesson-title font-weight-normal  mb-5'>You completed<br> the first step<br> of the famous…</h3> <img style='' class='w-50 swiper-lazy' src='/img/timer_circle.png'> <h1 class='h2 lesson-title font-weight-normal mt-1'>5-Minute <br>Website</h1>  </div>
     `,
-    "js_function" : "console.log('I am a DB loaded function')",
-      "sort_order" : 5,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      js_function: "console.log('I am a DB loaded function')",
+      sort_order: 5,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'>  <h2 class='lesson-title encouraging mb-4'>Awesome!</h2><img class='w-20 swiper-lazy' src='/img/emoji/72/smiling-face-with-open-mouth.png'></div>
       `,
-      "sort_order" : 6,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 6,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div><h3 class='lesson-title font-weight-normal mb-0' style='text-transform: none'>We are going to<br> learn how to code<br> your website using </h3><h2 class='lesson-title mb-5'>HTML</h2><h3 class='lesson-title font-weight-normal mt-5' style='text-transform: none'>What is that?</h3><div><img class='w-20 pr-1  swiper-lazy' src='/img/emoji/thinking-face_1f914.png' alt=''><img class='w-20 pl-1 swiper-lazy' src='/img/emoji/thinking-face_1f914.png' alt=''></div></div>
       `,
-      "sort_order" : 12,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 12,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'>  <h2 class='lesson-title blue'>HTML</h2><p class='lesson-instructions fs-16 mb-4'>HyperText Markup Language.</p> <img src='/img/lessons/P001-L00-M-V001-HTML-skeleton.jpg?00' class='swiper-lazy mb-4' style='max-height: 40vh;'><div class='swiper-lazy-preloader'></div><h3 class='lesson-title font-weight-normal mt-4'>HTML is the website <span class='yellow'>STRUCTURE</span><br><small>(SKELETON)</small></h3> </div>
       `,
-      "sort_order" : 13,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 13,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
                           <div class='container'>  <h3 class='lesson-title font-weight-normal mb-5'>It works like this:</h3> <img src='/img/lessons/bold-tags.png' class='swiper-lazy mb-4' style='max-width: 70vw;'><div class='swiper-lazy-preloader'></div> </div>
       `,
-      "sort_order" : 14,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 14,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'>      <h2 class='lesson-title font-weight-normal  mb-5' style='text-transform: none'>Ready for a<br> “Challenge?”</h2>               <img class='w-30 swiper-lazy' src='/img/emoji/boxing-glove.png' alt=''><img src="https://code.org/api/hour/begin_codejika.png" alt="HoC tracking pixel"></div>
       `,
-      "sort_order" : 9,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "action" : true,
-    "checkpoint" : true,
-    "checkpoint_id" : 2,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "css_class" : "challenge cp-peach black",
-    "html_content" : `
+      sort_order: 9,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      action: true,
+      checkpoint: true,
+      checkpoint_id: 2,
+      created_at: '2017-08-23T00:55:40.386Z',
+      css_class: 'challenge cp-peach black',
+      html_content: `
       <div>
         <p class="slide-header h2 white">CHALLENGE</p>
       </div>
@@ -158,40 +171,44 @@ export const lesson_data =
         <span class='red'>TIP:</span> Swipe left to start.
       </div>
       `,
-      "reg" : [ "<h1>[\\s\\r\\n]*(.*)[\\s\\r\\n]*<\\/h1>" ],
-    "sort_order" : 15,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      reg: ['<h1>[\\s\\r\\n]*(.*)[\\s\\r\\n]*<\\/h1>'],
+      sort_order: 15,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'><h2 class='lesson-title encouraging  mb-5'>GOOD JOB!</h2><h3 class='lesson-title font-weight-normal mb-5'>Now we’ll add <br> some styling with <br><span class='pink' style='font-weight: bold'>CSS</span>.</h3><h3 class='lesson-title font-weight-normal mt-5'>Are you ready?</h3></div>
       `,
-      "sort_order" : 16,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 16,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'>                    <h2 class='lesson-title pink '>CSS</h3>                      <p class='lesson-instructions fs-16 mb-4'>Cascading Style Sheets</p>                     <div style='position: relative'>                         <p class='lesson-instructions pink' style='position:absolute;top: 53%;left: 10%'>style='...'</p>                         <img src='/img/lessons/css-girl.png' class='swiper-lazy mb-2' style='max-height: 50vh;'>                     </div>                     <div class='swiper-lazy-preloader'></div>                      <h3 class='lesson-title font-weight-normal mt-2'>                       <span class=' pink' style='margin-left: -25%'>CSS</span> is the <br>                        <span class='yellow' style='margin-left: 25%'>STYLE </span>                       <small> (BLING)</small></h3>                      </div>
       `,
-      "sort_order" : 17,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 17,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'>      <h3 class='lesson-title font-weight-normal mb-5'>This will add a beautiful background color to your website.</h3>     <h3 class='lesson-title font-weight-normal mt-5 mb-5'>It’s worth it.<br>I promise.</h3>     <p class='lesson-instructions mb-4'>         <img class='swiper-lazy w-20' src='/img/emoji/ok-hand-sign_1f44c.png'>         <img class='swiper-lazy w-20' src='/img/emoji/grinning-face-with-smiling-eyes_1f601.png'>         <img class='swiper-lazy w-20' src='/img/emoji/ok-hand-sign_1f44c.png'>     </p> </div>
       `,
-      "sort_order" : 18,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "action" : true,
-    "checkpoint" : true,
-    "checkpoint_id" : 3,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "css_class" : "challenge cp-peach black",
-    "html_content" : `
+      sort_order: 18,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      action: true,
+      checkpoint: true,
+      checkpoint_id: 3,
+      created_at: '2017-08-23T00:55:40.386Z',
+      css_class: 'challenge cp-peach black',
+      html_content: `
       <div>
         <p class="slide-header h2 white">CHALLENGE</p>
       </div>
@@ -219,24 +236,26 @@ export const lesson_data =
         <span class='red'>TIP:</span> Add the &lt;body&gt; tag as the first line.
       </div>
       `,
-      "reg" : [ "<body(.*)>" ],
-    "sort_order" : 19,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      reg: ['<body(.*)>'],
+      sort_order: 19,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'><h2 class='lesson-title encouraging  mb-5'>GOOD!</h2><p class='lesson-instructions mt-5'>Now let's add some<br> style into body.</p></div>
       `,
-      "sort_order" : 20,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "action" : true,
-    "checkpoint" : true,
-    "checkpoint_id" : 4,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "css_class" : "challenge cp-peach black",
-    "html_content" : `
+      sort_order: 20,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      action: true,
+      checkpoint: true,
+      checkpoint_id: 4,
+      created_at: '2017-08-23T00:55:40.386Z',
+      css_class: 'challenge cp-peach black',
+      html_content: `
       <div>
         <p class="slide-header h2 white">CHALLENGE</p>
       </div>
@@ -263,24 +282,28 @@ export const lesson_data =
         <span class='red'>TIP:</span> Find “ on the quick-keys.
       </div>
       `,
-      "reg" : [ "<body [\\s\\r\\n]*style[\\s\\r\\n]*=[\\s\\r\\n]*\"[\s\0-9\a-z\:\;\#]*\"[\\s\\r\\n]*>[\\s\\r\\n]*(.*)" ],
-    "sort_order" : 21,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      reg: [
+        '<body [\\s\\r\\n]*style[\\s\\r\\n]*=[\\s\\r\\n]*"[s\0-9a-z:;#]*"[\\s\\r\\n]*>[\\s\\r\\n]*(.*)'
+      ],
+      sort_order: 21,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'><h2 class='lesson-title encouraging mb-5'>GREAT!</h2> <h3 class='lesson-title mt-5'>Now for the best part.</h3> <div> <img class='swiper-lazy w-20' src='/img/emoji/72/winking-face.png' alt=''> </div> <p class='lesson-instructions mt-5'>(This is where you<br> add your color.)</p> </div>
       `,
-      "sort_order" : 22,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "action" : true,
-    "checkpoint" : true,
-    "checkpoint_id" : 5,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "css_class" : "challenge cp-peach black",
-    "html_content" : `
+      sort_order: 22,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      action: true,
+      checkpoint: true,
+      checkpoint_id: 5,
+      created_at: '2017-08-23T00:55:40.386Z',
+      css_class: 'challenge cp-peach black',
+      html_content: `
       <div>
         <p class="slide-header h2 white">CHALLENGE</p>
       </div>
@@ -307,48 +330,55 @@ export const lesson_data =
         <span class='red'>TIP:</span> Notice <strong>:</strong> and <strong>;</strong>
       </div>
       `,
-      "reg" : [ "<body [\\s\\r\\n]*style[\\s\\r\\n]*=[\\s\\r\\n]*\"[\\s\\r\\n]*background[\\s\\r\\n]*:[\\s\\r\\n]*(pink|red)[\\s\\r\\n]*;[\\s\\r\\n]*\"[\\s\\r\\n]*>[\\s\\r\\n]*(.*)" ],
-    "sort_order" : 23,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      reg: [
+        '<body [\\s\\r\\n]*style[\\s\\r\\n]*=[\\s\\r\\n]*"[\\s\\r\\n]*background[\\s\\r\\n]*:[\\s\\r\\n]*(pink|red)[\\s\\r\\n]*;[\\s\\r\\n]*"[\\s\\r\\n]*>[\\s\\r\\n]*(.*)'
+      ],
+      sort_order: 23,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
                     <div class='container'></div><div class='container'><h2 class='lesson-title encouraging'>Great!</h2><h3 class='lesson-title font-weight-normal  mb-5'>Now check it in <br> the PREVIEW tab.</h3><p class='lesson-instructions mt-5'>Then come back here.</p>   </div>   <div class='container'><p class='lesson-tip'><span>Tip:</span> Swipe left twice to see Preview tab.</p></div>
       `,
-      "sort_order" : 24,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 24,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'> <h3 class='lesson-title encouraging mb-5 '>CONGRATULATIONS</h3> <div style='background-color: #6aa2c7;border-radius:50%; margin: 40px auto; width: 200px;height: 200px;'> <img class='w-75' style='padding-top:20px;' src='/img/congrats.png'> </div> <h3 class='lesson-title font-weight-normal  mt-5'>You’ve made <br>your first <br>website!</h2> </div>
       `,
-      "sort_order" : 25,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 25,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'><h3 class='lesson-title font-weight-normal  mb-5 w-75'>Want to try a different color for the background?</h3>                 <div style='margin-top: 3rem'>                     <img class='w-15 swiper-lazy' src='/img/emoji/72/grinning-face-with-star-eyes.png' alt=''>                     <img class='w-15 swiper-lazy' src='/img/emoji/72/grinning-face-with-star-eyes.png' alt=''>                     <img class='w-15 swiper-lazy' src='/img/emoji/72/grinning-face-with-star-eyes.png' alt=''>                   </div>                 </div>
       `,
-      "sort_order" : 26,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 26,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'><h3 class='lesson-title font-weight-normal  mb-5'>Which color do you<br> want to try?</h3>                 <div style='margin-top: 1rem'><h3 class='lesson-title font-weight-normal  mb-5'><span style="color:teal">teal</span> <span style="color:violet">violet</span> <br> <span style="color:dodgerblue">dodgerblue</span> <br><span style="color:deeppink">deeppink</span> <br><span style="color:aquamarine">aquamarine</span> <span style="color:gold">gold</span> <br> <span style="color:green">green</span> <span style="color:yellow">yellow</span> </h3> </div> <div style='margin-top: mt-2'><img class='swiper-lazy' src='/img/emoji/72/rainbow.png' alt=''></div>                 </div>
       `,
-      "sort_order" : 27,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "action" : true,
-    "checkpoint" : true,
-    "checkpoint_id" : 6,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "css_class" : "challenge cp-peach black",
-    "html_content" : `
+      sort_order: 27,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      action: true,
+      checkpoint: true,
+      checkpoint_id: 6,
+      created_at: '2017-08-23T00:55:40.386Z',
+      css_class: 'challenge cp-peach black',
+      html_content: `
       <div>
         <p class="slide-header h2 white">CHALLENGE</p>
       </div>
@@ -375,31 +405,34 @@ export const lesson_data =
         <span class='red'>TIP:</span> Notice <strong>:</strong> and <strong>;</strong>
       </div>
       `,
-      "reg" : [ "body(.*)background:[\s\r\n]*(?!pink;)[a-z]" ],
-    "sort_order" : 28,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      reg: ['body(.*)background:[s\r\n]*(?!pink;)[a-z]'],
+      sort_order: 28,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'> <h3 class='lesson-title font-weight-normal mb-5'>Did you check it in the PREVIEW tab?</h3> <div style='margin-top: 1rem'> <h3 class='lesson-title font-weight-normal mb-5'> Did it work? </h3> </div> <div style='margin-top: 3rem'> <h2 class='lesson-title encouraging aqua mb-2'>AWESOME!</h2> <img class='w-15 swiper-lazy' src='/img/emoji/fisted-hand-sign_1f44a.png' alt=''> </div> </div>
       `,
-      "sort_order" : 29,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "action" : true,
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 29,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      action: true,
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'>                 <h3 class='lesson-title font-weight-normal'>Share your creative work with your friends.</h3>                 <div>                     <img class='w-15 swiper-lazy' src='/img/emoji/72/smiling-face-with-open-mouth.png' alt=''>                 </div>                 <div>                                      <div class='mt-5'>     <a class='btn btn-share check mt-3' id='whatsapp-code-link' href='' style='width: 80%;font-size: 20px;color: #fff;font-family: 'Rajdhani', sans-serif;'>Share with Friends</a>  <br><button class='btn btn-encouraging next check mt-3' style='width:80%' id='gallery' href=''>Share to CodeJika Gallery<i class='icon-arrow_forward'></i></button> <div class="mt-4"> <a class="swiper-next skip white " style="">Skip this step</a></div> </div>                 </div>               </div>
       `,
-      "sort_order" : 30,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "action" : true,
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 30,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      action: true,
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
      <div class='container '>
        <h2 class='lesson-title font-weight-normal pb-3'>GREAT WORK!</h2>
        <h3 class='lesson-title font-weight-normal'>Get your Hour of Code certificate.</h3>
@@ -411,28 +444,26 @@ export const lesson_data =
        </div>
      </div>
       `,
-      "sort_order" : 30,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  }, {
-    "checkpoint" : false,
-    "created_at" : "2017-08-23T00:55:40.386Z",
-    "html_content" : `
+      sort_order: 30,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    },
+    {
+      checkpoint: false,
+      created_at: '2017-08-23T00:55:40.386Z',
+      html_content: `
       <div class='container'>     <h3 class='lesson-title font-weight-normal'> Are you ready to start <br>Training 1? </h3>     <div> <img class='w-15 swiper-lazy' src='/img/emoji/72/smiling-face-with-open-mouth.png' alt=''> </div>     <div style=' /* display: flex; */'>         <div class='mt-2' style=' display: flex; flex-direction: column; justify-content: center; align-items: center;'>             <br><a class='btn btn-encouraging next check ' style='width: 80%;' href='P1Training1'>Start Now</a> <a class='btn btn-encouraging next check mt-4' style='width: 80%;' href='../learn/projects'>Projects Page</a> </div>     </div> </div>
       `,
-      "sort_order" : 31,
-    "updated_at" : "2017-09-28T16:09:40.256Z"
-  } ]
-}
+      sort_order: 31,
+      updated_at: '2017-09-28T16:09:40.256Z'
+    }
+  ]
+};
 
-var check_points = {
+var check_points = {};
 
-}
+var hintsForCheckPonts = {};
 
-var hintsForCheckPonts = {
-
-}
-
-var hints_data =   `
+var hints_data = `
 
   <p style="margin-bottom:0px;">Slide: 12</p>
   <pre style="margin-bottom:10px; color:#ccc;">&lt;h1&gt;Nomzamo Mbatha&lt;/h1&gt;</pre>
@@ -445,23 +476,16 @@ var hints_data =   `
   <p style="margin-bottom:0px;">Slide: 27</p>
   <pre>placeholder="Your email"</pre>
 
-`
+`;
 /// Add custom JS for lesson below here
-
-
 
 function onlessonLoaded() {
   console.log('onlessonLoaded');
 
-  $('#lesson-page').addClass("show-help");
+  $('#lesson-page').addClass('show-help');
 
-  $('.submit-CodeChallenge').click(function() {
+  $('.submit-CodeChallenge').click(function () {
     console.log('submitCodeChallengeModal');
     submitCodeChallengeModal('submit-lesson-url');
-  })
-
-
-
+  });
 }
-
-
