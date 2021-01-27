@@ -5,10 +5,16 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import withStyles from "@material-ui/core/styles/withStyles";
+import withStyles from '@material-ui/core/styles/withStyles';
 import ToolPanel from '../components/Tool-Panel';
 import { createStructuredSelector } from 'reselect';
-import { currentTabSelector, moveToTab, validateSelector, setValidateChecked, validateCheckedSelector } from '../redux';
+import {
+  currentTabSelector,
+  moveToTab,
+  validateSelector,
+  setValidateChecked,
+  validateCheckedSelector
+} from '../redux';
 import { bindActionCreators } from 'redux';
 import AppBar from '@material-ui/core/AppBar';
 import Card from '@material-ui/core/Card';
@@ -22,12 +28,14 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import FaceIcon from '@material-ui/icons/Face';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import SwipeableViews from 'react-swipeable-views';
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from '@material-ui/core/IconButton';
 import { Grid, Menu, MenuItem } from '@material-ui/core';
 import { CheckerSwitch } from '../components/CheckerSwitch';
-import MainMenu from './Menu'
+import MainMenu from './Menu';
 import Signup from '../components/signup.js';
 import Login from '../components/login.js';
+import Tutorial from './Tutorial';
+
 function TabPanel(props) {
   const { children, index, ...other } = props;
 
@@ -49,7 +57,7 @@ function TabPanel(props) {
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired
 };
 
 function a11yProps(index) {
@@ -59,12 +67,12 @@ function a11yProps(index) {
   };
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   tabRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around'
     // width: `calc(100% / 3)`
   },
   button: {
@@ -73,12 +81,10 @@ const styles = theme => ({
   span: {
     color: theme.bars.colors.icon,
     fontSize: '12px',
-    textTransform: "uppercase",
-    fontWeight: "bold",
-  },
+    textTransform: 'uppercase',
+    fontWeight: 'bold'
+  }
 });
-
-
 
 const mapStateToProps = createStructuredSelector({
   currentTab: currentTabSelector,
@@ -86,7 +92,7 @@ const mapStateToProps = createStructuredSelector({
   validateChecked: validateCheckedSelector
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       moveToTab,
@@ -110,26 +116,23 @@ const propTypes = {
   videoUrl: PropTypes.string
 };
 
-
 class MobileLayout extends Component {
-
   state = {
     index: 0,
     openTutor: false,
-    anchorEl: null,
-
+    anchorEl: null
   };
 
   handleChange = (event, value) => {
     this.setState({
-      index: value,
+      index: value
     });
     this.props.moveToTab(value);
   };
 
-  handleChangeIndex = index => {
+  handleChangeIndex = (index) => {
     this.setState({
-      index,
+      index
     });
     this.props.moveToTab(index);
   };
@@ -141,8 +144,8 @@ class MobileLayout extends Component {
     this.setState({
       openTutor: !this.state.openTutor,
       anchorEl: event.currentTarget
-    })
-  }
+    });
+  };
 
   handleCloseTutorMenu = () => {
     if (!this.state.openTutor) {
@@ -155,21 +158,22 @@ class MobileLayout extends Component {
   };
 
   handleCheckerSwitch = (event) => {
-    this.props.setValidateChecked(event.target.checked)
-  }
+    this.props.setValidateChecked(event.target.checked);
+  };
 
   handleMainMenu = () => {
-    this.setState((state) => ({ isShowMainMenu: !state.isShowMainMenu }))
-  }
+    this.setState((state) => ({ isShowMainMenu: !state.isShowMainMenu }));
+  };
   handleSignUp = () => {
-    this.handleMainMenu()
-    this.setState((state) => ({ isShowSignUp: !state.isShowSignUp }))
-  }
+    this.handleMainMenu();
+    this.setState((state) => ({ isShowSignUp: !state.isShowSignUp }));
+  };
   handleSignIn = () => {
-    this.handleMainMenu()
-    this.setState((state) => ({ isShowSignIn: !state.isShowSignIn }))
-  }
+    this.handleMainMenu();
+    this.setState((state) => ({ isShowSignIn: !state.isShowSignIn }));
+  };
   render() {
+    console.log(this);
     const {
       index,
       anchorEl,
@@ -190,111 +194,156 @@ class MobileLayout extends Component {
     } = this.props;
 
     return (
-      <Fragment >
-        <div className="hide-body-shadow" style={{ height: 0 }}></div>
-        {isShowMainMenu && <MainMenu className="login-signup-container" isMobile close={this.handleMainMenu} handleSignIn={this.handleSignIn} handleSignUp={this.handleSignUp} />}
-        {isShowSignUp && <Signup isMobile handleSignIn={this.handleSignIn} handleSignUp={this.handleSignUp} />}
-        {isShowSignIn && <Login isMobile handleSignIn={this.handleSignIn} handleSignUp={this.handleSignUp} />}
-        <div style={{ flexGrow: 1, width: '100%', }}>
-          <AppBar position="static" color={'transparent'}>
+      <Fragment>
+        {this.state.index === 1 ? <Tutorial /> : ''}
+        <div className='hide-body-shadow' style={{ height: 0 }}></div>
+        {isShowMainMenu && (
+          <MainMenu
+            className='login-signup-container'
+            isMobile
+            close={this.handleMainMenu}
+            handleSignIn={this.handleSignIn}
+            handleSignUp={this.handleSignUp}
+          />
+        )}
+        {isShowSignUp && (
+          <Signup
+            isMobile
+            handleSignIn={this.handleSignIn}
+            handleSignUp={this.handleSignUp}
+          />
+        )}
+        {isShowSignIn && (
+          <Login
+            isMobile
+            handleSignIn={this.handleSignIn}
+            handleSignUp={this.handleSignUp}
+          />
+        )}
+        <div style={{ flexGrow: 1, width: '100%' }}>
+          <AppBar position='static' color={'transparent'}>
             <div className={classes.tabRow}>
-              {(index === 2 || index === 0) && <IconButton
-                aria-label="timmer"
-                onClick={() => { }}
-                title="timmer"
-                className={classes.button}
-              >
-                <TimerIcon />
-              </IconButton>}
+              {(index === 2 || index === 0) && (
+                <IconButton
+                  aria-label='timmer'
+                  onClick={() => {}}
+                  title='timmer'
+                  className={classes.button}
+                >
+                  <TimerIcon />
+                </IconButton>
+              )}
 
-              {index === 1 && <IconButton
-                aria-label="Back to home"
-                onClick={() => { }}
-                title="Back to home"
-                className={classes.button}
-              >
-                <FolderOpenIcon />
-              </IconButton>}
+              {index === 1 && (
+                <IconButton
+                  aria-label='Back to home'
+                  onClick={() => {}}
+                  title='Back to home'
+                  className={classes.button}
+                >
+                  <FolderOpenIcon />
+                </IconButton>
+              )}
               <Tabs
                 id='unit-page-tabs'
                 value={index}
                 onChange={this.handleChange}
-                variant="fullWidth"
-                indicatorColor="primary"
-                textColor="primary"
-                aria-label="lesson tabs">
-                <Tab icon={<AssignmentIcon />} aria-label="Lesson" {...a11yProps(0)} />
-                <Tab icon={<CodeIcon />} aria-label="Code"  {...a11yProps(1)} />
+                variant='fullWidth'
+                indicatorColor='primary'
+                textColor='primary'
+                aria-label='lesson tabs'
+              >
+                <Tab
+                  icon={<AssignmentIcon />}
+                  aria-label='Lesson'
+                  {...a11yProps(0)}
+                />
+                <Tab icon={<CodeIcon />} aria-label='Code' {...a11yProps(1)} />
                 {/*<Tab icon={<SpellcheckIcon />} aria-label="Tests"  {...a11yProps(2)} />*/}
                 {hasPreview && (
-                  <Tab icon={<VideoLabelIcon />} aria-label="Preview"  {...a11yProps(2)} />
+                  <Tab
+                    icon={<VideoLabelIcon />}
+                    aria-label='Preview'
+                    {...a11yProps(2)}
+                  />
                 )}
               </Tabs>
-              {(index === 2 || index === 0) && <IconButton
-                aria-label="Menu"
-                onClick={this.handleMainMenu}
-                title="Menu"
-                className={classes.button}
-              >
-                <MenuIcon />
-              </IconButton>}
-              {index === 1 && <>
+              {(index === 2 || index === 0) && (
                 <IconButton
-                  aria-label="person"
-                  onClick={this.handleTutorMenu}
-                  title="person"
+                  aria-label='Menu'
+                  onClick={this.handleMainMenu}
+                  title='Menu'
                   className={classes.button}
                 >
-                  <FaceIcon />
+                  <MenuIcon />
                 </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(openTutor)}
-                  onClose={this.handleCloseTutorMenu}>
-                  {openTutor && <>
-                    <MenuItem>
-                      <Grid container spacing={1} style={{ alignItems: "center" }}>
-                        <Grid item>
-                          <CheckCircleOutlineIcon />
-                        </Grid>
-                        <Grid item>
-                          <span className={classes.span} style={{ fontSize: "20px" }}>Checker</span>
-                        </Grid>
-                        <Grid item>
-                          <CheckerSwitch
-                            onChange={this.handleCheckerSwitch}
-                            checked={validateChecked}
-                            name="checkedChecker"
-                          />
-                        </Grid>
-                      </Grid>
-                    </MenuItem>
-                  </>}
-                </Menu></>}
+              )}
+              {index === 1 && (
+                <>
+                  <IconButton
+                    aria-label='person'
+                    onClick={this.handleTutorMenu}
+                    title='person'
+                    className={classes.button}
+                  >
+                    <FaceIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(openTutor)}
+                    onClose={this.handleCloseTutorMenu}
+                  >
+                    {openTutor && (
+                      <>
+                        <MenuItem>
+                          <Grid
+                            container
+                            spacing={1}
+                            style={{ alignItems: 'center' }}
+                          >
+                            <Grid item>
+                              <CheckCircleOutlineIcon />
+                            </Grid>
+                            <Grid item>
+                              <span
+                                className={classes.span}
+                                style={{ fontSize: '20px' }}
+                              >
+                                Checker
+                              </span>
+                            </Grid>
+                            <Grid item>
+                              <CheckerSwitch
+                                onChange={this.handleCheckerSwitch}
+                                checked={validateChecked}
+                                name='checkedChecker'
+                              />
+                            </Grid>
+                          </Grid>
+                        </MenuItem>
+                      </>
+                    )}
+                  </Menu>
+                </>
+              )}
             </div>
-
           </AppBar>
-          <SwipeableViews displaySameSlide index={index} onChangeIndex={this.handleChangeIndex}>
-            <TabPanel index={0}>
-              {instructions}
-            </TabPanel>
-            <TabPanel index={1} >
-              {editor}
-            </TabPanel>
+          <SwipeableViews
+            displaySameSlide
+            index={index}
+            onChangeIndex={this.handleChangeIndex}
+          >
+            <TabPanel index={0}>{instructions}</TabPanel>
+            <TabPanel index={1}>{editor}</TabPanel>
             {/* <TabPanel value={value} index={2}>
              {testOutput}
              </TabPanel> */}
-            {hasPreview && (
-              <TabPanel index={2} >
-                {preview}
-              </TabPanel>
-            )}
+            {hasPreview && <TabPanel index={2}>{preview}</TabPanel>}
           </SwipeableViews>
-
         </div>
         <ToolPanel guideUrl={guideUrl} isMobile={true} videoUrl={videoUrl} />
-      </Fragment >
+      </Fragment>
     );
   }
 }
