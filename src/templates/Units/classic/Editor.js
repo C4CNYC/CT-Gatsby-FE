@@ -29,7 +29,6 @@ import * as Auth from '../utils/authmanager.js';
 import { withStyles } from '@material-ui/styles';
 import { calculatePercentOfChecked } from '../utils/helpers';
 
-
 const MonacoEditor = React.lazy(() => import('react-monaco-editor'));
 
 const propTypes = {
@@ -63,7 +62,16 @@ const mapStateToProps = createSelector(
   validateSelector,
   textFromEditorSelector,
   currentSlideNumberSelector,
-  (canFocus, accessibilityMode, open, { theme = 'night' }, validateChecked, validate, textFromEditor, currentSlideNumber) => ({
+  (
+    canFocus,
+    accessibilityMode,
+    open,
+    { theme = 'night' },
+    validateChecked,
+    validate,
+    textFromEditor,
+    currentSlideNumber
+  ) => ({
     canFocus: open ? false : canFocus,
     inAccessibilityMode: accessibilityMode,
     theme,
@@ -92,7 +100,7 @@ const modeMap = {
 };
 
 var monacoThemesDefined = false;
-const defineMonacoThemes = monaco => {
+const defineMonacoThemes = (monaco) => {
   if (monacoThemesDefined) {
     return;
   }
@@ -120,100 +128,101 @@ const defineMonacoThemes = monaco => {
   });
 };
 
-const styles = theme => ({
+const styles = (theme) => ({
   progress: {
-    color: "#76dc37",
-    position: "absolute",
-    right: "22px",
-    top: "27px",
+    color: '#76dc37',
+    position: 'absolute',
+    right: '22px',
+    top: '27px',
     zIndex: 1,
-    "&::before": {
+    '&::before': {
       content: `""`,
-      position: "absolute",
-      background: "#46748e",
-      width: "18px",
-      height: "18px",
-      left: "3px",
-      top: "3px",
-      borderRadius: "50%",
+      position: 'absolute',
+      background: '#46748e',
+      width: '18px',
+      height: '18px',
+      left: '3px',
+      top: '3px',
+      borderRadius: '50%'
     }
   },
   panelContainer: {
-    borderRadius: "20px",
-    position: "absolute",
-    right: "10px",
-    top: "7px",
+    borderRadius: '20px',
+    position: 'absolute',
+    right: '10px',
+    top: '7px',
     width: 'calc(100% - 20px)',
     // height: '300px',
     border: '3px solid #43d4dd',
     zIndex: 1,
-    background: "white"
+    background: 'white'
   },
   gridParent: {
     // height: "calc(100% + 9px)",
-
   },
   leftGridItem: {
-    display: "flex",
+    display: 'flex',
     background: '#43d4dd',
     // height: "100%",
-    borderRadius: "20px",
-    alignItems: "center",
+    borderRadius: '20px',
+    alignItems: 'center',
     // justifyContent: "center",
-    flexDirection: "column",
-    color: "#216a6f",
-    width: "40px"
-
+    flexDirection: 'column',
+    color: '#216a6f',
+    width: '40px'
   },
   checkGridItem: {
-    color: "#43d4dd",
-    justifyContent: "space-between",
-    padding: "10px 0 5px",
-
+    color: '#43d4dd',
+    justifyContent: 'space-between',
+    padding: '10px 0 5px'
   },
   arrowIcon: {
-    padding: "10px 0 5px",
-    justifyContent: "center",
-    alignItems: "center"
+    padding: '10px 0 5px',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   iconsContainer: {
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   rightGridItem: {
     // padding: "10px!important",
-    color: "black",
-    display: "flex",
-    flexDirection: "column",
-    width: "calc(100% - 40px)",
-    fontWeight: "bold",
-    padding: "10px 20px 20px",
-
+    color: 'black',
+    display: 'flex',
+    flexDirection: 'column',
+    width: 'calc(100% - 40px)',
+    fontWeight: 'bold',
+    padding: '10px 20px 20px'
   },
   compressedPanelContainer: {
-    borderRadius: "20px",
-    position: "absolute",
-    right: "10px",
-    top: "7px",
+    borderRadius: '20px',
+    position: 'absolute',
+    right: '10px',
+    top: '7px',
     width: '40px',
     border: '3px solid #43d4dd',
     zIndex: 1,
-    background: "white",
-    justifyContent: "space-around",
-    alignItems: "center",
-    display: "flex",
-    minHeight: "251px",
-    flexDirection: "column",
+    background: 'white',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    display: 'flex',
+    minHeight: '251px',
+    flexDirection: 'column',
     opacity: 0.5
   },
   checkerText: {
-    fontSize: "14px"
+    fontSize: '14px'
   }
 });
 const PlaskChecker = () => {
-  return <img src={require("../img/icons/plask.png")} alt="plask" style={{ width: "25px", height: "25px" }} />
-}
+  return (
+    <img
+      src={require('../img/icons/plask.png')}
+      alt='plask'
+      style={{ width: '25px', height: '25px' }}
+    />
+  );
+};
 class Editor extends Component {
-
   constructor(...props) {
     super(...props);
     this.options = {
@@ -237,8 +246,7 @@ class Editor extends Component {
       },
       parameterHints: {
         enabled: false
-      },
-
+      }
     };
 
     this.state = {
@@ -246,7 +254,6 @@ class Editor extends Component {
       showTutorPanel: false,
       compressedTutorPanel: false,
       validate: []
-
     };
 
     this._editor = null;
@@ -257,41 +264,43 @@ class Editor extends Component {
     Auth.getCode((codes) => {
       if (codes !== null && typeof codes !== undefined) {
         this.validatesFunc(codes);
-        this.setState({ currentCode: codes })
+        this.setState({ currentCode: codes });
       }
     });
     Auth.change((user) => {
-      if (user) Auth.getCode((codes) => {
-        if (codes !== null && typeof codes !== undefined) {
-
-          this.validatesFunc(codes);
-          this.setState({ currentCode: codes })
-        }
-      });
+      if (user)
+        Auth.getCode((codes) => {
+          if (codes !== null && typeof codes !== undefined) {
+            this.validatesFunc(codes);
+            this.setState({ currentCode: codes });
+          }
+        });
     });
   }
   async componentWillReceiveProps(next) {
     if (this.props.currentSlideNumber !== next.currentSlideNumber) {
       const { settingValidate, currentSlideNumber } = next;
-      var validatedItems = slider.validate_test(this.state.currentCode, currentSlideNumber);
+      var validatedItems = slider.validate_test(
+        this.state.currentCode,
+        currentSlideNumber
+      );
       var returnedCode = await this.checkReturnedCode(validatedItems);
 
       if (!returnedCode) {
-        this.setState({ validate: validatedItems })
-        settingValidate(validatedItems)
+        this.setState({ validate: validatedItems });
+        settingValidate(validatedItems);
       }
     }
   }
-  editorWillMount = monaco => {
+  editorWillMount = (monaco) => {
     defineMonacoThemes(monaco);
   };
 
   editorDidMount = (editor, monaco) => {
-
     const { setMonacoEditor } = this.props;
     this._editor = editor;
 
-    setMonacoEditor(editor)
+    setMonacoEditor(editor);
 
     this._editor.updateOptions({
       accessibilitySupport: this.props.inAccessibilityMode ? 'on' : 'auto'
@@ -363,37 +372,36 @@ class Editor extends Component {
     this._editor.focus();
   }
 
-  onChange = editorValue => {
+  onChange = (editorValue) => {
     const { updateFile, fileKey, setTextFromEditor } = this.props;
     updateFile({ key: fileKey, editorValue });
     setTextFromEditor(editorValue);
     this.props.executeUnit();
     // slider.validate_function(editorValue);
-    this.validatesFunc(editorValue);
+    // this.validatesFunc(editorValue);
     this.setState({ currentCode: editorValue });
-
   };
 
   checkReturnedCode = async (validatedItems) => {
-    return false
+    return false;
     // if (!validatedItems) return true;
     let list = await Auth.getSlider();
     if (!list) return false;
-    return validatedItems.filter((e) => e.checked).length < list.length
-  }
+    return validatedItems.filter((e) => e.checked).length < list.length;
+  };
 
   validatesFunc = async (context) => {
     const { settingValidate, currentSlideNumber } = this.props;
     var validatedItems = slider.validate_test(context, currentSlideNumber);
     var returnedCode = await this.checkReturnedCode(validatedItems);
-    console.log("current slider val", validatedItems)
+    console.log('current slider val', validatedItems);
     if (!returnedCode) {
-      console.log("current slider valsss", validatedItems)
-      this.setState({ validate: validatedItems })
-      settingValidate(validatedItems)
+      console.log('current slider valsss', validatedItems);
+      this.setState({ validate: validatedItems });
+      settingValidate(validatedItems);
       Auth.savCode(context);
     }
-  }
+  };
 
   componentDidUpdate(prevProps) {
     if (this.props.dimensions !== prevProps.dimensions && this._editor) {
@@ -402,81 +410,117 @@ class Editor extends Component {
   }
 
   handleTutorPanel = () => {
-    this.setState({ showTutorPanel: !this.state.showTutorPanel })
-  }
+    this.setState({ showTutorPanel: !this.state.showTutorPanel });
+  };
 
   handleCompressedTutorPanel = () => {
-    this.setState({ compressedTutorPanel: !this.state.compressedTutorPanel })
-  }
-
+    this.setState({ compressedTutorPanel: !this.state.compressedTutorPanel });
+  };
 
   render() {
-    const { classes, contents, ext, theme, fileKey, validateChecked } = this.props;
     const {
-      showTutorPanel,
-      compressedTutorPanel,
-      validate
-    } = this.state
+      classes,
+      contents,
+      ext,
+      theme,
+      fileKey,
+      validateChecked
+    } = this.props;
+    const { showTutorPanel, compressedTutorPanel, validate } = this.state;
     const editorTheme = theme === 'night' ? 'vs-dark-custom' : 'vs-custom';
     return (
-      <Suspense fallback={<Loader timeout={600} />} >
+      <Suspense fallback={<Loader timeout={600} />}>
         <div style={{ position: 'relative' }}>
-          {validateChecked && !showTutorPanel && <div >
-            <CircularProgress
-              className={classes.progress}
-              variant="static"
-              value={calculatePercentOfChecked(validate)}
-              size={24}
-              thickness={6}
-              onClick={this.handleTutorPanel} />
-          </div>}
-          {validateChecked && showTutorPanel && (compressedTutorPanel ? <div
-            className={classes.compressedPanelContainer}
-            onClick={this.handleCompressedTutorPanel}
-          >
-            <CloseIcon
-              onClick={this.handleTutorPanel}
-              style={{ color: "#808080" }}
-            />
-            {validate.map((v) => v.checked ? <CheckCircleOutlineIcon style={{ color: "black" }} /> : <PlaskChecker />)}
-
-          </div> :
-            <div className={classes.panelContainer}>
-              <Grid container spacing={1} className={classes.gridParent}>
-                <div className={classes.leftGridItem} onClick={this.handleCompressedTutorPanel}>
-                  <Grid container item xs={12} className={classes.arrowIcon}>
-                    <Grid item>
-                      <ArrowForwardIosIcon />
-                    </Grid>
-                  </Grid>
-                  {validate.map((v) => <Grid container item xs={12} spacing={1} className={classes.iconsContainer} >
-                    <Grid item >
-                      {v.checked ? <CheckCircleOutlineIcon /> : <PlaskChecker />}
-                    </Grid>
-                  </Grid>)}
-
-                </div>
-                <div className={classes.rightGridItem}>
-                  <Grid container item xs={12} className={classes.checkGridItem}>
-                    <Grid item>
-                      <Typography>CHECKER</Typography>
-                    </Grid>
-                    <Grid item style={{ color: "#808080" }}>
-                      <CloseIcon
-                        onClick={this.handleTutorPanel}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container>
-                    {validate.map((v) => <Grid container item xs={12} spacing={1} >
-                      <Grid item xs>
-                        <Typography className={classes.checkerText}>{v.text}</Typography>
+          {validateChecked && !showTutorPanel && (
+            <div>
+              <CircularProgress
+                className={classes.progress}
+                variant='static'
+                value={calculatePercentOfChecked(validate)}
+                size={24}
+                thickness={6}
+                onClick={this.handleTutorPanel}
+              />
+            </div>
+          )}
+          {validateChecked &&
+            showTutorPanel &&
+            (compressedTutorPanel ? (
+              <div
+                className={classes.compressedPanelContainer}
+                onClick={this.handleCompressedTutorPanel}
+              >
+                <CloseIcon
+                  onClick={this.handleTutorPanel}
+                  style={{ color: '#808080' }}
+                />
+                {validate.map((v) =>
+                  v.checked ? (
+                    <CheckCircleOutlineIcon style={{ color: 'black' }} />
+                  ) : (
+                    <PlaskChecker />
+                  )
+                )}
+              </div>
+            ) : (
+              <div className={classes.panelContainer}>
+                <Grid container spacing={1} className={classes.gridParent}>
+                  <div
+                    className={classes.leftGridItem}
+                    onClick={this.handleCompressedTutorPanel}
+                  >
+                    <Grid container item xs={12} className={classes.arrowIcon}>
+                      <Grid item>
+                        <ArrowForwardIosIcon />
                       </Grid>
-                    </Grid>)}
-                  </Grid>
-                </div>
-              </Grid>
-            </div>)}
+                    </Grid>
+                    {validate.map((v) => (
+                      <Grid
+                        container
+                        item
+                        xs={12}
+                        spacing={1}
+                        className={classes.iconsContainer}
+                      >
+                        <Grid item>
+                          {v.checked ? (
+                            <CheckCircleOutlineIcon />
+                          ) : (
+                            <PlaskChecker />
+                          )}
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </div>
+                  <div className={classes.rightGridItem}>
+                    <Grid
+                      container
+                      item
+                      xs={12}
+                      className={classes.checkGridItem}
+                    >
+                      <Grid item>
+                        <Typography>CHECKER</Typography>
+                      </Grid>
+                      <Grid item style={{ color: '#808080' }}>
+                        <CloseIcon onClick={this.handleTutorPanel} />
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      {validate.map((v) => (
+                        <Grid container item xs={12} spacing={1}>
+                          <Grid item xs>
+                            <Typography className={classes.checkerText}>
+                              {v.text}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </div>
+                </Grid>
+              </div>
+            ))}
         </div>
         <MonacoEditor
           editorDidMount={this.editorDidMount}
@@ -489,7 +533,7 @@ class Editor extends Component {
           value={this.state.currentCode}
           theme={editorTheme}
           automaticLayout={true}
-          height="100%"
+          height='100%'
         />
       </Suspense>
     );
@@ -501,9 +545,6 @@ Editor.propTypes = propTypes;
 
 // NOTE: withRef gets replaced by forwardRef in react-state 6,
 // https://github.com/reduxjs/react-redux/releases/tag/v6.0.0
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  null,
-  { withRef: true }
-)(withStyles(styles)(Editor));
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  withRef: true
+})(withStyles(styles)(Editor));

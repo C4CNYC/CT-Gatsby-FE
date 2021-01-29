@@ -3,31 +3,19 @@ import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
 import { connect, useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { Loader } from '../../components/helpers';
 import {
   userSelector,
   userFetchStateSelector,
   isSignedInSelector,
   tryToShowDonationModal
 } from '../../state';
-import createRedirect from '../../components/createRedirect';
-import DonateModal from '../Donation/DonationModal';
 
 import 'prismjs/themes/prism.css';
 import './prism.css';
 import './prism-night.css';
 import 'react-reflex/styles.css';
 import './learn.css';
-import Main from '../Main';
-import OfflineWarning from '../OfflineWarning';
-import Flash from '../Flash';
-import ActionsBar from '../ActionsBar/ActionsBar';
-import InfoBar from '../InfoBar/InfoBar';
-import Loading from '../common/Loading/Loading';
-import muiTheme from '../../styles/theme';
-import LayoutWrapper from '../LayoutWrapper/LayoutWrapper';
 import WithInstantSearch from '../search/WithInstantSearch';
-import SpringScrollbars from '../SpringScrollbars/SpringScrollbars';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TopBar from '../ActionsBar/TopBar';
 import Footer from '../ActionsBar/Footer';
@@ -81,8 +69,6 @@ const mapDispatchToProps = {
   setLesson
 };
 
-const RedirectAcceptPrivacyTerm = createRedirect('/accept-privacy-terms');
-
 class LearnLayout extends Component {
   componentDidMount() {
     this.props.tryToShowDonationModal();
@@ -99,13 +85,7 @@ class LearnLayout extends Component {
   }
 
   render() {
-    const {
-      fetchState: { pending, complete },
-      isSignedIn,
-      user: { acceptedPrivacyTerms },
-      children,
-      classes
-    } = this.props;
+    const { children, classes } = this.props;
 
     // if (pending && !complete) {
     //   return <Loader fullScreen={true} />;
@@ -121,26 +101,10 @@ class LearnLayout extends Component {
           <meta content='noindex' name='robots' />
         </Helmet>
         <WithInstantSearch>
-          {/*  <LayoutWrapper>*/}
-          {/*<OfflineWarning isOnline={isOnline} isSignedIn={isSignedIn} />*/}
-          {/*{hasMessage && flashMessage ? (*/}
-          {/*    <Flash flashMessage={flashMessage} onClose={removeFlashMessage} />*/}
-          {/*) : null}*/}
-
-          {/*{children}*/}
           <TopBar categories={[]} />
-          <main className={classes.main}>
-            {/*<SpringScrollbars>*/}
-            {children}
-            {/*</SpringScrollbars>*/}
-          </main>
+          <main className={classes.main}>{children}</main>
           <Footer categories={[]} />
-          {/* <ActionsBar categories={[]} /> */}
-          {/*<InfoBar pages={[]} parts={[]} />*/}
-          {/*</LayoutWrapper>*/}
         </WithInstantSearch>
-        {/*<Main id='learn-app-wrapper'>{children}</Main>*/}
-        {/*<DonateModal />*/}
       </Fragment>
     );
   }

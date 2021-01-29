@@ -83,6 +83,12 @@ const styles = (theme) => ({
     fontSize: '12px',
     textTransform: 'uppercase',
     fontWeight: 'bold'
+  },
+  tabs: {
+    maxWidth: 220
+  },
+  tab: {
+    color: theme.base.colors.text
   }
 });
 
@@ -252,16 +258,24 @@ class MobileLayout extends Component {
                 indicatorColor='primary'
                 textColor='primary'
                 aria-label='lesson tabs'
+                className={classes.tabs}
               >
                 <Tab
                   icon={<AssignmentIcon />}
+                  className={classes.tab}
                   aria-label='Lesson'
                   {...a11yProps(0)}
                 />
-                <Tab icon={<CodeIcon />} aria-label='Code' {...a11yProps(1)} />
+                <Tab
+                  className={classes.tab}
+                  icon={<CodeIcon />}
+                  aria-label='Code'
+                  {...a11yProps(1)}
+                />
                 {/*<Tab icon={<SpellcheckIcon />} aria-label="Tests"  {...a11yProps(2)} />*/}
                 {hasPreview && (
                   <Tab
+                    className={classes.tab}
                     icon={<VideoLabelIcon />}
                     aria-label='Preview'
                     {...a11yProps(2)}

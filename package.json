@@ -111,7 +111,7 @@
     "react-helmet": "^5.2.1",
     "react-hotkeys": "^2.0.0",
     "react-html-parser": "^2.0.2",
-    "react-id-swiper": "^3.0.0",
+    "react-id-swiper": "^4.0.0",
     "react-identicons": "^1.2.4",
     "react-instantsearch-dom": "^6.4.0",
     "react-lazyload": "^2.6.5",
@@ -142,7 +142,7 @@
     "screenfull": "^5.0.2",
     "store": "^2.0.12",
     "svg-react-loader": "^0.4.6",
-    "swiper": "^5.3.6",
+    "swiper": "^6.4.8",
     "uuid": "^8.3.0",
     "validator": "^10.11.0"
   },

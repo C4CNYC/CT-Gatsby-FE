@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
-import ReactPageScroller from 'react-page-scroller';
+import ReactPageScroller from '../react-page-scroller';
 
 import {
   unitTestsSelector,
@@ -33,24 +33,29 @@ const SidePanel = (props) => {
   // const forceUpdate = useForceUpdate();
 
   const { setCurrentSlideNumber, textFromEditor, lessonData } = props;
+  console.log(`current lesson id ${lessonData.id}`);
 
   const isValid = useMemo(() => {
-    return lessonData.slides[currentSlide].action
+    if (!lessonData.slides[currentSlide]) {
+      return false;
+    }
+    const res = lessonData.slides[currentSlide].action
       ? !!textFromEditor.match(lessonData.slides[currentSlide].reg)
       : true;
+
+    const slideInStorage = Number(
+      localStorage.getItem(`lesson-progress-${lessonData.id}`)
+    );
+    if (res && slideInStorage < currentSlide) {
+      localStorage.setItem(`lesson-progress-${lessonData.id}`, currentSlide);
+    }
+    return res;
   }, [currentSlide, textFromEditor]);
 
   useEffect(() => {
-    console.log(
-      ' props.textFromEditor>>>>>',
-      props.textFromEditor,
-      currentSlide
-    );
     if (isValid) {
-      console.log('isValid', isValid, '#slide' + currentSlide);
       const slide = document.getElementById(`slide${currentSlide}`);
       slide && slide.classList.add('validated');
-
       // forceUpdate()
     }
   }, [props.textFromEditor]);
@@ -69,6 +74,15 @@ const SidePanel = (props) => {
     } else {
       stylesContainer.appendChild(document.createTextNode(css));
     }
+
+    const slideInStorage = Number(
+      localStorage.getItem(`lesson-progress-${lessonData.id}`)
+    );
+
+    if (slideInStorage > currentSlide) {
+      setCurrentSlide(slideInStorage);
+      setCurrentSlideNumber(slideInStorage);
+    }
   }, [lessonData]);
 
   const clickHandler = (e) => {
@@ -85,6 +99,11 @@ const SidePanel = (props) => {
     }
   };
 
+  const pageChangeHandler = (e) => {
+    setCurrentSlideNumber(e);
+    setCurrentSlide(e);
+  };
+
   // const isCheckedOf = (sliderID, index) => {
   //   const { validate } = props;
   //   const validateItem = validate.filter((e) => e.sliderID === sliderID)[index];
@@ -93,6 +112,7 @@ const SidePanel = (props) => {
 
   // console.log('isCheckedOf @@@555555555555@@@: ', isCheckedOf(0, 0));
   // console.log('textFromEditor @@@222222222222@@@: ', textFromEditor, props);
+
   return (
     <ReflexContainer
       orientation='horizontal'
@@ -102,15 +122,12 @@ const SidePanel = (props) => {
     >
       <ReactPageScroller
         ref={(c) => (this.reactPageScroller = c)}
-        animationTimer={1000}
+        animationTimer={300}
         containerWidth='100%'
         customPageNumber={currentSlide}
         blockScrollDown={!isValid}
         // pageOnChange={e => setCurrentSlideNumber(e)}
-        pageOnChange={(e) => {
-          setCurrentSlideNumber(e);
-          setCurrentSlide(e);
-        }}
+        pageOnChange={(e) => pageChangeHandler(e)}
       >
         {lessonData.slides.map((slide, slideNumber) => {
           return (

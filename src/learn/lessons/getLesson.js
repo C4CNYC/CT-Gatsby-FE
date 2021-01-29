@@ -4,10 +4,10 @@ import { lesson_data as basic } from './P001-T01-M-V008/lesson_data';
 export const getLesson = (name) => {
   switch (name) {
     case 'time-to-learn-about-basic-html-tags-son': {
-      return basic;
+      return { ...basic, id: 2 };
     }
     default: {
-      return intro;
+      return { ...intro, id: 1 };
     }
   }
 };

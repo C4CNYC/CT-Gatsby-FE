@@ -3,7 +3,6 @@
 import colors from './colors';
 
 export default {
-
   /*
     BEGiNNIG OF CUTSOM GLOBAL STYLE
    */
@@ -38,8 +37,10 @@ export default {
   },
   body: {
     margin: 0,
+    color: colors.black,
+    backgroundColor: colors.white,
     // background: theme.base.colors.background,
-    overflow: "hidden",
+    overflow: 'hidden',
     '-webkit-tap-highlight-color': 'rgba(0,0,0,.05)'
   },
   // wrapper: {},
@@ -57,9 +58,9 @@ export default {
     // textDecoration: 'none',
     // transition: '0.3s'
 
-    color: colors.bright,
+    color: colors.lightBlue,
     '&:hover': {
-      color: colors.accent
+      color: colors.blude
     }
   },
   // 'input:-webkit-autofill': {
@@ -73,6 +74,6 @@ export default {
   //   borderRadius: '2px'
   // }
   div: {
-    margin: "initial"
+    margin: 'initial'
   }
 };

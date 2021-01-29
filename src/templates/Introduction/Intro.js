@@ -49,12 +49,14 @@ function IntroductionPage({ data: { blockNode, allUnitNode } }) {
           <Grid item={true} sm={4} xs={6}>
             <h1
               className='intro-layout'
+              style={{ color: 'black' }}
               dangerouslySetInnerHTML={{ __html: title }}
             />
           </Grid>
           <FullWidthRow>
             <div
               className='intro-layout'
+              style={{ color: 'black' }}
               dangerouslySetInnerHTML={{ __html: content }}
             />
           </FullWidthRow>

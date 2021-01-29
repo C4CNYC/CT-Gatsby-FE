@@ -61,6 +61,10 @@ const styles = (theme) => ({
       top: 0,
       borderTop: `1px solid ${theme.base.colors.lines}`
     },
+
+    '& .MuiPaper-root': {
+      backgroundColor: theme.base.colors.background
+    },
     alignItems: 'center',
     display: 'none',
     [`@media (min-width: ${theme.mediaQueryTresholds.P}px)`]: {
@@ -133,6 +137,8 @@ const styles = (theme) => ({
   },
   moreOptions: {
     display: 'flex',
+    backgroundColor: theme.base.colors.background,
+    color: theme.base.colors.text,
     flexDirection: 'row',
     marginLeft: theme.base.sizes.linesMargin,
     marginRight: theme.base.sizes.linesMargin,
@@ -140,6 +146,11 @@ const styles = (theme) => ({
   },
   bottomBorder: {
     borderBottom: `1px solid ${theme.base.colors.lines}`
+  },
+  menu: {
+    '&.MuiPaper-root': {
+      backgroundColor: theme.base.colors.background
+    }
   }
 });
 
@@ -432,6 +443,7 @@ class Footer extends React.Component {
                   keepMounted
                   open={Boolean(open)}
                   onClose={this.handleCloseMore}
+                  classeName={classes.menu}
                 >
                   {open && (
                     <>

@@ -9,24 +9,30 @@ import { Box, Card, CardContent, Grid } from '@material-ui/core';
 import LearnLayout from '../../components/layouts/Learn';
 import Map from '../../components/Map';
 import { Spacer } from '../../components/helpers';
-import lessons from '../../../utils/lessons'
+import withStyles from '@material-ui/core/styles/withStyles';
+import lessons from '../../../utils/lessons';
 const propTypes = {
   data: PropTypes.shape({
     block: Block
   })
 };
 
-function SuperBlockIntroductionPage({
-  data: {
-    allBlockNode,
-    blockNode
+const styles = (theme) => ({
+  title: {
+    color: theme.base.colors.text
+  },
+  card: {
+    backgroundColor: theme.base.colors.background,
+    color: theme.base.colors.text,
+    border: `4px solid ${theme.base.colors.lines}`
   }
+});
+
+function SuperBlockIntroductionPage({
+  classes,
+  data: { allBlockNode, blockNode }
 }) {
-  const {
-    content,
-    title,
-    image
-  } = blockNode;
+  const { content, title, image } = blockNode;
   return (
     <>
       <Helmet>
@@ -40,7 +46,7 @@ function SuperBlockIntroductionPage({
             </Grid>
             <Grid item={true}>
               <h1
-                className='intro-layout'
+                className={classes.title}
                 dangerouslySetInnerHTML={{ __html: title }}
               />
             </Grid>
@@ -50,7 +56,16 @@ function SuperBlockIntroductionPage({
               className='intro-layout'
               dangerouslySetInnerHTML={{ __html: content }}
             />
-            <p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor </p>
+            <p>
+              Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum
+              dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem
+              ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+              Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum
+              dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem
+              ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+              Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum
+              dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor{' '}
+            </p>
           </FullWidthRow>
         </Grid>
       </Box>
@@ -60,11 +75,22 @@ function SuperBlockIntroductionPage({
         </FullWidthRow>
         <Grid container={true} spacing={3}>
           {lessons.edges.map((block, i) => (
-            <Grid className={'superblock'} item={true} key={i} xs={4}>
-              <Card>
+            <Grid
+              className={'superblock'}
+              item={true}
+              key={i}
+              sm={12}
+              md={6}
+              lg={4}
+            >
+              <Card className={classes.card}>
                 <CardContent>
                   <Link to={block.node.fields.slug}>
-                    <img alt='' src={block.node.image} style={{ width: '100%' }} />
+                    <img
+                      alt=''
+                      src={block.node.image}
+                      style={{ width: '100%' }}
+                    />
                     <h2 className='medium-heading'>{block.node.title}</h2>
                   </Link>
                 </CardContent>
@@ -81,7 +107,7 @@ function SuperBlockIntroductionPage({
 SuperBlockIntroductionPage.displayName = 'SuperBlockIntroductionPage';
 SuperBlockIntroductionPage.propTypes = propTypes;
 
-export default SuperBlockIntroductionPage;
+export default withStyles(styles)(SuperBlockIntroductionPage);
 
 export const query = graphql`
   query SuperBlockIntroPageBySlug($slug: String!) {
@@ -89,9 +115,9 @@ export const query = graphql`
       title
       content
       image
-    },
+    }
     allBlockNode(
-#      filter: { superBlock: { eq: $slug } }
+      #      filter: { superBlock: { eq: $slug } }
       sort: { fields: [order] }
     ) {
       edges {
