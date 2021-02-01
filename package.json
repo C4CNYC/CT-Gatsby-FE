@@ -115,6 +115,7 @@
     "react-identicons": "^1.2.4",
     "react-instantsearch-dom": "^6.4.0",
     "react-lazyload": "^2.6.5",
+    "react-media": "^2.0.0-rc.1",
     "react-modal": "^3.11.2",
     "react-monaco-editor": "^0.31.1",
     "react-page-scroller": "^2.0.7-beta",
