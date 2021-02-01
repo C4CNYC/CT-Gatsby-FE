@@ -130,6 +130,7 @@ class MobileLayout extends Component {
   };
 
   handleChange = (event, value) => {
+    console.log('change tab index');
     this.setState({
       index: value
     });

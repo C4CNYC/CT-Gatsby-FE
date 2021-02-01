@@ -28,8 +28,8 @@ const globalRequires = [
   }
 ];
 
-const applyFunction = fn =>
-  async function(file) {
+const applyFunction = (fn) =>
+  async function (file) {
     try {
       if (file.error) {
         return file;
@@ -45,7 +45,7 @@ const applyFunction = fn =>
   };
 
 const composeFunctions = (...fns) =>
-  fns.map(applyFunction).reduce((f, g) => x => f(x).then(g));
+  fns.map(applyFunction).reduce((f, g) => (x) => f(x).then(g));
 
 function buildSourceMap(files) {
   return files.reduce((sources, file) => {
@@ -112,7 +112,7 @@ function getJSTestRunner({ build, sources }, proxyLogger) {
 }
 
 async function getDOMTestRunner(buildData, proxyLogger, document) {
-  await new Promise(resolve =>
+  await new Promise((resolve) =>
     createTestFramer(document, resolve, proxyLogger)(buildData)
   );
   return (testString, testTimeout) =>
@@ -121,15 +121,15 @@ async function getDOMTestRunner(buildData, proxyLogger, document) {
 
 export function buildDOMUnit({ files, required = [], template = '' }) {
   const finalRequires = [...globalRequires, ...required, ...frameRunner];
-  const loadEnzyme = Object.keys(files).some(key => files[key].ext === 'jsx');
+  const loadEnzyme = Object.keys(files).some((key) => files[key].ext === 'jsx');
   const toHtml = [jsToHtml, cssToHtml];
   const pipeLine = composeFunctions(...getTransformers(), ...toHtml);
   const finalFiles = Object.keys(files)
-    .map(key => files[key])
+    .map((key) => files[key])
     .map(pipeLine);
   return Promise.all(finalFiles)
     .then(checkFilesErrors)
-    .then(files => ({
+    .then((files) => ({
       unitType: unitTypes.html,
       build: concatHtml({ required: finalRequires, template, files }),
       sources: buildSourceMap(files),
@@ -141,11 +141,11 @@ export function buildJSUnit({ files }, options) {
   const pipeLine = composeFunctions(...getTransformers(options));
 
   const finalFiles = Object.keys(files)
-    .map(key => files[key])
+    .map((key) => files[key])
     .map(pipeLine);
   return Promise.all(finalFiles)
     .then(checkFilesErrors)
-    .then(files => ({
+    .then((files) => ({
       unitType: unitTypes.js,
       build: files
         .reduce(
@@ -169,7 +169,7 @@ export async function updatePreview(buildData, document, proxyLogger) {
   const { unitType } = buildData;
 
   if (unitType === unitTypes.html) {
-    await new Promise(resolve =>
+    await new Promise((resolve) =>
       createMainFramer(document, resolve, proxyLogger)(buildData)
     );
   } else {
@@ -178,17 +178,11 @@ export async function updatePreview(buildData, document, proxyLogger) {
 }
 
 export function unitHasPreview({ unitType }) {
-  return (
-    unitType === unitTypes.html ||
-    unitType === unitTypes.modern
-  );
+  return unitType === unitTypes.html || unitType === unitTypes.modern;
 }
 
 export function isJavaScriptUnit({ unitType }) {
-  return (
-    unitType === unitTypes.js ||
-    unitType === unitTypes.bonfire
-  );
+  return unitType === unitTypes.js || unitType === unitTypes.bonfire;
 }
 
 export function isLoopProtected(unitMeta) {

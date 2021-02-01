@@ -15,7 +15,7 @@ import {
   lessonSelector,
   lessonDataSelector
 } from '../redux';
-import './side-panel.css';
+// import './side-panel.css';
 import '../../../learn/lessons/common/css/custom.css';
 import '../../../learn/lessons/common/css/lessons.css';
 
@@ -43,11 +43,13 @@ const SidePanel = (props) => {
       ? !!textFromEditor.match(lessonData.slides[currentSlide].reg)
       : true;
 
-    const slideInStorage = Number(
-      localStorage.getItem(`lesson-progress-${lessonData.id}`)
-    );
-    if (res && slideInStorage < currentSlide) {
-      localStorage.setItem(`lesson-progress-${lessonData.id}`, currentSlide);
+    if (typeof window !== 'undefined') {
+      const slideInStorage = Number(
+        localStorage.getItem(`lesson-progress-${lessonData.id}`)
+      );
+      if (res && slideInStorage < currentSlide) {
+        localStorage.setItem(`lesson-progress-${lessonData.id}`, currentSlide);
+      }
     }
     return res;
   }, [currentSlide, textFromEditor]);
@@ -75,9 +77,13 @@ const SidePanel = (props) => {
       stylesContainer.appendChild(document.createTextNode(css));
     }
 
-    const slideInStorage = Number(
-      localStorage.getItem(`lesson-progress-${lessonData.id}`)
-    );
+    let slideInStorage = 0;
+
+    if (typeof window !== 'undefined') {
+      slideInStorage = Number(
+        localStorage.getItem(`lesson-progress-${lessonData.id}`)
+      );
+    }
 
     if (slideInStorage > currentSlide) {
       setCurrentSlide(slideInStorage);
@@ -121,7 +127,6 @@ const SidePanel = (props) => {
       tabIndex='-1'
     >
       <ReactPageScroller
-        ref={(c) => (this.reactPageScroller = c)}
         animationTimer={300}
         containerWidth='100%'
         customPageNumber={currentSlide}
@@ -133,16 +138,35 @@ const SidePanel = (props) => {
           return (
             <div
               id='lesson-page'
-              style={{ height: '100%' }}
+              style={{ height: 'calc(100% - 100px)' }}
               key={`${lessonData.slug}_${slideNumber}`}
               onClick={(e) => clickHandler(e)}
             >
               <ReflexElement
                 flex={1}
-                style={{ height: '100%' }}
-                className={`snapshot snap1 white hide-help swiper-slide`}
+                style={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'black'
+                }}
+                className={`snap1 white hide-help swiper-slide${
+                  slide.reg ? ' bg-orange' : ''
+                }`}
               >
-                <div id={`slide${slideNumber}`}>
+                <div
+                  id={`slide${slideNumber}`}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    paddingTop: 15,
+                    paddingBottom: 25,
+                    width: '100%',
+                    height: '100%'
+                  }}
+                >
                   {ReactHtmlParser(slide.html_content)}
                 </div>
               </ReflexElement>

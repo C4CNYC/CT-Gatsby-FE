@@ -36,7 +36,7 @@ export const lesson_data = {
         <p class="slide-header h2">CHALLENGE</p>
     </div>
     <div class='white'>
-      <p class="h1 white text-left">Hi,... <img class='swiper-lazy' data-src='/img/emoji/72/waving-hand-sign-type-3.png' alt=''> </p>
+      <p class="h1 white text-left">Hi,... <img class='swiper-lazy' src='/img/emoji/72/waving-hand-sign-type-3.png' alt=''> </p>
       <div class="h2 white text-left">Type <div class='inline-code bg-black p-2'>&lt;h1&gt;</div> in the code editor.</div>
       <p class="h5 pt-3 text-left">Tip: Swipe left <img class='swiper-lazy w-1em' src='/img/emoji/72/leftwards-black-arrow.png' alt=''> or click the button below.</p>
 
@@ -75,7 +75,7 @@ export const lesson_data = {
               <img class='w-20 swiper-lazy' src='/img/emoji/72/flexed-biceps-type-3.png'>
             </div>
       </div>
-      <div class='slide-footer tips'>
+      <div class='slide-footer tips dark-tip'>
         <span>Tip:</span> Swipe up to view the next slide
       </div>
       `,
@@ -106,7 +106,7 @@ export const lesson_data = {
       checkpoint: false,
       created_at: '2017-08-23T00:55:40.386Z',
       html_content: `
-      <div><h3 class='lesson-title font-weight-normal mb-0' style='text-transform: none'>We are going to<br> learn how to code<br> your website using </h3><h2 class='lesson-title mb-5'>HTML</h2><h3 class='lesson-title font-weight-normal mt-5' style='text-transform: none'>What is that?</h3><div><img class='w-20 pr-1  swiper-lazy' src='/img/emoji/thinking-face_1f914.png' alt=''><img class='w-20 pl-1 swiper-lazy' src='/img/emoji/thinking-face_1f914.png' alt=''></div></div>
+      <div class="container"><h3 class='lesson-title font-weight-normal mb-0' style='text-transform: none'>We are going to<br> learn how to code<br> your website using </h3><h2 class='lesson-title mb-5'>HTML</h2><h3 class='lesson-title font-weight-normal mt-5' style='text-transform: none'>What is that?</h3><div><img class='w-20 pr-1  swiper-lazy' src='/img/emoji/thinking-face_1f914.png' alt=''><img class='w-20 pl-1 swiper-lazy' src='/img/emoji/thinking-face_1f914.png' alt=''></div></div>
       `,
       sort_order: 12,
       updated_at: '2017-09-28T16:09:40.256Z'

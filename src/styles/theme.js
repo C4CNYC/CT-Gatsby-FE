@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import Color from 'color';
+// import Color from 'color';
 
 import colors from './colors';
 import globals from './globals';
@@ -12,8 +12,7 @@ const theme = createMuiTheme({
     MuiPaper: {
       root: {
         backgroundColor: colors.white
-      },
-      backgroundColor: colors.white
+      }
     }
   },
   base: {

@@ -6,17 +6,14 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
 import { first, last } from 'lodash';
-import Media from 'react-responsive';
+// import Media from 'react-responsive';
+import Media from 'react-media';
 
-import LearnLayout from '../../../components/layouts/Learn';
 import Editor from './Editor';
 import Preview from '../components/Preview';
 import SidePanel from '../components/Side-Panel';
 import Output from '../components/Output';
 import CompletionModal from '../components/CompletionModal';
-import HelpModal from '../components/HelpModal';
-import VideoModal from '../components/VideoModal';
-import ResetModal from '../components/ResetModal';
 import MobileLayout from './MobileLayout';
 import DesktopLayout from './DesktopLayout';
 import Hotkeys from '../components/Hotkeys';
@@ -48,7 +45,7 @@ const mapStateToProps = createStructuredSelector({
   output: consoleOutputSelector
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       createFiles,
@@ -130,10 +127,9 @@ class ShowClassic extends Component {
 
     Auth.change((user) => {
       if (user) {
-        this.setState({ user })
+        this.setState({ user });
       }
-    })
-
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -160,11 +156,7 @@ class ShowClassic extends Component {
       initTests,
       updateUnitMeta,
       data: {
-        unitNode: {
-          files,
-          tests,
-          unitType
-        }
+        unitNode: { files, tests, unitType }
       },
       pageContext: { unitMeta }
     } = this.props;
@@ -195,15 +187,12 @@ class ShowClassic extends Component {
 
   getUnitFile() {
     const { files } = this.props;
-    return first(Object.keys(files).map(key => files[key]));
+    return first(Object.keys(files).map((key) => files[key]));
   }
 
   hasPreview() {
     const { unitType } = this.getUnit();
-    return (
-      unitType === unitTypes.html ||
-      unitType === unitTypes.modern
-    );
+    return unitType === unitTypes.html || unitType === unitTypes.modern;
   }
 
   renderInstructionsPanel({ showToolPanel }) {
@@ -229,7 +218,6 @@ class ShowClassic extends Component {
   }
 
   renderEditor() {
-
     // return (
     //   <Editor
     //     containerRef={this.containerRef}
@@ -238,7 +226,7 @@ class ShowClassic extends Component {
     // );
 
     const { files } = this.props;
-    const unitFile = first(Object.keys(files).map(key => files[key]));
+    const unitFile = first(Object.keys(files).map((key) => files[key]));
     return (
       unitFile && (
         <Editor
@@ -294,38 +282,48 @@ class ShowClassic extends Component {
       >
         <>
           <Helmet title={`Learn ${this.getBlockNameTitle()} | codetribe.com`} />
-          <div id="validate-html"></div>
-          <Media maxWidth={MAX_MOBILE_WIDTH}>
-            <MobileLayout
-              editor={this.renderEditor()}
-              guideUrl={getGuideUrl({ forumTopicId, title })}
-              hasPreview={this.hasPreview()}
-              instructions={this.renderInstructionsPanel({
-                showToolPanel: false
-              })}
-              preview={this.renderPreview()}
-              // testOutput={this.renderTestOutput()}
-              videoUrl={this.getVideoUrl()}
-            />
-          </Media>
-          <Media minWidth={MAX_MOBILE_WIDTH + 1}>
-            <DesktopLayout
-              unitFile={this.getUnitFile()}
-              editor={this.renderEditor()}
-              hasPreview={this.hasPreview()}
-              instructions={this.renderInstructionsPanel({
-                showToolPanel: true
-              })}
-              preview={this.renderPreview()}
-              resizeProps={this.resizeProps}
-            // testOutput={this.renderTestOutput()}
-            />
+          <div id='validate-html'></div>
+          <Media
+            queries={{
+              mobile: '(max-width: 767px)',
+              desktop: '(min-width: 768px)'
+            }}
+          >
+            {(matches) => (
+              <>
+                {matches.desktop && (
+                  <DesktopLayout
+                    unitFile={this.getUnitFile()}
+                    editor={this.renderEditor()}
+                    hasPreview={this.hasPreview()}
+                    instructions={this.renderInstructionsPanel({
+                      showToolPanel: true
+                    })}
+                    preview={this.renderPreview()}
+                    resizeProps={this.resizeProps}
+                    // testOutput={this.renderTestOutput()}
+                  />
+                )}
+                {matches.mobile && (
+                  <MobileLayout
+                    editor={this.renderEditor()}
+                    guideUrl={getGuideUrl({ forumTopicId, title })}
+                    hasPreview={this.hasPreview()}
+                    instructions={this.renderInstructionsPanel({
+                      showToolPanel: false
+                    })}
+                    preview={this.renderPreview()}
+                    // testOutput={this.renderTestOutput()}
+                    videoUrl={this.getVideoUrl()}
+                  />
+                )}
+              </>
+            )}
           </Media>
           <CompletionModal blockName={blockName} />
           {/*<HelpModal />*/}
           {/*<VideoModal videoUrl={this.getVideoUrl()} />*/}
           {/*<ResetModal />*/}
-
         </>
       </Hotkeys>
     );
@@ -335,48 +333,8 @@ class ShowClassic extends Component {
 ShowClassic.displayName = 'ShowClassic';
 ShowClassic.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ShowClassic);
+export default connect(mapStateToProps, mapDispatchToProps)(ShowClassic);
 
-/*
-
-files {
-        indexhtml {
-          key
-          ext
-          name
-          contents
-          head
-          tail
-        }
-      }
-
-required {
-  link
-  src
-}
-
-
-indexjs {
-          key
-          ext
-          name
-          contents
-          head
-          tail
-        }
-        indexjsx {
-          key
-          ext
-          name
-          contents
-          head
-          tail
-        }
-
-*/
 export const query = graphql`
   query ClassicUnit($slug: String!) {
     unitNode(fields: { slug: { eq: $slug } }) {
@@ -394,7 +352,7 @@ export const query = graphql`
       tests {
         text
         testString
-      },
+      }
       files {
         indexhtml {
           key
