@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -13,12 +12,12 @@ import {
   moveToTab,
   validateSelector,
   setValidateChecked,
-  validateCheckedSelector
+  validateCheckedSelector,
+  setTabIndex
 } from '../redux';
 import { bindActionCreators } from 'redux';
 import AppBar from '@material-ui/core/AppBar';
 import Card from '@material-ui/core/Card';
-import { makeStyles } from '@material-ui/core/styles';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 import CodeIcon from '@material-ui/icons/Code';
@@ -102,7 +101,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       moveToTab,
-      setValidateChecked
+      setValidateChecked,
+      setTabIndex
     },
     dispatch
   );
@@ -147,6 +147,7 @@ class MobileLayout extends Component {
   componentDidMount() {
     if (this.props.currentTab !== 0) this.props.moveToTab(0);
   }
+
   handleTutorMenu = (event) => {
     this.setState({
       openTutor: !this.state.openTutor,

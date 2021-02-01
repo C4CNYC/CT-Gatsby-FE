@@ -598,6 +598,7 @@
   text-transform: uppercase;
   font-weight: bold;
   color: #fff;
+  background-color: #00d2aa !important;
   width: 75%;
 }
 
@@ -626,7 +627,8 @@
 }
 
 #lesson-page .btn-success {
-  background-color: #68c300 !important;
+  /* background-color: #68c300 !important; */
+  background: #5fd3aa !important;
 }
 
 .arrow {

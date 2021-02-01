@@ -308,7 +308,7 @@ class Editor extends Component {
     // Users who are using screen readers should not have to move focus from
     // the editor to the description every time they open a unit.
     if (this.props.canFocus && !this.props.inAccessibilityMode) {
-      this._editor.focus();
+      // this._editor.focus();
     } else this.focusOnHotkeys();
     this._editor.addAction({
       id: 'execute-unit',

@@ -16,6 +16,7 @@ import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
 import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import KeyboardHideIcon from '@material-ui/icons/KeyboardHide';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { featureNavigator, moveNavigatorAside } from './../../utils/shared';
@@ -151,6 +152,21 @@ const styles = (theme) => ({
     '&.MuiPaper-root': {
       backgroundColor: theme.base.colors.background
     }
+  },
+  more: {
+    marginLeft: 'auto',
+    position: 'relative',
+
+    '&:hover $morePopup': {
+      display: 'flex'
+    }
+  },
+  morePopup: {
+    display: 'none',
+    position: 'absolute',
+    right: '100%',
+    backgroundColor: '#C4C4C4',
+    borderRadius: '30px'
   }
 });
 
@@ -295,35 +311,39 @@ class Footer extends React.Component {
             </Button>
           </div>
           <div className={classes.group3}>
-            <div>
-              <IconButton
-                aria-label='Gallery'
-                onClick={() => {}}
-                title='Gallery'
-              >
-                <CropOriginalIcon className={classes.button} />
+            <div className={classes.more}>
+              <IconButton aria-label='More' onClick={() => {}} title='More'>
+                <MoreVertIcon className={classes.button} />
+                <div className={classes.morePopup}>
+                  <div>
+                    <IconButton
+                      aria-label='Gallery'
+                      onClick={() => {}}
+                      title='Gallery'
+                    >
+                      <CropOriginalIcon className={classes.button} />
+                    </IconButton>
+                  </div>
+                  <div>
+                    <IconButton
+                      aria-label='Publish'
+                      onClick={() => {}}
+                      title='Publish'
+                    >
+                      <PublishOutlinedIcon className={classes.button} />
+                    </IconButton>
+                  </div>
+                  <div>
+                    <IconButton
+                      aria-label='Save As'
+                      onClick={() => {}}
+                      title='Save As'
+                    >
+                      <SaveOutlinedIcon className={classes.button} />
+                    </IconButton>
+                  </div>
+                </div>
               </IconButton>
-              <span className={classes.span}>Gallery</span>
-            </div>
-            <div>
-              <IconButton
-                aria-label='Publish'
-                onClick={() => {}}
-                title='Publish'
-              >
-                <PublishOutlinedIcon className={classes.button} />
-              </IconButton>
-              <span className={classes.span}>Publish</span>
-            </div>
-            <div>
-              <IconButton
-                aria-label='Save As'
-                onClick={() => {}}
-                title='Save As'
-              >
-                <SaveOutlinedIcon className={classes.button} />
-              </IconButton>
-              <span className={classes.span}>Save As</span>
             </div>
           </div>
         </div>

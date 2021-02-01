@@ -5247,11 +5247,11 @@ span.html-code {
   display: none;
 }
 
-.validated .button-locked {
+#lesson-page .validated .button-locked {
   display: none;
 }
 
-.validated .button-unlocked {
+#lesson-page .validated .button-unlocked {
   display: block;
 }
 
@@ -6497,4 +6497,3 @@ a,
     margin-bottom: 0px;
   }
 }
-

@@ -53,7 +53,9 @@ const initialState = {
   lesson: null,
   lessonData: {
     slides: [{}]
-  }
+  },
+
+  tabIndex: 0
 };
 
 export const types = createTypes(
@@ -105,7 +107,8 @@ export const types = createTypes(
     'lastBlockChalSubmitted',
 
     'setLesson',
-    'setLessonData'
+    'setLessonData',
+    'setTabIndex'
   ],
   ns
 );
@@ -195,6 +198,8 @@ export const lastBlockChalSubmitted = createAction(
 export const setLesson = createAction(types.setLesson);
 export const setLessonData = createAction(types.setLessonData);
 
+export const setTabIndex = createAction(types.setTabIndex);
+
 export const currentTabSelector = (state) => state[ns].currentTab;
 export const unitFilesSelector = (state) => state[ns].unitFiles;
 export const monacoeditorSelector = (state) => state[ns].monacoEditor;
@@ -221,6 +226,7 @@ export const isVideoModalOpenSelector = (state) => state[ns].modal.video;
 export const isResetModalOpenSelector = (state) => state[ns].modal.reset;
 export const isBuildEnabledSelector = (state) => state[ns].isBuildEnabled;
 export const successMessageSelector = (state) => state[ns].successMessage;
+export const currentTabIndexSelector = (state) => state[ns].tabIndex;
 
 export const backendFormValuesSelector = (state) =>
   state[ns].backendFormValues || {};
@@ -440,6 +446,10 @@ export const reducer = handleActions(
     [types.setLessonData]: (state, { payload }) => ({
       ...state,
       lessonData: payload
+    }),
+    [types.setTabIndex]: (state, { payload }) => ({
+      ...state,
+      tabIndex: payload
     })
   },
   initialState

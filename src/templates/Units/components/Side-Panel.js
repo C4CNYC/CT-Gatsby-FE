@@ -2,9 +2,11 @@ import React, { useEffect, useState, useMemo } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { createSelector } from 'reselect';
 import { ReflexContainer, ReflexElement } from 'react-reflex';
 import ReactPageScroller from '../react-page-scroller';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import {
   unitTestsSelector,
@@ -12,8 +14,11 @@ import {
   validateSelector,
   textFromEditorSelector,
   setCurrentSlideNumber,
+  currentSlideNumberSelector,
   lessonSelector,
-  lessonDataSelector
+  lessonDataSelector,
+  moveToTab,
+  monacoeditorSelector
 } from '../redux';
 // import './side-panel.css';
 import '../../../learn/lessons/common/css/custom.css';
@@ -26,37 +31,71 @@ import { bindActionCreators } from 'redux';
 //   const [, setValue] = useState(0); // integer state
 //   return () => setValue((value) => value + 1); // update the state to force render
 // }
+const styles = (theme) => ({
+  pageLesson: {
+    height: 'calc(100% - 100px)'
+  },
+  reflex: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    backgroundColor: 'black'
+  },
+  slideContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingTop: 15,
+    paddingBottom: 25,
+    width: '100%',
+    height: '100%'
+  }
+});
 
 const SidePanel = (props) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
+
+  const { classes } = props;
+  const isDesktop = useMediaQuery('(min-width:768px)');
 
   // const forceUpdate = useForceUpdate();
 
-  const { setCurrentSlideNumber, textFromEditor, lessonData } = props;
-  console.log(`current lesson id ${lessonData.id}`);
+  const {
+    setCurrentSlideNumber,
+    textFromEditor,
+    lessonData,
+    moveToTab,
+    currentSlideNumber,
+    monacoEditor
+  } = props;
 
   const isValid = useMemo(() => {
-    if (!lessonData.slides[currentSlide]) {
+    if (!lessonData.slides[currentSlideNumber]) {
       return false;
     }
-    const res = lessonData.slides[currentSlide].action
-      ? !!textFromEditor.match(lessonData.slides[currentSlide].reg)
+    const res = lessonData.slides[currentSlideNumber].action
+      ? !!textFromEditor.match(lessonData.slides[currentSlideNumber].reg)
       : true;
 
     if (typeof window !== 'undefined') {
+      console.log('have window');
       const slideInStorage = Number(
         localStorage.getItem(`lesson-progress-${lessonData.id}`)
       );
-      if (res && slideInStorage < currentSlide) {
-        localStorage.setItem(`lesson-progress-${lessonData.id}`, currentSlide);
+      if (res && slideInStorage < currentSlideNumber) {
+        localStorage.setItem(
+          `lesson-progress-${lessonData.id}`,
+          currentSlideNumber
+        );
       }
     }
     return res;
-  }, [currentSlide, textFromEditor]);
+  }, [currentSlideNumber, textFromEditor]);
 
   useEffect(() => {
     if (isValid) {
-      const slide = document.getElementById(`slide${currentSlide}`);
+      const slide = document.getElementById(`slide${currentSlideNumber}`);
       slide && slide.classList.add('validated');
       // forceUpdate()
     }
@@ -85,8 +124,8 @@ const SidePanel = (props) => {
       );
     }
 
-    if (slideInStorage > currentSlide) {
-      setCurrentSlide(slideInStorage);
+    if (slideInStorage > currentSlideNumber) {
+      // setCurrentSlide(slideInStorage);
       setCurrentSlideNumber(slideInStorage);
     }
   }, [lessonData]);
@@ -96,18 +135,22 @@ const SidePanel = (props) => {
 
     if (
       e.target.closest('.swiper-next') ||
-      (e.target.closest(`#slide${currentSlide}`) &&
+      (e.target.closest(`#slide${currentSlideNumber}`) &&
         e.target.closest('.swiper-editor') &&
         isValid)
     ) {
       setCurrentSlideNumber(currentSlide + 1);
-      setCurrentSlide(currentSlide + 1);
+      // setCurrentSlide(currentSlide + 1);
+    }
+    if (e.target.closest('.button-locked')) {
+      monacoEditor.focus();
+      // moveToTab(1);
     }
   };
 
   const pageChangeHandler = (e) => {
     setCurrentSlideNumber(e);
-    setCurrentSlide(e);
+    // setCurrentSlide(e);
   };
 
   // const isCheckedOf = (sliderID, index) => {
@@ -129,7 +172,7 @@ const SidePanel = (props) => {
       <ReactPageScroller
         animationTimer={300}
         containerWidth='100%'
-        customPageNumber={currentSlide}
+        customPageNumber={currentSlideNumber}
         blockScrollDown={!isValid}
         // pageOnChange={e => setCurrentSlideNumber(e)}
         pageOnChange={(e) => pageChangeHandler(e)}
@@ -138,34 +181,23 @@ const SidePanel = (props) => {
           return (
             <div
               id='lesson-page'
-              style={{ height: 'calc(100% - 100px)' }}
               key={`${lessonData.slug}_${slideNumber}`}
               onClick={(e) => clickHandler(e)}
+              style={{
+                height: `calc(100% - ${isDesktop ? '60' : '100'}px)`
+              }}
             >
               <ReflexElement
                 flex={1}
-                style={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  backgroundColor: 'black'
-                }}
-                className={`snap1 white hide-help swiper-slide${
+                className={`${
+                  classes.reflex
+                } snap1 white hide-help swiper-slide${
                   slide.reg ? ' bg-orange' : ''
                 }`}
               >
                 <div
                   id={`slide${slideNumber}`}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    paddingTop: 15,
-                    paddingBottom: 25,
-                    width: '100%',
-                    height: '100%'
-                  }}
+                  className={classes.slideContainer}
                 >
                   {ReactHtmlParser(slide.html_content)}
                 </div>
@@ -185,19 +217,33 @@ const mapStateToProps = createSelector(
   textFromEditorSelector,
   lessonSelector,
   lessonDataSelector,
-  (isUnitCompleted, tests, validate, textFromEditor, lesson, lessonData) => ({
+  currentSlideNumberSelector,
+  monacoeditorSelector,
+  (
     isUnitCompleted,
     tests,
     validate,
     textFromEditor,
     lesson,
-    lessonData
+    lessonData,
+    currentSlideNumber,
+    monacoEditor
+  ) => ({
+    isUnitCompleted,
+    tests,
+    validate,
+    textFromEditor,
+    lesson,
+    lessonData,
+    currentSlideNumber,
+    monacoEditor
   })
 );
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      setCurrentSlideNumber
+      setCurrentSlideNumber,
+      moveToTab
     },
     dispatch
   );
@@ -213,4 +259,7 @@ const propTypes = {
 SidePanel.displayName = 'SidePanel';
 SidePanel.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidePanel);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(SidePanel));
